@@ -1,7 +1,9 @@
 "use client";
 
 import {
+  CalendarDays,
   Check,
+  ChevronDown,
   ExternalLink,
   Fish,
   Languages,
@@ -10,6 +12,7 @@ import {
   Navigation,
   Search,
   ShieldAlert,
+  Sparkles,
   Waves,
   X,
 } from "lucide-react";
@@ -63,6 +66,11 @@ const ui = {
     facilities: "No fishing within 100 m of a government fish-counting, passage or rearing facility.",
     sourceNote: "Salmon rules only",
     locate: "Show my location",
+    waters: "mapped waters",
+    liveNow: "with a current listing",
+    listTitle: "Water directory",
+    listHint: "Select a water to see boundaries and limits",
+    explore: "Explore the map",
   },
   zh: {
     eyebrow: "DFO 第 2 区 · 大温及低陆平原",
@@ -99,6 +107,11 @@ const ui = {
     facilities: "政府运营的鱼类计数、通行或养殖设施周围 100 米内禁止钓鱼。",
     sourceNote: "仅限鲑鱼规定",
     locate: "显示我的位置",
+    waters: "个已标注水域",
+    liveNow: "个当前有条目",
+    listTitle: "水域目录",
+    listHint: "选择水域查看边界与限额",
+    explore: "开始查看地图",
   },
 } as const;
 
@@ -352,10 +365,12 @@ export default function FishingExplorer() {
   return (
     <main className="site-shell">
       <header className="topbar">
-        <div className="brand-mark"><Waves size={21} /></div>
-        <div className="brand-copy">
-          <span>{ui[language].eyebrow}</span>
-          <strong>{language === "zh" ? "BC 鲑鱼地图" : "BC Salmon Map"}</strong>
+        <div className="brand-lockup">
+          <div className="brand-mark"><Waves size={21} /></div>
+          <div className="brand-copy">
+            <span>{ui[language].eyebrow}</span>
+            <strong>{language === "zh" ? "BC 鲑鱼地图" : "BC Salmon Map"}</strong>
+          </div>
         </div>
         <div className="topbar-spacer" />
         <a className="source-link" href={sourceUrl} target="_blank" rel="noreferrer">
@@ -374,14 +389,27 @@ export default function FishingExplorer() {
       </header>
 
       <section className="intro">
-        <div>
-          <p className="eyebrow">{ui[language].eyebrow}</p>
+        <div className="intro-content">
+          <p className="eyebrow"><Sparkles size={13} />{ui[language].eyebrow}</p>
           <h1>{ui[language].title}</h1>
           <p className="intro-copy">{ui[language].subtitle}</p>
+          <a className="intro-cta" href="#explorer">
+            {ui[language].explore}<ChevronDown size={16} />
+          </a>
         </div>
-        <div className="intro-meta">
-          <span>{ui[language].updated}</span>
-          <span className="source-note">{ui[language].sourceNote}</span>
+        <div className="hero-summary">
+          <div className="hero-stat hero-stat-primary">
+            <span><MapPin size={16} />{ui[language].waters}</span>
+            <strong>{fishingSpots.length}</strong>
+          </div>
+          <div className="hero-stat">
+            <span><CalendarDays size={16} />{ui[language].liveNow}</span>
+            <strong>{activeCount}</strong>
+          </div>
+          <div className="intro-meta">
+            <span>{ui[language].updated}</span>
+            <span className="source-note"><Check size={12} />{ui[language].sourceNote}</span>
+          </div>
         </div>
       </section>
 
@@ -415,10 +443,17 @@ export default function FishingExplorer() {
         </div>
       </section>
 
-      <section className="explorer">
+      <section className="explorer" id="explorer">
         <FishingMap spots={filtered} selected={selected} language={language} onSelect={selectSpot} />
 
         <aside className="water-list" aria-label={language === "zh" ? "水域列表" : "Water list"}>
+          <div className="list-header">
+            <div>
+              <strong>{ui[language].listTitle}</strong>
+              <span>{ui[language].listHint}</span>
+            </div>
+            <span className="list-count">{filtered.length}</span>
+          </div>
           {filtered.length === 0 ? (
             <div className="empty-state">
               <Search size={26} />
@@ -435,13 +470,21 @@ export default function FishingExplorer() {
                   key={spot.id}
                   data-spot={spot.id}
                 >
-                  <button type="button" className="water-card-summary" onClick={() => setSelectedId(isSelected ? null : spot.id)}>
+                  <button
+                    type="button"
+                    className="water-card-summary"
+                    onClick={() => setSelectedId(isSelected ? null : spot.id)}
+                    aria-expanded={isSelected}
+                  >
                     <span className={`list-index marker-${kind}`}>{index + 1}</span>
                     <span className="water-card-title">
                       <strong>{spot.water[language]}</strong>
                       <span>{spot.area[language]}</span>
                     </span>
-                    <StatusPill kind={kind} language={language} />
+                    <span className="card-meta">
+                      <StatusPill kind={kind} language={language} />
+                      <ChevronDown className="card-chevron" size={16} />
+                    </span>
                   </button>
 
                   {isSelected && (
