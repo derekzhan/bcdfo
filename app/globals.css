@@ -788,6 +788,22 @@ a {
   padding-left: 18px;
 }
 
+.safety-strip > .region-rules {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.region-rules strong {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #7a6236;
+}
+
+.region-rules li + li {
+  margin-top: 4px;
+}
+
 footer {
   display: flex;
   justify-content: space-between;

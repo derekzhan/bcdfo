@@ -23,6 +23,7 @@ import {
   fishingSpots,
   getBoundaryStart,
   isRuleActive,
+  regionRules,
   sourceUrl,
   type FishingSpot,
   type Language,
@@ -64,9 +65,7 @@ const ui = {
     gear: "Gear restriction",
     closed: "No salmon fishing",
     disclaimer:
-      "A red line appears only where the DFO table provides a mappable regulation reach. It follows a single OpenStreetMap main channel for visual guidance and is not a legal boundary. Waters without precise endpoints remain text-and-marker only. Confirm written areas, notices, provincial rules and posted signs.",
-    daylight: "Salmon fishing is permitted only during daylight hours in Region 2.",
-    facilities: "No fishing within 100 m of a government fish-counting, passage or rearing facility.",
+      "Red lines are clipped to the boundaries the DFO table names, or show the whole mapped channel where the table lists a water with no specific area. They follow OpenStreetMap geometry for visual guidance and are not legal boundaries. Waters DFO does not locate stay text-and-marker only. Confirm written areas, notices, provincial rules and posted signs.",
     sourceNote: "Salmon rules only",
     locate: "Show my location",
     waters: "mapped waters",
@@ -82,6 +81,8 @@ const ui = {
     rangeStart: "Start",
     rangeEnd: "End",
     closedRange: "Highlighted no-salmon-fishing reach",
+    entireRange: "DFO lists this whole water · full mapped channel shown",
+    regionTitle: "Region-wide DFO rules",
   },
   zh: {
     eyebrow: "DFO 第 2 区 · 大温及低陆平原",
@@ -113,9 +114,7 @@ const ui = {
     release: "不得保留",
     gear: "渔具限制",
     closed: "禁止垂钓鲑鱼",
-    disclaimer: "仅当 DFO 表格给出可定位的规定河段时才显示红线；红线只沿 OpenStreetMap 单一主河道绘制，仅供直观参考，并非法律边界。没有精确端点的水域只显示文字与位置标记。出发前请核对文字范围、季中公告、省级规定及现场标志。",
-    daylight: "第 2 区仅可在白天垂钓鲑鱼。",
-    facilities: "政府运营的鱼类计数、通行或养殖设施周围 100 米内禁止钓鱼。",
+    disclaimer: "红线严格裁剪到 DFO 表格写明的边界；表格未写具体范围时，红线覆盖该水域已测绘的全部主河道。红线基于 OpenStreetMap 几何，仅供直观参考，并非法律边界。DFO 未给出可定位范围的条目只显示文字与位置标记。出发前请核对文字范围、季中公告、省级规定及现场标志。",
     sourceNote: "仅限鲑鱼规定",
     locate: "显示我的位置",
     waters: "个已标注水域",
@@ -131,6 +130,8 @@ const ui = {
     rangeStart: "起点",
     rangeEnd: "终点",
     closedRange: "高亮河段禁止垂钓鲑鱼",
+    entireRange: "DFO 表格列出整条水域 · 已绘制全部主河道",
+    regionTitle: "全区通用 DFO 规定",
   },
 } as const;
 
@@ -277,35 +278,25 @@ function FishingMap({
       }).addTo(layer);
     });
 
-    if (!waterway.reference) {
-      const startPoint = getBoundaryStart(selected);
-      const addEndpoint = (coordinates: [number, number], label: string) => {
-        L.circleMarker(coordinates, {
-          radius: 7,
-          color: "#ffffff",
-          weight: 3,
-          fillColor: closed ? "#7f1d1d" : "#dc2626",
-          fillOpacity: 1,
-        })
-          .bindTooltip(label, {
+    waterway.endpoints.forEach((endpoint) => {
+      L.circleMarker(endpoint.coordinates, {
+        radius: 7,
+        color: "#ffffff",
+        weight: 3,
+        fillColor: closed ? "#7f1d1d" : "#dc2626",
+        fillOpacity: 1,
+      })
+        .bindTooltip(
+          `${endpoint.role === "start" ? ui[language].rangeStart : ui[language].rangeEnd} · ${endpoint.label[language]}`,
+          {
             permanent: true,
             direction: "top",
             offset: [0, -7],
             className: "range-endpoint-tooltip",
-          })
-          .addTo(layer);
-      };
-      addEndpoint(
-        waterway.start ?? startPoint.coordinates,
-        `${ui[language].rangeStart} · ${startPoint.label[language]}`,
-      );
-      if (waterway.end && waterway.endLabel) {
-        addEndpoint(
-          waterway.end,
-          `${ui[language].rangeEnd} · ${waterway.endLabel[language]}`,
-        );
-      }
-    }
+          },
+        )
+        .addTo(layer);
+    });
 
     const bounds = L.latLngBounds(waterway.paths.flat());
     map.fitBounds(bounds, { padding: [48, 48], maxZoom: 13, animate: true, duration: 0.65 });
@@ -364,7 +355,9 @@ function FishingMap({
             ? ui[language].textOnlyRange
             : currentKind(selected) === "closed"
               ? ui[language].closedRange
-              : ui[language].highlightedRange}
+              : waterwayPaths[selected.id]?.entire
+                ? ui[language].entireRange
+                : ui[language].highlightedRange}
         </div>
       )}
       <div className="map-legend" aria-label={language === "zh" ? "地图图例" : "Map legend"}>
@@ -611,16 +604,27 @@ export default function FishingExplorer() {
                           {boundaryPoint.approximate && <small>{ui[language].approximate}</small>}
                         </div>
                       </div>
-                      {waterway?.end && waterway.endLabel && (
-                        <div className="boundary-point boundary-end">
-                          <MapPin size={17} />
-                          <div>
-                            <span>{ui[language].rangeEnd}</span>
-                            <p>{waterway.endLabel[language]}</p>
-                            {waterway.approximate && <small>{ui[language].approximate}</small>}
+                      {waterway?.endpoints
+                        .filter(
+                          (endpoint) =>
+                            endpoint.coordinates[0] !== boundaryPoint.coordinates[0] ||
+                            endpoint.coordinates[1] !== boundaryPoint.coordinates[1],
+                        )
+                        .map((endpoint) => (
+                          <div
+                            className="boundary-point boundary-end"
+                            key={`${endpoint.coordinates[0]},${endpoint.coordinates[1]}`}
+                          >
+                            <MapPin size={17} />
+                            <div>
+                              <span>
+                                {endpoint.role === "start" ? ui[language].rangeStart : ui[language].rangeEnd}
+                              </span>
+                              <p>{endpoint.label[language]}</p>
+                              {endpoint.approximate && <small>{ui[language].approximate}</small>}
+                            </div>
                           </div>
-                        </div>
-                      )}
+                        ))}
                       <RuleList spot={spot} language={language} />
                       <div className="detail-actions">
                         <a
@@ -646,10 +650,14 @@ export default function FishingExplorer() {
 
       <section className="safety-strip">
         <div><ShieldAlert size={21} /><p>{ui[language].disclaimer}</p></div>
-        <ul>
-          <li>{ui[language].daylight}</li>
-          <li>{ui[language].facilities}</li>
-        </ul>
+        <div className="region-rules">
+          <strong>{ui[language].regionTitle}</strong>
+          <ul>
+            {regionRules.map((item) => (
+              <li key={item.en}>{item[language]}</li>
+            ))}
+          </ul>
+        </div>
       </section>
 
       <footer>

@@ -36,7 +36,12 @@ yarn-error.log*
 
 # typescript
 next-env.d.ts
+tsconfig.tsbuildinfo
 /dist/
 /.wrangler/
 /outputs/
 /work/
+
+# cached Overpass responses, tiles and preview renders
+/scripts/.cache/
+/scripts/*.png

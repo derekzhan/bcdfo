@@ -1,3 +1,5 @@
+import { waterwayPaths } from "./waterway-paths";
+
 export type Language = "en" | "zh";
 export type LocalizedText = { en: string; zh: string };
 export type RuleKind = "retain" | "release" | "gear" | "closed";
@@ -92,7 +94,7 @@ export const fishingSpots: FishingSpot[] = [
     id: "ashlu-creek",
     water: t("Ashlu Creek", "Ashlu Creek"),
     area: t("Entire listed water", "该水域"),
-    coordinates: [49.79, -123.322],
+    coordinates: [49.90061, -123.30329],
     rules: [
       rule("All", "Apr 1–Mar 31", "4月1日–次年3月31日", "Bait ban", "禁止使用鱼饵", "gear", undefined, undefined, true),
       rule("Coho", "Sep 15–Jan 31", "9月15日–次年1月31日", "1 hatchery-marked per day", "每日 1 条有孵化场标记的鱼", "retain", [9, 15], [1, 31]),
@@ -224,7 +226,7 @@ export const fishingSpots: FishingSpot[] = [
     id: "khartoum",
     water: t("Khartoum Lake", "Khartoum Lake"),
     area: t("Entire lake", "全湖"),
-    coordinates: [49.881944, -124.109722],
+    coordinates: [49.88536, -124.09835],
     rules: [
       rule("All", "Apr 1–Mar 31", "4月1日–次年3月31日", "Single barbless hook", "仅可使用单枚无倒刺鱼钩", "gear", undefined, undefined, true),
       rule("Chinook", "Apr 1–Mar 31", "4月1日–次年3月31日", "4 per day", "每日 4 条", "retain", undefined, undefined, true),
@@ -235,7 +237,7 @@ export const fishingSpots: FishingSpot[] = [
     id: "little-campbell",
     water: t("Little Campbell River", "Little Campbell River"),
     area: t("Downstream of 12th Avenue, including tributaries to that part", "12th Avenue 以下河段，包括汇入该河段的支流"),
-    coordinates: [49.026, -122.858],
+    coordinates: [49.02392, -122.71943],
     rules: [
       rule("Chinook", "Aug 15–Sep 15", "8月15日–9月15日", "1 hatchery-marked per day", "每日 1 条有孵化场标记的鱼", "retain", [8, 15], [9, 15]),
       rule("Chinook", "Sep 16–Dec 31", "9月16日–12月31日", "Non-retention", "不得保留，钓获即放", "release", [9, 16], [12, 31]),
@@ -259,7 +261,7 @@ export const fishingSpots: FishingSpot[] = [
     id: "lois",
     water: t("Lois Lake", "Lois Lake"),
     area: t("Entire lake", "全湖"),
-    coordinates: [49.7699, -124.317],
+    coordinates: [49.83389, -124.25835],
     rules: [
       rule("All", "Apr 1–Mar 31", "4月1日–次年3月31日", "Single barbless hook", "仅可使用单枚无倒刺鱼钩", "gear", undefined, undefined, true),
       rule("Chinook", "Apr 1–Mar 31", "4月1日–次年3月31日", "4 per day", "每日 4 条", "retain", undefined, undefined, true),
@@ -280,7 +282,7 @@ export const fishingSpots: FishingSpot[] = [
     id: "nicomekl",
     water: t("Nicomekl River", "Nicomekl River"),
     area: t("Downstream of 208th Street", "208th Street 以下河段"),
-    coordinates: [49.103, -122.87],
+    coordinates: [49.10053, -122.64402],
     rules: [
       rule("Chinook", "Sep 1–Nov 30", "9月1日–11月30日", "1 per day", "每日 1 条", "retain", [9, 1], [11, 30]),
       rule("Chinook", "Dec 1–Dec 31", "12月1日–12月31日", "Non-retention", "不得保留，钓获即放", "release", [12, 1], [12, 31]),
@@ -344,107 +346,94 @@ export const fishingSpots: FishingSpot[] = [
 export const sourceUrl =
   "https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region2-eng.html";
 
-const boundaryStarts: Record<string, BoundaryPoint> = {
-  "alouette-upper": {
-    coordinates: [49.24095, -122.62241],
-    label: t("216th Street bridge", "216th Street 大桥"),
-    kind: "start",
-  },
-  "alouette-lower": {
-    coordinates: [49.24095, -122.62241],
-    label: t("216th Street bridge", "216th Street 大桥"),
-    kind: "start",
-  },
-  chapman: {
-    coordinates: [49.466, -123.754],
-    label: t("Tidal-water boundary signs below the Highway 101 bridge", "Highway 101 大桥下方的潮水边界标志"),
-    kind: "start",
-    approximate: true,
-  },
-  chehalis: {
-    coordinates: [49.414, -121.946],
-    label: t("Logging bridge 2.4 km downstream of Chehalis Lake", "Chehalis Lake 下游约 2.4 公里的伐木桥"),
-    kind: "start",
-    approximate: true,
-  },
-  "chilliwack-vedder": {
-    coordinates: [49.07806, -121.70861],
-    label: t("Boundary signs 100 m downstream of the Slesse Creek confluence", "Slesse Creek 汇流处下游 100 米的边界标志"),
-    kind: "start",
-    approximate: true,
-  },
-  "de-boville": {
-    coordinates: [49.272, -122.731],
-    label: t("Confluence of Cedar Creek and Hyde Creek", "Cedar Creek 与 Hyde Creek 汇流处"),
-    kind: "start",
-    approximate: true,
-  },
+// The notes DFO prints above the Region 2 table; they apply to every row below.
+export const regionRules: LocalizedText[] = [
+  t(
+    "You can only fish for salmon in Region 2 during daylight hours.",
+    "第 2 区仅可在白天垂钓鲑鱼。",
+  ),
+  t(
+    "No fishing within 100 m of any government facility operated for counting, passing or rearing fish.",
+    "政府运营的鱼类计数、通行或养殖设施周围 100 米内禁止钓鱼。",
+  ),
+  t(
+    "The daily limit for all species of Pacific salmon from tidal and fresh waters combined is 4; individual species limits also apply.",
+    "潮水与淡水合计，所有太平洋鲑鱼每日上限为 4 条；同时仍须遵守各鱼种的单独限额。",
+  ),
+  t(
+    "The possession limit is twice the daily limit: you cannot possess more than 8 salmon in total, except salmon kept at your ordinary residence.",
+    "持有上限为每日限额的两倍：合计不得持有超过 8 条鲑鱼，存放在常住居所的鲑鱼除外。",
+  ),
+  t(
+    "The annual limit is 10 chinook over 50 cm from all fresh waters combined.",
+    "所有淡水合计，每年最多可保留 10 条超过 50 厘米的帝王鲑。",
+  ),
+  t(
+    "Squamish watershed: the aggregate daily limit of hatchery-marked coho across the entire Squamish non-tidal systems combined is 1.",
+    "Squamish 流域：整个 Squamish 非潮水水系合计，每日最多保留 1 条有孵化场标记的银鲑。",
+  ),
+  t(
+    "Retained coho must measure 25 cm or more; retained chinook, chum, pink and sockeye must measure 30 cm or more, measured from nose tip to tail fork.",
+    "保留的银鲑须达 25 厘米以上；保留的帝王鲑、粉鲑、红鲑及狗鲑须达 30 厘米以上，由吻端量至尾叉。",
+  ),
+  t(
+    "An adult chinook is over 50 cm, except over 62 cm on the Fraser River (Sep 1–Dec 31), the Chehalis River (Sep 1–Dec 31), the Chilliwack/Vedder River (including Sumas River) and the Capilano River.",
+    "成年帝王鲑指超过 50 厘米，但在 Fraser River（9月1日–12月31日）、Chehalis River（9月1日–12月31日）、Chilliwack／Vedder River（含 Sumas River）及 Capilano River 为超过 62 厘米。",
+  ),
+  t(
+    "There is no fishing for salmon in Region 2 waters flowing into Areas 28 and 29 except the opportunities listed here, and unless stated otherwise the daily limit for waters flowing into Areas 13, 15 and 16 is zero.",
+    "除本表列出的机会外，流入 28 区和 29 区的第 2 区水域禁止垂钓鲑鱼；除另有说明外，流入 13、15、16 区的水域每日限额为 0。",
+  ),
+];
+
+// Only the rows whose DFO boundary cannot be placed on a map line need a
+// hand-written point; everything else is derived from the generated geometry so
+// the marker can never drift away from the drawn reach.
+const referencePoints: Record<string, BoundaryPoint> = {
   "fraser-mission": {
     coordinates: [49.12505, -122.29903],
     label: t("CPR Railway Bridge at Mission", "Mission CPR 铁路桥"),
     kind: "start",
   },
-  "harrison-upper": {
-    coordinates: [49.3004, -121.8032],
-    label: t("Outlet of Harrison Lake", "Harrison Lake 出水口"),
-    kind: "start",
-    approximate: true,
-  },
-  "harrison-lower": {
-    coordinates: [49.252, -121.95],
-    label: t("Highway 7 bridge", "Highway 7 大桥"),
-    kind: "start",
-  },
-  kanaka: {
-    coordinates: [49.205, -122.498],
-    label: t("112th Street bridge", "112th Street 大桥"),
-    kind: "start",
-    approximate: true,
-  },
-  "little-campbell": {
-    coordinates: [49.026, -122.719],
-    label: t("12th Avenue crossing", "12th Avenue 跨河处"),
-    kind: "start",
-  },
   "little-campbell-closure": {
-    coordinates: [49.015, -122.853],
-    label: t("Line between the two fishing boundary signs", "两岸钓鱼边界标志之间的连线"),
-    kind: "start",
+    coordinates: [49.01615, -122.7795],
+    label: t(
+      "Pedestrian bridge at the foot of Stayte Road (downstream end)",
+      "Stayte Road 尽头的人行桥（下游端）",
+    ),
+    kind: "reference",
     approximate: true,
   },
-  nicomekl: {
-    coordinates: [49.102, -122.65],
-    label: t("208th Street crossing", "208th Street 跨河处"),
-    kind: "start",
-    approximate: true,
+  khartoum: {
+    coordinates: [49.88536, -124.09835],
+    label: t("Khartoum Lake", "Khartoum Lake"),
+    kind: "reference",
   },
-  nicomen: {
-    coordinates: [49.181, -122.013],
-    label: t("Confluence of Siddle (Bell's) Creek", "Siddle（Bell's）Creek 汇流处"),
-    kind: "start",
-    approximate: true,
-  },
-  serpentine: {
-    coordinates: [49.174, -122.757],
-    label: t("168th Street at Bothwell Park", "Bothwell Park 的 168th Street"),
-    kind: "start",
-    approximate: true,
-  },
-  stave: {
-    coordinates: [49.19605, -122.40781],
-    label: t("B.C. Hydro Ruskin Dam", "B.C. Hydro Ruskin 大坝"),
-    kind: "start",
-    approximate: true,
+  lois: {
+    coordinates: [49.83389, -124.25835],
+    label: t("Lois Lake", "Lois Lake"),
+    kind: "reference",
   },
 };
 
 export function getBoundaryStart(spot: FishingSpot): BoundaryPoint {
-  return boundaryStarts[spot.id] ?? {
-    coordinates: spot.coordinates,
-    label: spot.area,
-    kind: "reference",
-    approximate: true,
-  };
+  const waterway = waterwayPaths[spot.id];
+  if (waterway) {
+    return {
+      coordinates: waterway.pin,
+      label: waterway.pinLabel,
+      kind: waterway.pinKind,
+      approximate: waterway.pinApproximate,
+    };
+  }
+  return (
+    referencePoints[spot.id] ?? {
+      coordinates: spot.coordinates,
+      label: spot.area,
+      kind: "reference",
+      approximate: true,
+    }
+  );
 }
 
 export function isRuleActive(rule: FishingRule, date = new Date()) {

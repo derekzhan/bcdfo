@@ -23,6 +23,14 @@ async function render() {
   );
 }
 
+async function loadWaterways() {
+  const source = await readFile(new URL("../app/waterway-paths.ts", import.meta.url), "utf8");
+  const serialized = source
+    .slice(source.indexOf("= ", source.indexOf("export const waterwayPaths")) + 2)
+    .replace(/;\s*$/, "");
+  return { source, waterways: JSON.parse(serialized) };
+}
+
 test("server-renders the bilingual salmon explorer", async () => {
   const response = await render();
   assert.equal(response.status, 200);
@@ -49,38 +57,87 @@ test("removes the disposable starter and keeps product metadata", async () => {
   await assert.rejects(access(new URL("../app/_sites-preview", import.meta.url)));
 });
 
+test("renders the region-wide DFO notes that apply to every listing", async () => {
+  const html = await (await render()).text();
+
+  // Limits printed above the DFO table, not inside any single row.
+  assert.match(html, /每日上限为 4 条|daily limit for all species/i);
+  assert.match(html, /10 条超过 50 厘米|10 chinook over 50 cm/i);
+  assert.match(html, /Squamish/);
+  assert.match(html, /25 厘米|25 cm/);
+});
+
+test("labels both ends of the reach opened by default", async () => {
+  const html = await (await render()).text();
+
+  // Alouette upstream of 216th Street to Allco Park: both DFO boundaries.
+  assert.match(html, /216th Street 大桥/);
+  assert.match(html, /Allco Park 的钓鱼边界标志/);
+  assert.match(html, /起点/);
+  assert.match(html, /终点/);
+});
+
 test("highlights regulated reaches along real waterway geometry", async () => {
-  const [explorer, paths] = await Promise.all([
-    readFile(new URL("../app/FishingExplorer.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/waterway-paths.ts", import.meta.url), "utf8"),
-  ]);
+  const explorer = await readFile(new URL("../app/FishingExplorer.tsx", import.meta.url), "utf8");
+  const { source, waterways } = await loadWaterways();
 
   assert.match(explorer, /L\.polyline/);
   assert.match(explorer, /range-endpoint-tooltip/);
-  assert.match(paths, /"alouette-upper"/);
-  assert.match(paths, /"harrison-upper"/);
-  assert.match(paths, /OpenStreetMap contributors/);
-  assert.match(paths, /"start":/);
-  assert.doesNotMatch(paths, /Downstream Chilliwack\/Vedder extent/);
-  assert.doesNotMatch(paths, /Downstream river mouth/);
+  assert.match(source, /OpenStreetMap contributors/);
+  assert.ok(waterways["alouette-upper"]);
+  assert.ok(waterways["harrison-upper"]);
 
-  const serializedPaths = paths
-    .slice(paths.indexOf("= ", paths.indexOf("export const")) + 2)
-    .replace(/;\s*$/, "");
-  const generated = JSON.parse(serializedPaths);
-  const chilliwack = generated["chilliwack-vedder"];
-
+  // The Chilliwack/Vedder listing is the only row DFO extends onto a second water.
+  const chilliwack = waterways["chilliwack-vedder"];
   assert.equal(chilliwack.paths.length, 2);
-  assert.equal(chilliwack.end, undefined);
-  assert.deepEqual(chilliwack.start, chilliwack.paths[0][0]);
-  assert.equal(generated.capilano, undefined);
-  assert.equal(generated.khartoum, undefined);
-  assert.equal(generated.lois, undefined);
+  assert.equal(chilliwack.entire, undefined);
 
-  for (const [id, waterway] of Object.entries(generated)) {
-    assert.equal(waterway.reference, undefined);
-    assert.equal(waterway.paths.length, id === "chilliwack-vedder" ? 2 : 1);
-    if (waterway.start) assert.deepEqual(waterway.start, waterway.paths[0][0]);
-    if (waterway.end) assert.deepEqual(waterway.end, waterway.paths.at(-1).at(-1));
+  for (const [id, waterway] of Object.entries(waterways)) {
+    assert.ok(waterway.paths.length >= 1, `${id} has no geometry`);
+    for (const path of waterway.paths) assert.ok(path.length >= 2, `${id} has a degenerate path`);
+
+    // Rows with a specific area get labelled endpoints; whole-water rows do not.
+    if (waterway.entire) {
+      assert.equal(waterway.endpoints.length, 0, `${id} should not claim boundaries`);
+      assert.equal(waterway.pinKind, "reference");
+    } else {
+      assert.equal(waterway.endpoints.length, waterway.paths.length * 2, `${id} is missing endpoints`);
+      assert.equal(waterway.pinKind, "start");
+    }
+
+    // Every marker must sit on the geometry the map draws.
+    for (const point of [waterway.pin, ...waterway.endpoints.map((endpoint) => endpoint.coordinates)]) {
+      assert.ok(
+        waterway.paths.some((path) => path.some((vertex) => onSamePoint(vertex, point))),
+        `${id} has a marker off the drawn reach: ${point}`,
+      );
+    }
   }
 });
+
+test("keeps every DFO row either mapped or explicitly text-only", async () => {
+  const [data, { waterways }] = await Promise.all([
+    readFile(new URL("../app/fishing-data.ts", import.meta.url), "utf8"),
+    loadWaterways(),
+  ]);
+
+  const ids = [...data.matchAll(/^\s{4}id: "([a-z-]+)",$/gm)].map((match) => match[1]);
+  assert.ok(ids.length >= 26, `expected the full DFO table, found ${ids.length} rows`);
+
+  // DFO gives no mappable extent for these, so they stay text plus a marker.
+  const textOnly = new Set(["fraser-mission", "khartoum", "lois", "little-campbell-closure"]);
+  for (const id of ids) {
+    assert.equal(
+      Boolean(waterways[id]),
+      !textOnly.has(id),
+      `${id} should ${textOnly.has(id) ? "not " : ""}have mapped geometry`,
+    );
+  }
+  for (const id of Object.keys(waterways)) {
+    assert.ok(ids.includes(id), `${id} has geometry but no DFO row`);
+  }
+});
+
+function onSamePoint(a, b) {
+  return Math.abs(a[0] - b[0]) < 1e-6 && Math.abs(a[1] - b[1]) < 1e-6;
+}
