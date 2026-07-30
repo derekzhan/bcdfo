@@ -1,6 +1,9 @@
-"""Scratch helper: draw the generated reaches over OSM tiles for eyeball review.
+"""Scratch helper: draw the generated reaches over map tiles for eyeball review.
 
-Usage: python3 scripts/preview-map.py [zoom] [out.png] [spot-id ...]
+Usage: python3 scripts/preview-map.py [zoom] [out.png] [spot-id ...] [--satellite]
+
+--satellite renders the same Esri World Imagery basemap the app offers, which is
+how to check that a reach follows the real channel rather than the OSM drawing.
 """
 
 import io
@@ -32,11 +35,14 @@ def project(lat, lon, zoom):
     return x, y
 
 
-def tile(zoom, x, y):
+ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile"
+
+
+def tile(zoom, x, y, satellite=False):
     os.makedirs(CACHE, exist_ok=True)
-    path = os.path.join(CACHE, f"{zoom}-{x}-{y}.png")
+    path = os.path.join(CACHE, f"{'esri' if satellite else 'osm'}-{zoom}-{x}-{y}.png")
     if not os.path.exists(path):
-        url = f"https://tile.openstreetmap.org/{zoom}/{x}/{y}.png"
+        url = f"{ESRI}/{zoom}/{y}/{x}" if satellite else f"https://tile.openstreetmap.org/{zoom}/{x}/{y}.png"
         request = urllib.request.Request(url, headers={"User-Agent": "bc-salmon-map-dev/1.0"})
         with urllib.request.urlopen(request, timeout=30) as response:
             open(path, "wb").write(response.read())
@@ -44,9 +50,11 @@ def tile(zoom, x, y):
 
 
 def main():
-    zoom = int(sys.argv[1]) if len(sys.argv) > 1 else 9
-    out = sys.argv[2] if len(sys.argv) > 2 else os.path.join(ROOT, "scripts", "preview.png")
-    wanted = sys.argv[3:]
+    args = [arg for arg in sys.argv[1:] if arg != "--satellite"]
+    satellite = "--satellite" in sys.argv
+    zoom = int(args[0]) if args else 9
+    out = args[1] if len(args) > 1 else os.path.join(ROOT, "scripts", "preview.png")
+    wanted = args[2:]
 
     waterways = load_waterways()
     if wanted:
@@ -63,7 +71,7 @@ def main():
     canvas = Image.new("RGB", ((tx1 - tx0 + 1) * TILE, (ty1 - ty0 + 1) * TILE), "white")
     for tx in range(tx0, tx1 + 1):
         for ty in range(ty0, ty1 + 1):
-            canvas.paste(tile(zoom, tx, ty), ((tx - tx0) * TILE, (ty - ty0) * TILE))
+            canvas.paste(tile(zoom, tx, ty, satellite), ((tx - tx0) * TILE, (ty - ty0) * TILE))
 
     origin_x, origin_y = tx0 * TILE, ty0 * TILE
     draw = ImageDraw.Draw(canvas)
@@ -78,7 +86,7 @@ def main():
         px, py = project(*water["pin"], zoom)
         px, py = px - origin_x, py - origin_y
         draw.ellipse([px - 4, py - 4, px + 4, py + 4], fill=(20, 108, 90), outline="white", width=2)
-        draw.text((px + 7, py - 6), re.sub(r"-", " ", water_id), fill=(15, 40, 30))
+        draw.text((px + 7, py - 6), re.sub(r"-", " ", water_id), fill=(255, 255, 255) if satellite else (15, 40, 30))
         for endpoint in water["endpoints"]:
             ex, ey = project(*endpoint["coordinates"], zoom)
             ex, ey = ex - origin_x, ey - origin_y

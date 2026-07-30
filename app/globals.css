@@ -381,6 +381,48 @@ a {
   pointer-events: auto;
 }
 
+.map-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.basemap-switch {
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 7px 18px rgba(28, 54, 47, 0.14);
+  pointer-events: auto;
+}
+
+.basemap-switch button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 9px;
+  height: 30px;
+  border: 0;
+  border-radius: 9px;
+  color: var(--ink-soft);
+  background: transparent;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.basemap-switch button:hover {
+  color: var(--green);
+  background: rgba(20, 108, 90, 0.09);
+}
+
+.basemap-switch button.is-active {
+  color: #fff;
+  background: var(--green);
+}
+
 .location-error {
   position: absolute;
   z-index: 500;
@@ -391,6 +433,12 @@ a {
   color: #7e2420;
   background: #fff1ef;
   font-size: 11px;
+}
+
+.location-error.is-tile-error {
+  top: 106px;
+  max-width: 210px;
+  text-align: right;
 }
 
 .map-legend {
@@ -985,7 +1033,17 @@ footer a {
   }
 
   .map-topline > span {
-    max-width: calc(100% - 52px);
+    max-width: calc(100% - 148px);
+  }
+
+  /* Not enough width for both labels next to the hint; icons carry the meaning
+     and aria-label keeps the buttons readable. */
+  .basemap-switch button span {
+    display: none;
+  }
+
+  .basemap-switch button {
+    padding: 0 8px;
   }
 
   .map-legend {
@@ -1327,6 +1385,12 @@ input:focus-visible {
   filter: saturate(0.88) contrast(0.98);
 }
 
+/* The street basemap is muted so the red reaches stand out; imagery needs its
+   own contrast instead of being washed out by that filter. */
+.map-wrap.is-satellite .map-canvas {
+  filter: saturate(1.04) contrast(1.03);
+}
+
 .map-topline {
   top: 16px;
   left: 16px;
@@ -1335,6 +1399,7 @@ input:focus-visible {
 
 .map-topline > span,
 .map-location-button,
+.basemap-switch,
 .map-legend {
   border: 1px solid rgba(255, 255, 255, 0.82);
   background: rgba(255, 255, 255, 0.88);
@@ -1352,6 +1417,16 @@ input:focus-visible {
   width: 42px;
   height: 42px;
   border-radius: 13px;
+}
+
+.basemap-switch {
+  padding: 4px;
+  border-radius: 13px;
+}
+
+.basemap-switch button {
+  height: 34px;
+  border-radius: 10px;
 }
 
 .map-location-button:hover {
@@ -1820,6 +1895,9 @@ input:focus-visible {
 }
 
 .range-endpoint-tooltip {
+  /* Tooltips sit in a zero-width pane, so shrink-to-fit collapses this to one
+     character per line once white-space stops being nowrap. */
+  width: max-content;
   max-width: 245px;
   padding: 8px 10px !important;
   border: 1px solid #f1cbc8 !important;

@@ -9,8 +9,10 @@ import {
   Flag,
   Languages,
   LocateFixed,
+  Map as MapIcon,
   MapPin,
   Navigation,
+  Satellite,
   Search,
   ShieldAlert,
   Sparkles,
@@ -32,6 +34,28 @@ import {
 import { waterwayPaths } from "./waterway-paths";
 
 type Filter = "all" | "today" | "chinook" | "coho" | "closures";
+type Basemap = "street" | "satellite";
+
+// Esri serves the imagery tiles with a matching label overlay, so place names
+// stay readable once the street basemap is swapped out.
+const basemapTiles = {
+  street: [
+    {
+      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    },
+  ],
+  satellite: [
+    {
+      url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      attribution: 'Imagery © <a href="https://www.esri.com">Esri</a>, Maxar, Earthstar Geographics',
+    },
+    {
+      url: "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
+      attribution: "",
+    },
+  ],
+} as const;
 
 const ui = {
   en: {
@@ -83,6 +107,10 @@ const ui = {
     closedRange: "Highlighted no-salmon-fishing reach",
     entireRange: "DFO lists this whole water · full mapped channel shown",
     regionTitle: "Region-wide DFO rules",
+    basemap: "Base map",
+    basemapStreet: "Street",
+    basemapSatellite: "Satellite",
+    tileError: "Base map tiles failed to load—check your connection",
   },
   zh: {
     eyebrow: "DFO 第 2 区 · 大温及低陆平原",
@@ -132,6 +160,10 @@ const ui = {
     closedRange: "高亮河段禁止垂钓鲑鱼",
     entireRange: "DFO 表格列出整条水域 · 已绘制全部主河道",
     regionTitle: "全区通用 DFO 规定",
+    basemap: "底图",
+    basemapStreet: "街道图",
+    basemapSatellite: "卫星影像",
+    tileError: "底图瓦片加载失败，请检查网络",
   },
 } as const;
 
@@ -169,8 +201,14 @@ function FishingMap({
   const markerLayerRef = useRef<import("leaflet").LayerGroup | null>(null);
   const waterwayLayerRef = useRef<import("leaflet").LayerGroup | null>(null);
   const locationLayerRef = useRef<import("leaflet").LayerGroup | null>(null);
-  const [mapReady, setMapReady] = useState(false);
+  const baseLayersRef = useRef<Record<Basemap, import("leaflet").TileLayer[]> | null>(null);
+  // Counts map instances rather than flagging readiness: a hot update rebuilds
+  // the map while React keeps state, and a boolean would stop re-running the
+  // layer effects below, leaving the new map empty.
+  const [mapEpoch, setMapEpoch] = useState(0);
   const [locationError, setLocationError] = useState(false);
+  const [tileError, setTileError] = useState(false);
+  const [basemap, setBasemap] = useState<Basemap>("street");
 
   useEffect(() => {
     let active = true;
@@ -186,16 +224,24 @@ function FishingMap({
         ],
       }).setView([49.45, -122.72], 8);
 
-      leaflet.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        maxZoom: 18,
-      }).addTo(map);
+      // Both basemaps stop at z18: past that the imagery only exists over the
+      // towns and returns a placeholder tile over the backcountry reaches.
+      const build = (tiles: readonly { url: string; attribution: string }[]) =>
+        tiles.map(({ url, attribution }, index) =>
+          leaflet
+            .tileLayer(url, { attribution, maxZoom: 18, zIndex: index + 1 })
+            .on("tileerror", () => setTileError(true)),
+        );
+      baseLayersRef.current = {
+        street: build(basemapTiles.street),
+        satellite: build(basemapTiles.satellite),
+      };
       leaflet.control.zoom({ position: "bottomright" }).addTo(map);
       waterwayLayerRef.current = leaflet.layerGroup().addTo(map);
       markerLayerRef.current = leaflet.layerGroup().addTo(map);
       locationLayerRef.current = leaflet.layerGroup().addTo(map);
       mapRef.current = map;
-      setMapReady(true);
+      setMapEpoch((epoch) => epoch + 1);
       requestAnimationFrame(() => map.invalidateSize());
     });
 
@@ -205,6 +251,17 @@ function FishingMap({
       mapRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    const layers = baseLayersRef.current;
+    if (!map || !layers) return;
+    const previous = basemap === "street" ? layers.satellite : layers.street;
+    previous.forEach((layer) => layer.remove());
+    layers[basemap].forEach((layer) => {
+      if (!map.hasLayer(layer)) layer.addTo(map);
+    });
+  }, [basemap, mapEpoch]);
 
   useEffect(() => {
     const L = leafletRef.current;
@@ -240,7 +297,7 @@ function FishingMap({
       const bounds = L.latLngBounds(spots.map((spot) => getBoundaryStart(spot).coordinates));
       map.fitBounds(bounds, { padding: [34, 34], maxZoom: 9 });
     }
-  }, [spots, selected, language, onSelect, mapReady]);
+  }, [spots, selected, language, onSelect, mapEpoch]);
 
   useEffect(() => {
     const L = leafletRef.current;
@@ -300,7 +357,7 @@ function FishingMap({
 
     const bounds = L.latLngBounds(waterway.paths.flat());
     map.fitBounds(bounds, { padding: [48, 48], maxZoom: 13, animate: true, duration: 0.65 });
-  }, [selected, language, mapReady]);
+  }, [selected, language, mapEpoch]);
 
   const locate = () => {
     setLocationError(false);
@@ -333,17 +390,48 @@ function FishingMap({
   };
 
   return (
-    <div className="map-wrap">
-      <div ref={containerRef} className="map-canvas" aria-label={language === "zh" ? "钓场互动地图" : "Interactive fishing map"} />
+    <div className={`map-wrap${basemap === "satellite" ? " is-satellite" : ""}`}>
+      {/* Leaflet adds its own classes to this node, so its className has to stay
+          a constant: re-rendering it would wipe leaflet-container and with it
+          the tile sizing rules. Basemap styling hangs off .map-wrap instead. */}
+      <div
+        ref={containerRef}
+        className="map-canvas"
+        aria-label={language === "zh" ? "钓场互动地图" : "Interactive fishing map"}
+      />
       <div className="map-topline">
         <span><MapPin size={15} />{ui[language].mapHint}</span>
-        <button type="button" className="map-location-button" onClick={locate} aria-label={ui[language].locate}>
-          <LocateFixed size={17} />
-        </button>
+        <div className="map-controls">
+          <div className="basemap-switch" role="group" aria-label={ui[language].basemap}>
+            {(["street", "satellite"] as const).map((option) => {
+              const label = option === "street" ? ui[language].basemapStreet : ui[language].basemapSatellite;
+              return (
+                <button
+                  key={option}
+                  type="button"
+                  className={basemap === option ? "is-active" : undefined}
+                  onClick={() => {
+                    setTileError(false);
+                    setBasemap(option);
+                  }}
+                  aria-pressed={basemap === option}
+                  aria-label={label}
+                >
+                  {option === "street" ? <MapIcon size={15} /> : <Satellite size={15} />}
+                  <span>{label}</span>
+                </button>
+              );
+            })}
+          </div>
+          <button type="button" className="map-location-button" onClick={locate} aria-label={ui[language].locate}>
+            <LocateFixed size={17} />
+          </button>
+        </div>
       </div>
       {locationError && (
         <div className="location-error">{language === "zh" ? "无法读取当前位置" : "Location unavailable"}</div>
       )}
+      {tileError && <div className="location-error is-tile-error">{ui[language].tileError}</div>}
       {selected && (
         <div
           className={`range-status${!waterwayPaths[selected.id]?.paths.length ? " is-text-only" : ""}${currentKind(selected) === "closed" ? " is-closed" : ""}`}

@@ -67,6 +67,30 @@ test("renders the region-wide DFO notes that apply to every listing", async () =
   assert.match(html, /25 厘米|25 cm/);
 });
 
+test("offers the street and satellite basemaps", async () => {
+  const [html, explorer] = await Promise.all([
+    (await render()).text(),
+    readFile(new URL("../app/FishingExplorer.tsx", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(html, /basemap-switch/);
+  assert.match(html, /街道图/);
+  assert.match(html, /卫星影像/);
+  // Imagery only has global coverage through z18; z19 is blank backcountry.
+  assert.match(explorer, /World_Imagery\/MapServer\/tile\/\{z\}\/\{y\}\/\{x\}/);
+  assert.doesNotMatch(explorer, /maxZoom: 19/);
+  assert.match(explorer, /Imagery © <a href="https:\/\/www\.esri\.com">Esri<\/a>/);
+
+  // Leaflet writes its own classes onto the map container, so React must never
+  // re-render that className: doing so drops leaflet-container and the tile
+  // sizing rules with it, which renders every tile at zero width.
+  assert.match(explorer, /ref=\{containerRef\}\s*\n\s*className="map-canvas"/);
+  // Layer effects key off a map instance counter, because a hot update rebuilds
+  // the map while React keeps state and a boolean would never change again.
+  assert.doesNotMatch(explorer, /mapReady/);
+  assert.match(explorer, /\[basemap, mapEpoch\]/);
+});
+
 test("labels both ends of the reach opened by default", async () => {
   const html = await (await render()).text();
 

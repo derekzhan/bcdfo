@@ -14,6 +14,7 @@ Oceans Canada（DFO）Region 2 的表格规定整理成更容易搜索、筛选�
 - 支持手机和桌面浏览器的响应式布局
 - 按水域、边界、Chinook、Coho、当天条目及禁钓条目筛选
 - 在地图上显示 DFO 表格中的水域位置和明确规定河段
+- 底图可在街道图与高清卫星影像之间切换，便于查看真实河道和进入路线
 - 展示季节、保留限额、不得保留、渔具限制和禁钓规定
 - 列出 DFO 表格上方的全区通用规定（每日与持有上限、年度限额、体长要求、
   成年帝王鲑定义、Squamish 流域合计限额等）
@@ -36,6 +37,8 @@ Oceans Canada（DFO）Region 2 的表格规定整理成更容易搜索、筛选�
   Little Campbell 禁钓段）只显示文字规定和位置标记。
 - 所有标记坐标都来自生成的红线顶点，因此地图标记不可能与所绘河段脱节。
 - OpenStreetMap 几何只用于地图可视化，DFO 文字、现场标志及最新公告始终优先。
+- 底图（OpenStreetMap 街道图或 Esri World Imagery 卫星影像）只影响背景显示，
+  不改变红线坐标。
 
 规定和双语文字位于 [`app/fishing-data.ts`](app/fishing-data.ts)。红线几何位于
 [`app/waterway-paths.ts`](app/waterway-paths.ts)，由
@@ -54,8 +57,16 @@ npm run waterways
 ```
 
 Overpass 响应缓存在 `scripts/.cache/`，重复运行不会重复请求。
-`python3 scripts/preview-map.py 11 scripts/preview.png <spot-id…>` 可把生成的
-红线叠加在 OSM 瓦片上，便于人工核对。
+
+人工核对红线位置：
+
+```bash
+# 叠加在 OpenStreetMap 瓦片上
+python3 scripts/preview-map.py 11 scripts/preview.png <spot-id…>
+
+# 叠加在卫星影像上，最适合确认红线是否压在真实河道上
+python3 scripts/preview-map.py 14 scripts/preview.png <spot-id…> --satellite
+```
 
 ## 重要免责声明
 
