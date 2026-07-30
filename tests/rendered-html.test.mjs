@@ -60,4 +60,22 @@ test("highlights regulated reaches along real waterway geometry", async () => {
   assert.match(paths, /"alouette-upper"/);
   assert.match(paths, /"harrison-upper"/);
   assert.match(paths, /OpenStreetMap contributors/);
+  assert.match(paths, /"start":/);
+  assert.doesNotMatch(paths, /Downstream Chilliwack\/Vedder extent/);
+  assert.doesNotMatch(paths, /Downstream river mouth/);
+
+  const serializedPaths = paths
+    .slice(paths.indexOf("= ", paths.indexOf("export const")) + 2)
+    .replace(/;\s*$/, "");
+  const generated = JSON.parse(serializedPaths);
+  const chilliwack = generated["chilliwack-vedder"];
+
+  assert.equal(chilliwack.paths.length, 2);
+  assert.equal(chilliwack.end, undefined);
+  assert.deepEqual(chilliwack.start, chilliwack.paths[0][0]);
+
+  for (const waterway of Object.values(generated)) {
+    if (waterway.start) assert.deepEqual(waterway.start, waterway.paths[0][0]);
+    if (waterway.end) assert.deepEqual(waterway.end, waterway.paths.at(-1).at(-1));
+  }
 });

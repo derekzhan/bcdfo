@@ -334,7 +334,7 @@ export const fishingSpots: FishingSpot[] = [
       "Downstream of the B.C. Hydro Dam to the CPR Railway Bridge, excluding the Ruskin and Northrop spawning channels described by DFO",
       "从 B.C. Hydro 大坝向下游至 CPR 铁路桥；不包括 DFO 所述的 Ruskin 与 Northrop 产卵水道",
     ),
-    coordinates: [49.221, -122.359],
+    coordinates: [49.19605, -122.40781],
     rules: [
       rule("Coho", "Sep 1–Dec 31", "9月1日–12月31日", "4 hatchery-marked per day, only 2 over 35 cm", "每日 4 条有孵化场标记的鱼，其中超过 35 厘米的最多 2 条", "retain", [9, 1], [12, 31]),
     ],
@@ -431,8 +431,8 @@ const boundaryStarts: Record<string, BoundaryPoint> = {
     approximate: true,
   },
   stave: {
-    coordinates: [49.221, -122.359],
-    label: t("B.C. Hydro dam", "B.C. Hydro 大坝"),
+    coordinates: [49.19605, -122.40781],
+    label: t("B.C. Hydro Ruskin Dam", "B.C. Hydro Ruskin 大坝"),
     kind: "start",
     approximate: true,
   },

@@ -279,7 +279,6 @@ function FishingMap({
 
     if (!waterway.reference) {
       const startPoint = getBoundaryStart(selected);
-      const endPoint = waterway.end ?? waterway.paths.at(-1)?.at(-1);
       const addEndpoint = (coordinates: [number, number], label: string) => {
         L.circleMarker(coordinates, {
           radius: 7,
@@ -296,11 +295,14 @@ function FishingMap({
           })
           .addTo(layer);
       };
-      addEndpoint(startPoint.coordinates, `${ui[language].rangeStart} · ${startPoint.label[language]}`);
-      if (endPoint) {
+      addEndpoint(
+        waterway.start ?? startPoint.coordinates,
+        `${ui[language].rangeStart} · ${startPoint.label[language]}`,
+      );
+      if (waterway.end && waterway.endLabel) {
         addEndpoint(
-          endPoint,
-          `${ui[language].rangeEnd} · ${waterway.endLabel?.[language] ?? selected.area[language]}`,
+          waterway.end,
+          `${ui[language].rangeEnd} · ${waterway.endLabel[language]}`,
         );
       }
     }
