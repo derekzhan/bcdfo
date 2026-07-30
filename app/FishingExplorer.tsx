@@ -6,6 +6,7 @@ import {
   ChevronDown,
   ExternalLink,
   Fish,
+  Flag,
   Languages,
   LocateFixed,
   MapPin,
@@ -20,6 +21,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   currentKind,
   fishingSpots,
+  getBoundaryStart,
   isRuleActive,
   sourceUrl,
   type FishingSpot,
@@ -44,7 +46,7 @@ const ui = {
     active: "listed today",
     source: "Official DFO table",
     updated: "Source modified Apr 1, 2026",
-    mapHint: "Tap a marker or select a water",
+    mapHint: "Tap a start marker or select a water",
     details: "Rules & limits",
     area: "Regulated area",
     season: "Season",
@@ -71,6 +73,9 @@ const ui = {
     listTitle: "Water directory",
     listHint: "Select a water to see boundaries and limits",
     explore: "Explore the map",
+    boundaryStart: "Boundary start",
+    referencePoint: "Water reference",
+    approximate: "Approximate—confirm posted signs",
   },
   zh: {
     eyebrow: "DFO 第 2 区 · 大温及低陆平原",
@@ -86,7 +91,7 @@ const ui = {
     active: "个今天有条目",
     source: "DFO 官方表格",
     updated: "来源更新于 2026年4月1日",
-    mapHint: "点击标点或选择水域",
+    mapHint: "点击起点标记或选择水域",
     details: "规定与限额",
     area: "适用范围",
     season: "日期",
@@ -112,6 +117,9 @@ const ui = {
     listTitle: "水域目录",
     listHint: "选择水域查看边界与限额",
     explore: "开始查看地图",
+    boundaryStart: "区域起点",
+    referencePoint: "水域参考点",
+    approximate: "约略位置，请以现场标志为准",
   },
 } as const;
 
@@ -193,31 +201,36 @@ function FishingMap({
 
     spots.forEach((spot, index) => {
       const kind = currentKind(spot);
+      const point = getBoundaryStart(spot);
+      const pointLabel = point.kind === "start" ? (language === "zh" ? "起" : "S") : (language === "zh" ? "参" : "R");
       const icon = L.divIcon({
         className: "marker-shell",
-        html: `<span class="${markerClass(kind, selected?.id === spot.id)}"><b>${index + 1}</b></span>`,
-        iconSize: [36, 42],
-        iconAnchor: [18, 38],
+        html: `<span class="${markerClass(kind, selected?.id === spot.id)}${point.kind === "reference" ? " is-reference-point" : ""}"><b>${index + 1}</b><em>${pointLabel}</em></span>`,
+        iconSize: [42, 48],
+        iconAnchor: [21, 43],
       });
-      const marker = L.marker(spot.coordinates, { icon, keyboard: true });
-      marker.bindTooltip(spot.water[language], {
+      const marker = L.marker(point.coordinates, { icon, keyboard: true });
+      marker.bindTooltip(
+        `${spot.water[language]} · ${point.kind === "start" ? ui[language].boundaryStart : ui[language].referencePoint}`,
+        {
         direction: "top",
-        offset: [0, -30],
+        offset: [0, -34],
         opacity: 0.96,
-      });
+        },
+      );
       marker.on("click", () => onSelect(spot.id));
       marker.addTo(layer);
     });
 
     if (spots.length > 1 && !selected) {
-      const bounds = L.latLngBounds(spots.map((spot) => spot.coordinates));
+      const bounds = L.latLngBounds(spots.map((spot) => getBoundaryStart(spot).coordinates));
       map.fitBounds(bounds, { padding: [34, 34], maxZoom: 9 });
     }
   }, [spots, selected, language, onSelect, mapReady]);
 
   useEffect(() => {
     if (selected && mapRef.current) {
-      mapRef.current.flyTo(selected.coordinates, Math.max(mapRef.current.getZoom(), 11), {
+      mapRef.current.flyTo(getBoundaryStart(selected).coordinates, Math.max(mapRef.current.getZoom(), 11), {
         duration: 0.65,
       });
     }
@@ -266,6 +279,8 @@ function FishingMap({
         <div className="location-error">{language === "zh" ? "无法读取当前位置" : "Location unavailable"}</div>
       )}
       <div className="map-legend" aria-label={language === "zh" ? "地图图例" : "Map legend"}>
+        <span className="boundary-legend"><i>{language === "zh" ? "起" : "S"}</i>{ui[language].boundaryStart}</span>
+        <span className="boundary-legend is-reference"><i>{language === "zh" ? "参" : "R"}</i>{ui[language].referencePoint}</span>
         {(["retain", "release", "gear", "closed", "inactive"] as const).map((kind) => (
           <span key={kind}><i className={`legend-dot marker-${kind}`} />{ui[language][kind]}</span>
         ))}
@@ -464,6 +479,7 @@ export default function FishingExplorer() {
             filtered.map((spot, index) => {
               const isSelected = selectedId === spot.id;
               const kind = currentKind(spot);
+              const boundaryPoint = getBoundaryStart(spot);
               return (
                 <article
                   className={`water-card${isSelected ? " is-selected" : ""}`}
@@ -497,11 +513,19 @@ export default function FishingExplorer() {
                         <span>{ui[language].area}</span>
                         <p>{spot.area[language]}</p>
                       </div>
+                      <div className={`boundary-point${boundaryPoint.kind === "reference" ? " is-reference" : ""}`}>
+                        <Flag size={17} />
+                        <div>
+                          <span>{boundaryPoint.kind === "start" ? ui[language].boundaryStart : ui[language].referencePoint}</span>
+                          <p>{boundaryPoint.label[language]}</p>
+                          {boundaryPoint.approximate && <small>{ui[language].approximate}</small>}
+                        </div>
+                      </div>
                       <RuleList spot={spot} language={language} />
                       <div className="detail-actions">
                         <a
                           className="navigate-button"
-                          href={`https://www.google.com/maps/dir/?api=1&destination=${spot.coordinates[0]},${spot.coordinates[1]}`}
+                          href={`https://www.google.com/maps/dir/?api=1&destination=${boundaryPoint.coordinates[0]},${boundaryPoint.coordinates[1]}`}
                           target="_blank"
                           rel="noreferrer"
                         >

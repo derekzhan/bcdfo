@@ -22,6 +22,13 @@ export type FishingSpot = {
   sourceAnchor?: string;
 };
 
+export type BoundaryPoint = {
+  coordinates: [number, number];
+  label: LocalizedText;
+  kind: "start" | "reference";
+  approximate?: boolean;
+};
+
 const t = (en: string, zh: string): LocalizedText => ({ en, zh });
 
 const rule = (
@@ -336,6 +343,109 @@ export const fishingSpots: FishingSpot[] = [
 
 export const sourceUrl =
   "https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region2-eng.html";
+
+const boundaryStarts: Record<string, BoundaryPoint> = {
+  "alouette-upper": {
+    coordinates: [49.24095, -122.62241],
+    label: t("216th Street bridge", "216th Street 大桥"),
+    kind: "start",
+  },
+  "alouette-lower": {
+    coordinates: [49.24095, -122.62241],
+    label: t("216th Street bridge", "216th Street 大桥"),
+    kind: "start",
+  },
+  chapman: {
+    coordinates: [49.466, -123.754],
+    label: t("Tidal-water boundary signs below the Highway 101 bridge", "Highway 101 大桥下方的潮水边界标志"),
+    kind: "start",
+    approximate: true,
+  },
+  chehalis: {
+    coordinates: [49.414, -121.946],
+    label: t("Logging bridge 2.4 km downstream of Chehalis Lake", "Chehalis Lake 下游约 2.4 公里的伐木桥"),
+    kind: "start",
+    approximate: true,
+  },
+  "chilliwack-vedder": {
+    coordinates: [49.07806, -121.70861],
+    label: t("Boundary signs 100 m downstream of the Slesse Creek confluence", "Slesse Creek 汇流处下游 100 米的边界标志"),
+    kind: "start",
+    approximate: true,
+  },
+  "de-boville": {
+    coordinates: [49.272, -122.731],
+    label: t("Confluence of Cedar Creek and Hyde Creek", "Cedar Creek 与 Hyde Creek 汇流处"),
+    kind: "start",
+    approximate: true,
+  },
+  "fraser-mission": {
+    coordinates: [49.12505, -122.29903],
+    label: t("CPR Railway Bridge at Mission", "Mission CPR 铁路桥"),
+    kind: "start",
+  },
+  "harrison-upper": {
+    coordinates: [49.3004, -121.8032],
+    label: t("Outlet of Harrison Lake", "Harrison Lake 出水口"),
+    kind: "start",
+    approximate: true,
+  },
+  "harrison-lower": {
+    coordinates: [49.252, -121.95],
+    label: t("Highway 7 bridge", "Highway 7 大桥"),
+    kind: "start",
+  },
+  kanaka: {
+    coordinates: [49.205, -122.498],
+    label: t("112th Street bridge", "112th Street 大桥"),
+    kind: "start",
+    approximate: true,
+  },
+  "little-campbell": {
+    coordinates: [49.026, -122.719],
+    label: t("12th Avenue crossing", "12th Avenue 跨河处"),
+    kind: "start",
+  },
+  "little-campbell-closure": {
+    coordinates: [49.015, -122.853],
+    label: t("Line between the two fishing boundary signs", "两岸钓鱼边界标志之间的连线"),
+    kind: "start",
+    approximate: true,
+  },
+  nicomekl: {
+    coordinates: [49.102, -122.65],
+    label: t("208th Street crossing", "208th Street 跨河处"),
+    kind: "start",
+    approximate: true,
+  },
+  nicomen: {
+    coordinates: [49.181, -122.013],
+    label: t("Confluence of Siddle (Bell's) Creek", "Siddle（Bell's）Creek 汇流处"),
+    kind: "start",
+    approximate: true,
+  },
+  serpentine: {
+    coordinates: [49.174, -122.757],
+    label: t("168th Street at Bothwell Park", "Bothwell Park 的 168th Street"),
+    kind: "start",
+    approximate: true,
+  },
+  stave: {
+    coordinates: [49.221, -122.359],
+    label: t("B.C. Hydro dam", "B.C. Hydro 大坝"),
+    kind: "start",
+    approximate: true,
+  },
+};
+
+export function getBoundaryStart(spot: FishingSpot): BoundaryPoint {
+  return boundaryStarts[spot.id] ?? {
+    coordinates: spot.coordinates,
+    label: spot.area,
+    kind: "reference",
+    approximate: true,
+  };
+}
 
 export function isRuleActive(rule: FishingRule, date = new Date()) {
   if (rule.always) return true;

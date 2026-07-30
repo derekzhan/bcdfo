@@ -1655,3 +1655,107 @@ input:focus-visible {
     padding-left: 14px;
   }
 }
+
+.map-marker em {
+  position: absolute;
+  top: -7px;
+  right: -8px;
+  min-width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #fff;
+  border-radius: 7px;
+  color: var(--green);
+  background: #dff5ed;
+  box-shadow: 0 4px 10px rgba(14, 56, 48, 0.2);
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1;
+  transform: rotate(45deg);
+}
+
+.map-marker.is-reference-point {
+  opacity: 0.84;
+  border-style: dashed;
+}
+
+.map-marker.is-reference-point em {
+  color: #586b66;
+  background: #eef2f0;
+}
+
+.boundary-legend {
+  color: var(--ink) !important;
+}
+
+.boundary-legend i {
+  min-width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  color: var(--green);
+  background: #dff5ed;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.boundary-legend.is-reference i {
+  color: #64746f;
+  background: #e9eeec;
+}
+
+.boundary-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 12px 13px;
+  border: 1px solid #c9e2d8;
+  border-radius: 12px;
+  color: var(--green);
+  background: #f4fbf8;
+}
+
+.boundary-point.is-reference {
+  border-color: #dce5e2;
+  color: #62736e;
+  background: #f7f9f8;
+}
+
+.boundary-point > div {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.boundary-point span {
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.boundary-point p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 720;
+  line-height: 1.45;
+}
+
+.boundary-point small {
+  color: #788984;
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+@media (max-width: 760px) {
+  .map-legend {
+    max-height: 92px;
+    overflow-y: auto;
+  }
+}
