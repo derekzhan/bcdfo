@@ -196,7 +196,7 @@ function FishingMap({
   onSelect: (id: string) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const leafletRef = useRef<typeof import("leaflet").default | null>(null);
+  const leafletRef = useRef<typeof import("leaflet") | null>(null);
   const mapRef = useRef<import("leaflet").Map | null>(null);
   const markerLayerRef = useRef<import("leaflet").LayerGroup | null>(null);
   const waterwayLayerRef = useRef<import("leaflet").LayerGroup | null>(null);

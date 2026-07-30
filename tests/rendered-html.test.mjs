@@ -1,27 +1,61 @@
 import assert from "node:assert/strict";
+import { spawn } from "node:child_process";
 import { access, readFile } from "node:fs/promises";
-import test from "node:test";
+import test, { after } from "node:test";
 
-async function render() {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
+const START_TIMEOUT_MS = 60_000;
 
-  return worker.fetch(
-    new Request("http://localhost/", {
-      headers: { accept: "text/html" },
-    }),
+// The page is server-rendered on demand (the root layout reads request
+// headers), so the HTML assertions need a running Next.js server rather than a
+// static file from `.next`.
+let serverPromise;
+
+function startServer() {
+  const port = 3000 + (process.pid % 2000);
+  const child = spawn(
+    process.execPath,
+    ["node_modules/next/dist/bin/next", "start", "--port", String(port)],
     {
-      ASSETS: {
-        fetch: async () => new Response("Not found", { status: 404 }),
-      },
-    },
-    {
-      waitUntil() {},
-      passThroughOnException() {},
+      cwd: new URL("..", import.meta.url),
+      stdio: ["ignore", "pipe", "pipe"],
+      env: { ...process.env, NODE_ENV: "production" },
     },
   );
+
+  let output = "";
+  child.stdout.on("data", (chunk) => (output += chunk));
+  child.stderr.on("data", (chunk) => (output += chunk));
+
+  const origin = `http://127.0.0.1:${port}`;
+  const ready = (async () => {
+    const deadline = Date.now() + START_TIMEOUT_MS;
+    while (Date.now() < deadline) {
+      if (child.exitCode !== null) {
+        throw new Error(`next start exited with ${child.exitCode}:\n${output}`);
+      }
+      try {
+        await fetch(origin, { method: "HEAD" });
+        return origin;
+      } catch {
+        await new Promise((resolve) => setTimeout(resolve, 200));
+      }
+    }
+    throw new Error(`next start did not listen on ${port}:\n${output}`);
+  })();
+
+  return { child, ready };
 }
+
+async function render() {
+  serverPromise ??= startServer();
+  const origin = await serverPromise.ready;
+
+  return fetch(origin, { headers: { accept: "text/html" } });
+}
+
+after(() => {
+  serverPromise?.child.kill("SIGTERM");
+});
 
 async function loadWaterways() {
   const source = await readFile(new URL("../app/waterway-paths.ts", import.meta.url), "utf8");

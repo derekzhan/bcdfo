@@ -83,12 +83,11 @@ python3 scripts/preview-map.py 14 scripts/preview.png <spot-id…> --satellite
 ## 技术栈
 
 - React 19
-- Next.js 16 API surface
-- vinext / Vite
+- Next.js 16 App Router（Turbopack）
 - Leaflet
 - OpenStreetMap tiles and waterway geometry
 - TypeScript
-- OpenAI Sites hosting
+- Vercel hosting
 
 ## 本地运行
 
@@ -125,6 +124,12 @@ npm run lint
 npm run start
 ```
 
+## 部署
+
+标准 Next.js 项目，Vercel 使用默认设置即可：构建命令 `npm run build`，输出
+目录 `.next`，无需额外环境变量。根布局通过 `headers()` 推导 Open Graph 图片
+的绝对地址，因此首页按需服务端渲染，而不是导出为静态文件。
+
 地图回归测试会检查：
 
 - 页面能够正确服务端渲染；
@@ -152,8 +157,6 @@ scripts/
   preview-map.py             把生成的红线叠加到 OSM 瓦片上预览
 tests/
   rendered-html.test.mjs     页面和地图数据回归测试
-.openai/
-  hosting.json               OpenAI Sites 项目配置
 ```
 
 ## 数据与署名
