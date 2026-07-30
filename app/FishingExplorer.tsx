@@ -43,7 +43,7 @@ const ui = {
     chinook: "Chinook",
     coho: "Coho",
     closures: "Closures",
-    results: "mapped areas",
+    results: "DFO waters",
     active: "listed today",
     source: "Official DFO table",
     updated: "Source modified Apr 1, 2026",
@@ -64,7 +64,7 @@ const ui = {
     gear: "Gear restriction",
     closed: "No salmon fishing",
     disclaimer:
-      "Highlighted reaches follow OpenStreetMap waterway geometry for visual guidance only; they are not legal boundaries. Confirm the written area, in-season notices, provincial rules and posted signs before fishing.",
+      "A red line appears only where the DFO table provides a mappable regulation reach. It follows a single OpenStreetMap main channel for visual guidance and is not a legal boundary. Waters without precise endpoints remain text-and-marker only. Confirm written areas, notices, provincial rules and posted signs.",
     daylight: "Salmon fishing is permitted only during daylight hours in Region 2.",
     facilities: "No fishing within 100 m of a government fish-counting, passage or rearing facility.",
     sourceNote: "Salmon rules only",
@@ -78,7 +78,7 @@ const ui = {
     referencePoint: "Water reference",
     approximate: "Approximate—confirm posted signs",
     highlightedRange: "Highlighted regulation reach",
-    referenceRange: "Reference watercourse",
+    textOnlyRange: "DFO text only · no inferred boundary line",
     rangeStart: "Start",
     rangeEnd: "End",
     closedRange: "Highlighted no-salmon-fishing reach",
@@ -93,7 +93,7 @@ const ui = {
     chinook: "帝王鲑",
     coho: "银鲑",
     closures: "禁钓区域",
-    results: "个地图区域",
+    results: "个 DFO 水域",
     active: "个今天有条目",
     source: "DFO 官方表格",
     updated: "来源更新于 2026年4月1日",
@@ -113,7 +113,7 @@ const ui = {
     release: "不得保留",
     gear: "渔具限制",
     closed: "禁止垂钓鲑鱼",
-    disclaimer: "高亮河段依照 OpenStreetMap 水道几何绘制，仅供直观参考，并非法律边界。出发前请核对文字范围、季中公告、省级规定及现场标志。",
+    disclaimer: "仅当 DFO 表格给出可定位的规定河段时才显示红线；红线只沿 OpenStreetMap 单一主河道绘制，仅供直观参考，并非法律边界。没有精确端点的水域只显示文字与位置标记。出发前请核对文字范围、季中公告、省级规定及现场标志。",
     daylight: "第 2 区仅可在白天垂钓鲑鱼。",
     facilities: "政府运营的鱼类计数、通行或养殖设施周围 100 米内禁止钓鱼。",
     sourceNote: "仅限鲑鱼规定",
@@ -127,7 +127,7 @@ const ui = {
     referencePoint: "水域参考点",
     approximate: "约略位置，请以现场标志为准",
     highlightedRange: "红线为当前规定河段",
-    referenceRange: "红线为水域参考河道",
+    textOnlyRange: "仅按 DFO 文字说明，不推测绘制边界",
     rangeStart: "起点",
     rangeEnd: "终点",
     closedRange: "高亮河段禁止垂钓鲑鱼",
@@ -353,15 +353,17 @@ function FishingMap({
       {locationError && (
         <div className="location-error">{language === "zh" ? "无法读取当前位置" : "Location unavailable"}</div>
       )}
-      {selected && waterwayPaths[selected.id] && (
+      {selected && (
         <div
-          className={`range-status${waterwayPaths[selected.id]?.reference ? " is-reference" : ""}${currentKind(selected) === "closed" ? " is-closed" : ""}`}
+          className={`range-status${!waterwayPaths[selected.id]?.paths.length ? " is-text-only" : ""}${currentKind(selected) === "closed" ? " is-closed" : ""}`}
         >
-          <span className="range-line-swatch" />
-          {currentKind(selected) === "closed"
-            ? ui[language].closedRange
-            : waterwayPaths[selected.id]?.reference
-              ? ui[language].referenceRange
+          {waterwayPaths[selected.id]?.paths.length
+            ? <span className="range-line-swatch" />
+            : <MapPin size={15} />}
+          {!waterwayPaths[selected.id]?.paths.length
+            ? ui[language].textOnlyRange
+            : currentKind(selected) === "closed"
+              ? ui[language].closedRange
               : ui[language].highlightedRange}
         </div>
       )}

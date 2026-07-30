@@ -73,8 +73,13 @@ test("highlights regulated reaches along real waterway geometry", async () => {
   assert.equal(chilliwack.paths.length, 2);
   assert.equal(chilliwack.end, undefined);
   assert.deepEqual(chilliwack.start, chilliwack.paths[0][0]);
+  assert.equal(generated.capilano, undefined);
+  assert.equal(generated.khartoum, undefined);
+  assert.equal(generated.lois, undefined);
 
-  for (const waterway of Object.values(generated)) {
+  for (const [id, waterway] of Object.entries(generated)) {
+    assert.equal(waterway.reference, undefined);
+    assert.equal(waterway.paths.length, id === "chilliwack-vedder" ? 2 : 1);
     if (waterway.start) assert.deepEqual(waterway.start, waterway.paths[0][0]);
     if (waterway.end) assert.deepEqual(waterway.end, waterway.paths.at(-1).at(-1));
   }

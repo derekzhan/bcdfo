@@ -1780,13 +1780,14 @@ input:focus-visible {
   font-weight: 800;
 }
 
-.range-status.is-reference {
-  color: #5f6e69;
-}
-
 .range-status.is-closed {
   color: #651c1a;
   background: rgba(255, 245, 244, 0.94);
+}
+
+.range-status.is-text-only {
+  color: #4f625d;
+  border-color: rgba(79, 98, 93, 0.16);
 }
 
 .range-line-swatch {
@@ -1796,10 +1797,6 @@ input:focus-visible {
   border-radius: 99px;
   background: #dc2626;
   box-shadow: 0 0 0 2px #fff;
-}
-
-.range-status.is-reference .range-line-swatch {
-  background: repeating-linear-gradient(90deg, #dc2626 0 6px, transparent 6px 10px);
 }
 
 .range-status.is-closed .range-line-swatch {
