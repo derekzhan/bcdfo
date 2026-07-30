@@ -48,3 +48,16 @@ test("removes the disposable starter and keeps product metadata", async () => {
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   await assert.rejects(access(new URL("../app/_sites-preview", import.meta.url)));
 });
+
+test("highlights regulated reaches along real waterway geometry", async () => {
+  const [explorer, paths] = await Promise.all([
+    readFile(new URL("../app/FishingExplorer.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/waterway-paths.ts", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(explorer, /L\.polyline/);
+  assert.match(explorer, /range-endpoint-tooltip/);
+  assert.match(paths, /"alouette-upper"/);
+  assert.match(paths, /"harrison-upper"/);
+  assert.match(paths, /OpenStreetMap contributors/);
+});

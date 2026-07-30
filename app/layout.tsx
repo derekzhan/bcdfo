@@ -23,13 +23,13 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       type: "website",
-      images: [{ url: `${origin}/og-v3.png`, width: 1732, height: 908, alt: "BC Salmon Map — Region 2 boundary starts" }],
+      images: [{ url: `${origin}/og-v4.png`, width: 1732, height: 908, alt: "BC Salmon Map — highlighted fishing reach" }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [`${origin}/og-v3.png`],
+      images: [`${origin}/og-v4.png`],
     },
   };
 }

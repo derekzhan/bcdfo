@@ -28,6 +28,7 @@ import {
   type Language,
   type RuleKind,
 } from "./fishing-data";
+import { waterwayPaths } from "./waterway-paths";
 
 type Filter = "all" | "today" | "chinook" | "coho" | "closures";
 
@@ -63,7 +64,7 @@ const ui = {
     gear: "Gear restriction",
     closed: "No salmon fishing",
     disclaimer:
-      "Map pins are reference points, not legal boundaries. Confirm the written area, in-season notices, provincial rules and posted signs before fishing.",
+      "Highlighted reaches follow OpenStreetMap waterway geometry for visual guidance only; they are not legal boundaries. Confirm the written area, in-season notices, provincial rules and posted signs before fishing.",
     daylight: "Salmon fishing is permitted only during daylight hours in Region 2.",
     facilities: "No fishing within 100 m of a government fish-counting, passage or rearing facility.",
     sourceNote: "Salmon rules only",
@@ -76,6 +77,11 @@ const ui = {
     boundaryStart: "Boundary start",
     referencePoint: "Water reference",
     approximate: "Approximate—confirm posted signs",
+    highlightedRange: "Highlighted regulation reach",
+    referenceRange: "Reference watercourse",
+    rangeStart: "Start",
+    rangeEnd: "End",
+    closedRange: "Highlighted no-salmon-fishing reach",
   },
   zh: {
     eyebrow: "DFO 第 2 区 · 大温及低陆平原",
@@ -107,7 +113,7 @@ const ui = {
     release: "不得保留",
     gear: "渔具限制",
     closed: "禁止垂钓鲑鱼",
-    disclaimer: "地图标点仅供定位参考，并非法律边界。出发前请核对文字范围、季中公告、省级规定及现场标志。",
+    disclaimer: "高亮河段依照 OpenStreetMap 水道几何绘制，仅供直观参考，并非法律边界。出发前请核对文字范围、季中公告、省级规定及现场标志。",
     daylight: "第 2 区仅可在白天垂钓鲑鱼。",
     facilities: "政府运营的鱼类计数、通行或养殖设施周围 100 米内禁止钓鱼。",
     sourceNote: "仅限鲑鱼规定",
@@ -120,6 +126,11 @@ const ui = {
     boundaryStart: "区域起点",
     referencePoint: "水域参考点",
     approximate: "约略位置，请以现场标志为准",
+    highlightedRange: "红线为当前规定河段",
+    referenceRange: "红线为水域参考河道",
+    rangeStart: "起点",
+    rangeEnd: "终点",
+    closedRange: "高亮河段禁止垂钓鲑鱼",
   },
 } as const;
 
@@ -155,6 +166,7 @@ function FishingMap({
   const leafletRef = useRef<typeof import("leaflet").default | null>(null);
   const mapRef = useRef<import("leaflet").Map | null>(null);
   const markerLayerRef = useRef<import("leaflet").LayerGroup | null>(null);
+  const waterwayLayerRef = useRef<import("leaflet").LayerGroup | null>(null);
   const locationLayerRef = useRef<import("leaflet").LayerGroup | null>(null);
   const [mapReady, setMapReady] = useState(false);
   const [locationError, setLocationError] = useState(false);
@@ -178,6 +190,7 @@ function FishingMap({
         maxZoom: 18,
       }).addTo(map);
       leaflet.control.zoom({ position: "bottomright" }).addTo(map);
+      waterwayLayerRef.current = leaflet.layerGroup().addTo(map);
       markerLayerRef.current = leaflet.layerGroup().addTo(map);
       locationLayerRef.current = leaflet.layerGroup().addTo(map);
       mapRef.current = map;
@@ -229,12 +242,72 @@ function FishingMap({
   }, [spots, selected, language, onSelect, mapReady]);
 
   useEffect(() => {
-    if (selected && mapRef.current) {
-      mapRef.current.flyTo(getBoundaryStart(selected).coordinates, Math.max(mapRef.current.getZoom(), 11), {
-        duration: 0.65,
-      });
+    const L = leafletRef.current;
+    const map = mapRef.current;
+    const layer = waterwayLayerRef.current;
+    if (!L || !map || !layer) return;
+    layer.clearLayers();
+    if (!selected) return;
+
+    const waterway = waterwayPaths[selected.id];
+    if (!waterway?.paths.length) {
+      map.flyTo(getBoundaryStart(selected).coordinates, Math.max(map.getZoom(), 11), { duration: 0.65 });
+      return;
     }
-  }, [selected]);
+
+    const selectedKind = currentKind(selected);
+    const closed = selectedKind === "closed";
+    waterway.paths.forEach((path) => {
+      L.polyline(path, {
+        color: "#ffffff",
+        weight: 11,
+        opacity: 0.94,
+        lineCap: "round",
+        lineJoin: "round",
+        interactive: false,
+      }).addTo(layer);
+      L.polyline(path, {
+        color: closed ? "#7f1d1d" : "#dc2626",
+        weight: 7,
+        opacity: 0.94,
+        dashArray: closed ? "12 9" : undefined,
+        lineCap: "round",
+        lineJoin: "round",
+        interactive: false,
+      }).addTo(layer);
+    });
+
+    if (!waterway.reference) {
+      const startPoint = getBoundaryStart(selected);
+      const endPoint = waterway.end ?? waterway.paths.at(-1)?.at(-1);
+      const addEndpoint = (coordinates: [number, number], label: string) => {
+        L.circleMarker(coordinates, {
+          radius: 7,
+          color: "#ffffff",
+          weight: 3,
+          fillColor: closed ? "#7f1d1d" : "#dc2626",
+          fillOpacity: 1,
+        })
+          .bindTooltip(label, {
+            permanent: true,
+            direction: "top",
+            offset: [0, -7],
+            className: "range-endpoint-tooltip",
+          })
+          .addTo(layer);
+      };
+      addEndpoint(startPoint.coordinates, `${ui[language].rangeStart} · ${startPoint.label[language]}`);
+      if (endPoint) {
+        addEndpoint(
+          endPoint,
+          `${ui[language].rangeEnd} · ${waterway.endLabel?.[language] ?? selected.area[language]}`,
+        );
+      }
+    }
+
+    const bounds = L.latLngBounds(waterway.paths.flat());
+    map.fitBounds(bounds, { padding: [48, 48], maxZoom: 13, animate: true, duration: 0.65 });
+  }, [selected, language, mapReady]);
 
   const locate = () => {
     setLocationError(false);
@@ -277,6 +350,18 @@ function FishingMap({
       </div>
       {locationError && (
         <div className="location-error">{language === "zh" ? "无法读取当前位置" : "Location unavailable"}</div>
+      )}
+      {selected && waterwayPaths[selected.id] && (
+        <div
+          className={`range-status${waterwayPaths[selected.id]?.reference ? " is-reference" : ""}${currentKind(selected) === "closed" ? " is-closed" : ""}`}
+        >
+          <span className="range-line-swatch" />
+          {currentKind(selected) === "closed"
+            ? ui[language].closedRange
+            : waterwayPaths[selected.id]?.reference
+              ? ui[language].referenceRange
+              : ui[language].highlightedRange}
+        </div>
       )}
       <div className="map-legend" aria-label={language === "zh" ? "地图图例" : "Map legend"}>
         <span className="boundary-legend"><i>{language === "zh" ? "起" : "S"}</i>{ui[language].boundaryStart}</span>
@@ -480,6 +565,7 @@ export default function FishingExplorer() {
               const isSelected = selectedId === spot.id;
               const kind = currentKind(spot);
               const boundaryPoint = getBoundaryStart(spot);
+              const waterway = waterwayPaths[spot.id];
               return (
                 <article
                   className={`water-card${isSelected ? " is-selected" : ""}`}
@@ -521,6 +607,16 @@ export default function FishingExplorer() {
                           {boundaryPoint.approximate && <small>{ui[language].approximate}</small>}
                         </div>
                       </div>
+                      {waterway?.end && waterway.endLabel && (
+                        <div className="boundary-point boundary-end">
+                          <MapPin size={17} />
+                          <div>
+                            <span>{ui[language].rangeEnd}</span>
+                            <p>{waterway.endLabel[language]}</p>
+                            {waterway.approximate && <small>{ui[language].approximate}</small>}
+                          </div>
+                        </div>
+                      )}
                       <RuleList spot={spot} language={language} />
                       <div className="detail-actions">
                         <a
