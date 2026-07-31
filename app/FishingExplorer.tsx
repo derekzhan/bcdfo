@@ -251,7 +251,7 @@ function FishingMap({
   const [mapEpoch, setMapEpoch] = useState(0);
   const [locationError, setLocationError] = useState(false);
   const [tileError, setTileError] = useState(false);
-  const [basemap, setBasemap] = useState<Basemap>("street");
+  const [basemap, setBasemap] = useState<Basemap>("satellite");
 
   useEffect(() => {
     let active = true;

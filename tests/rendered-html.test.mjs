@@ -110,6 +110,10 @@ test("offers the street and satellite basemaps", async () => {
   assert.match(html, /basemap-switch/);
   assert.match(html, /街道图/);
   assert.match(html, /卫星影像/);
+  // Imagery is the default so the reaches sit on the real channel from the
+  // first paint, with the muted street filter reserved for the opt-out.
+  assert.match(html, /class="map-wrap is-satellite"/);
+  assert.match(explorer, /useState<Basemap>\("satellite"\)/);
   // Imagery only has global coverage through z18; z19 is blank backcountry.
   assert.match(explorer, /World_Imagery\/MapServer\/tile\/\{z\}\/\{y\}\/\{x\}/);
   assert.doesNotMatch(explorer, /maxZoom: 19/);
