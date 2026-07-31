@@ -202,16 +202,34 @@ function nearestApproach(chain, others) {
   return best;
 }
 
-function offsetIndex(chain, index, km, downstream) {
-  let remaining = km;
-  let cursor = index;
-  while (remaining > 0) {
+// Walks `km` from a resolved boundary and returns that exact spot, so a reach
+// the table measures in metres is not rounded out to the next survey point.
+// `vertex` is the lower of the two vertices the spot falls between; buildReach
+// uses it to clip and then adds the spot itself as the endpoint.
+function offsetPoint(chain, vertex, exact, km, downstream) {
+  // A crossing lands between two vertices, so start the walk there rather than
+  // at the vertex, which on a long segment is hundreds of metres away.
+  let cursor = vertex;
+  let from = exact ?? chain[vertex];
+  let travelled = 0;
+
+  for (;;) {
     const next = downstream ? cursor + 1 : cursor - 1;
-    if (next < 0 || next >= chain.length) break;
-    remaining -= distanceKm(chain[cursor], chain[next]);
+    // The mapped channel runs out before the table's distance does.
+    if (next < 0 || next >= chain.length) return { vertex: cursor, point: chain[cursor], short: true };
+    const step = distanceKm(from, chain[next]);
+    if (travelled + step >= km) {
+      const ratio = step === 0 ? 0 : (km - travelled) / step;
+      const point = [
+        round(from[0] + ratio * (chain[next][0] - from[0])),
+        round(from[1] + ratio * (chain[next][1] - from[1])),
+      ];
+      return { vertex: downstream ? cursor : next, point };
+    }
+    travelled += step;
     cursor = next;
+    from = chain[cursor];
   }
-  return cursor;
 }
 
 // Resolves one DFO boundary onto a channel. `role` decides which side of a
@@ -228,10 +246,14 @@ async function resolveAnchor(anchor, chain, role) {
   if (anchor.kind === "offset") {
     const inner = await resolveAnchor(anchor.from, chain, role);
     const km = anchor.downstreamKm ?? anchor.upstreamKm ?? 0;
+    const downstream = anchor.downstreamKm !== undefined;
+    const walked = offsetPoint(chain, inner.vertex, inner.exact, km, downstream);
     return {
-      vertex: offsetIndex(chain, inner.vertex, km, anchor.downstreamKm !== undefined),
+      vertex: walked.vertex,
+      exact: walked.point,
+      interpolated: !walked.short,
       gapKm: inner.gapKm,
-      note: `${inner.note} ${anchor.downstreamKm !== undefined ? "+" : "-"}${km} km`,
+      note: `${inner.note} ${downstream ? "+" : "-"}${km} km${walked.short ? " (channel ends first)" : ""}`,
     };
   }
 
@@ -300,11 +322,14 @@ async function buildReach(reach, label) {
   const to = await resolveAnchor(reach.to, chain, "to");
 
   const forward = from.vertex <= to.vertex;
-  const [firstVertex, lastVertex] = forward ? [from.vertex, to.vertex] : [to.vertex, from.vertex];
-  const [firstExact, lastExact] = forward ? [from.exact, to.exact] : [to.exact, from.exact];
+  const [first, last] = forward ? [from, to] : [to, from];
+  const [firstVertex, lastVertex] = [first.vertex, last.vertex];
+  const [firstExact, lastExact] = [first.exact, last.exact];
 
-  const clipped = chain.slice(firstVertex, lastVertex + 1);
-  if (firstExact && key(firstExact) !== key(clipped[0])) clipped.unshift(firstExact);
+  // An interpolated boundary sits just after its vertex, so that vertex belongs
+  // to the water outside the reach; the boundary itself becomes the endpoint.
+  const clipped = chain.slice(first.interpolated ? firstVertex + 1 : firstVertex, lastVertex + 1);
+  if (firstExact && (!clipped.length || key(firstExact) !== key(clipped[0]))) clipped.unshift(firstExact);
   if (lastExact && key(lastExact) !== key(clipped.at(-1))) clipped.push(lastExact);
   if (clipped.length < 2) throw new Error(`${label}: clipped reach is empty`);
   const path = simplify(clipped);

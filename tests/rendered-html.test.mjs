@@ -173,9 +173,59 @@ test("highlights regulated reaches along real waterway geometry", async () => {
   }
 });
 
+test("draws the reaches DFO spells out beyond Region 2", async () => {
+  const { waterways } = await loadWaterways();
+
+  for (const id of [
+    "r3-bridge-river",
+    "r3-clearwater-river",
+    "r3-fraser-lillooet",
+    "r3-thompson-upper",
+    "r3-thompson-lower",
+    "r7-nechako",
+    "r8-shuswap-middle",
+    "r8-shuswap-lower",
+    "r8-shuswap-trinity",
+  ]) {
+    assert.ok(waterways[id], `${id} lost its geometry`);
+  }
+
+  // The two Thompson rows meet at Goldpan Provincial Park, so the boundary they
+  // share has to be one point in both: no gap between them, no overlap.
+  const upperEnd = waterways["r3-thompson-upper"].endpoints.find((point) => point.role === "end");
+  const lowerStart = waterways["r3-thompson-lower"].endpoints.find((point) => point.role === "start");
+  assert.ok(
+    onSamePoint(upperEnd.coordinates, lowerStart.coordinates),
+    "the two Thompson rows do not meet at Goldpan",
+  );
+
+  // DFO measures this reach in metres, so the drawn line has to measure the
+  // same; clipping to the nearest survey point made it more than twice as long.
+  const trinity = waterways["r8-shuswap-trinity"];
+  assert.equal(trinity.paths.length, 1);
+  const metres = pathMetres(trinity.paths[0]);
+  assert.ok(metres > 90 && metres < 110, `the 100 m reach measures ${metres.toFixed(0)} m`);
+
+  // A lake is an area rather than a reach, and "All Region 4 waters" names no
+  // water at all, so those rows stay text plus a marker.
+  for (const prefix of [
+    "r3-kamloops-lake",
+    "r3-south-thompson",
+    "r4-all-region-4-waters",
+    "r8-mabel-lake",
+    "r8-osoyoos-lake",
+  ]) {
+    assert.ok(
+      !Object.keys(waterways).some((id) => id.startsWith(prefix)),
+      `${prefix} should stay text-only`,
+    );
+  }
+});
+
 test("keeps every DFO row either mapped or explicitly text-only", async () => {
-  const [data, { waterways }] = await Promise.all([
+  const [data, generated, { waterways }] = await Promise.all([
     readFile(new URL("../app/fishing-data.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/region-data.generated.ts", import.meta.url), "utf8"),
     loadWaterways(),
   ]);
 
@@ -191,8 +241,13 @@ test("keeps every DFO row either mapped or explicitly text-only", async () => {
       `${id} should ${textOnly.has(id) ? "not " : ""}have mapped geometry`,
     );
   }
+
+  // Reaches outside Region 2 hang off the ids build-region-data.mjs assigns, so
+  // a reworded DFO row would otherwise drop its geometry without a word.
+  const generatedIds = [...generated.matchAll(/^\s{4}id: "(r\d-[a-z0-9-]+)",$/gm)].map((match) => match[1]);
+  const known = new Set([...ids, ...generatedIds]);
   for (const id of Object.keys(waterways)) {
-    assert.ok(ids.includes(id), `${id} has geometry but no DFO row`);
+    assert.ok(known.has(id), `${id} has geometry but no DFO row`);
   }
 });
 
@@ -314,4 +369,18 @@ test("keeps the phone layout from being clamped or colourless", async () => {
 
 function onSamePoint(a, b) {
   return Math.abs(a[0] - b[0]) < 1e-6 && Math.abs(a[1] - b[1]) < 1e-6;
+}
+
+function pathMetres(path) {
+  const rad = Math.PI / 180;
+  let total = 0;
+  for (let index = 1; index < path.length; index += 1) {
+    const [aLat, aLon] = path[index - 1];
+    const [bLat, bLon] = path[index];
+    const h =
+      Math.sin(((bLat - aLat) * rad) / 2) ** 2 +
+      Math.cos(aLat * rad) * Math.cos(bLat * rad) * Math.sin(((bLon - aLon) * rad) / 2) ** 2;
+    total += 2 * 6371000 * Math.asin(Math.sqrt(h));
+  }
+  return total;
 }

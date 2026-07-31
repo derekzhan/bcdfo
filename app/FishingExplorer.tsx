@@ -423,11 +423,14 @@ function FishingMap({
     });
 
     const bounds = L.latLngBounds(waterway.paths.flat());
+    // DFO measures a few reaches in metres. At the zoom that suits a 40 km river
+    // those are a couple of pixels long, so close in on a short one instead.
+    const spanMetres = bounds.getNorthWest().distanceTo(bounds.getSouthEast());
     // Those labels are centred on their point, so a phone-width map needs side
     // room or they are clipped by the map edge.
     map.fitBounds(bounds, {
       padding: narrowMap ? [80, 46] : [48, 48],
-      maxZoom: 13,
+      maxZoom: spanMetres < 400 ? 16 : spanMetres < 2000 ? 14 : 13,
       animate: true,
       duration: 0.65,
     });

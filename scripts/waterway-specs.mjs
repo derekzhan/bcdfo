@@ -1,10 +1,19 @@
-// One spec per DFO Region 2 table row that describes a mappable water.
+// One spec per DFO table row that describes a mappable water.
 //
 // `channel` selects the OpenStreetMap ways that form the water. Rows that name
 // a specific area get `from`/`to` anchors so the drawn reach stops exactly where
 // the table says it stops. Rows with no specific area are marked `entire` and
 // draw the whole mapped channel, with `pin` giving the marker a locatable spot.
 // Anything the table leaves unlocatable is deliberately absent from this file.
+//
+// `id` is the spot id the reach belongs to: the hand-written ids in
+// app/fishing-data.ts for Region 2, and the DRAWN_IDS entries in
+// scripts/build-region-data.mjs for the generated regions.
+//
+// A row whose range carries its own year-round closure is still drawn end to
+// end; the closure is quoted on the card instead, because carving it out would
+// mean choosing between DFO's wording and DFO's own coordinates where the two
+// disagree.
 
 const bilingual = (en, zh) => ({ en, zh });
 
@@ -28,6 +37,28 @@ const crossingHighway7 = {
   selector: 'way["highway"]["name"~"Lougheed Highway|Highway 7"]',
   bbox: [49.23, -121.98, 49.28, -121.9],
   label: label.highway7,
+};
+
+// Two Region 3 rows meet at this park, which OSM spells as one word. The park
+// straddles the river bank, so the downstream-most crossing is its lower edge.
+const goldpanBoundary = {
+  kind: "crossing",
+  pick: "downstream",
+  selector: 'nwr["name"="Goldpan Provincial Park"]',
+  bbox: [50.31, -121.44, 50.39, -121.33],
+  approximate: true,
+  label: bilingual(
+    "Fishing boundary signs just downstream of Goldpan Provincial Park",
+    "Goldpan 省立公园下游的钓鱼边界标志",
+  ),
+};
+
+const shuswapChannel = { names: ["Shuswap River"], bbox: [50.2, -119.25, 50.9, -118.3] };
+const thompsonChannel = { names: ["Thompson River"], bbox: [50.15, -121.7, 50.8, -120.35] };
+const mabelLake = {
+  selector: 'nwr["natural"="water"]["name"="Mabel Lake"]',
+  bbox: [50.3, -119.0, 50.7, -118.5],
+  label: bilingual("Mabel Lake", "Mabel Lake"),
 };
 
 export const waterwaySpecs = [
@@ -324,6 +355,170 @@ export const waterwaySpecs = [
       selector: 'way["railway"]',
       bbox: [49.16, -122.44, 49.18, -122.41],
       label: bilingual("CPR Railway Bridge", "CPR 铁路桥"),
+    },
+  },
+
+  // Region 3 · Thompson-Nicola. The lakes this region lists stay text-only:
+  // a lake is an area, not a reach, so drawing its shoreline would read as a
+  // river running in a circle.
+  {
+    id: "r3-bridge-river",
+    entire: true,
+    channel: { names: ["Bridge River"], bbox: [50.55, -123.4, 51.05, -121.85] },
+    pin: { kind: "mouth", label: label.fraser },
+  },
+  {
+    id: "r3-clearwater-river",
+    entire: true,
+    channel: { names: ["Clearwater River"], bbox: [51.5, -120.5, 52.3, -119.7] },
+    pin: {
+      kind: "confluence",
+      selector: 'way["waterway"="river"]["name"="North Thompson River"]',
+      bbox: [51.55, -120.25, 51.75, -119.9],
+      label: bilingual(
+        "Confluence with the North Thompson River",
+        "与 North Thompson River 的汇流处",
+      ),
+    },
+  },
+  {
+    id: "r3-fraser-lillooet",
+    channel: { names: ["Fraser River"], bbox: [50.5, -122.1, 50.9, -121.7] },
+    from: {
+      // OSM stops the Seton short of the Fraser's centre line, so this lands
+      // about 200 m from the confluence itself.
+      kind: "confluence",
+      selector: 'way["waterway"="river"]["name"="Seton River"]',
+      bbox: [50.6, -122.05, 50.75, -121.88],
+      approximate: true,
+      label: bilingual("Confluence with the Seton River", "与 Seton River 的汇流处"),
+    },
+    to: {
+      kind: "offset",
+      // The table measures from the town, whose river frontage is this bridge.
+      from: {
+        kind: "crossing",
+        selector: 'way["highway"]["name"~"Twenty-Three Camels"]',
+        bbox: [50.66, -121.96, 50.71, -121.9],
+      },
+      downstreamKm: 4,
+      approximate: true,
+      label: bilingual(
+        "Fishing boundary signs about 4 km downstream of Lillooet",
+        "Lillooet 镇下游约 4 公里的钓鱼边界标志",
+      ),
+    },
+  },
+  {
+    id: "r3-thompson-upper",
+    channel: thompsonChannel,
+    from: {
+      kind: "shoreline",
+      selector: 'nwr["natural"="water"]["name"="Kamloops Lake"]',
+      bbox: [50.55, -120.95, 50.85, -120.3],
+      label: bilingual("Outlet of Kamloops Lake", "Kamloops Lake 出水口"),
+    },
+    to: goldpanBoundary,
+  },
+  {
+    id: "r3-thompson-lower",
+    channel: thompsonChannel,
+    from: goldpanBoundary,
+    to: {
+      // The table gives this boundary as coordinates, so use them verbatim.
+      kind: "coord",
+      coord: [50.256389, -121.515278],
+      label: bilingual(
+        "Easterly border of the Skihist Ecological Reserve",
+        "Skihist 生态保护区东界",
+      ),
+    },
+  },
+
+  // Region 7 · Omineca-Peace.
+  {
+    id: "r7-nechako",
+    channel: { names: ["Nechako River"], bbox: [53.8, -123.6, 54.05, -122.6] },
+    from: {
+      kind: "crossing",
+      selector: 'way["highway"]["name"="Foothills Boulevard"]["bridge"="yes"]',
+      bbox: [53.93, -122.85, 53.96, -122.78],
+      approximate: true,
+      label: bilingual(
+        "Downstream edge of the Foothills Boulevard bridge",
+        "Foothills Boulevard 大桥下游侧",
+      ),
+    },
+    to: {
+      kind: "confluence",
+      selector: 'way["waterway"="river"]["name"="Fraser River"]',
+      bbox: [53.85, -122.85, 53.98, -122.65],
+      label: bilingual(
+        "Boundary signs at the Fraser River confluence",
+        "与 Fraser River 汇流处的边界标志",
+      ),
+    },
+  },
+
+  // Region 8 · Okanagan. OSM draws the Shuswap River through Mabel Lake, so the
+  // lake is reached as a crossing: the first one going downstream is the inlet
+  // the middle reach ends at, the last one is the outlet the lower reach starts
+  // from.
+  {
+    id: "r8-shuswap-middle",
+    channel: shuswapChannel,
+    from: {
+      kind: "coord",
+      coord: [50.29579, -118.8116],
+      approximate: true,
+      label: bilingual("Shuswap Falls", "Shuswap Falls 瀑布"),
+    },
+    to: { kind: "crossing", ...mabelLake },
+  },
+  {
+    id: "r8-shuswap-lower",
+    channel: shuswapChannel,
+    from: {
+      // OSM names the road over the Shuswap at Mara "Rosemond Lake Road".
+      kind: "crossing",
+      selector: 'way["highway"]["name"="Rosemond Lake Road"]',
+      bbox: [50.67, -119.09, 50.7, -119.05],
+      approximate: true,
+      label: bilingual(
+        "White triangular boundary signs above the Mara bridge",
+        "Mara 桥上游的白色三角钓鱼边界标志",
+      ),
+    },
+    to: { kind: "shoreline", ...mabelLake, label: bilingual("Outlet of Mabel Lake", "Mabel Lake 出水口") },
+  },
+  {
+    id: "r8-shuswap-trinity",
+    channel: shuswapChannel,
+    from: {
+      kind: "offset",
+      from: {
+        kind: "crossing",
+        selector: 'way["highway"]["name"="Trinity Valley Road"]',
+        bbox: [50.53, -119.03, 50.56, -118.99],
+      },
+      upstreamKm: 0.05,
+      label: bilingual(
+        "50 m above the Trinity Valley Road bridge",
+        "Trinity Valley Road 大桥上游 50 米",
+      ),
+    },
+    to: {
+      kind: "offset",
+      from: {
+        kind: "crossing",
+        selector: 'way["highway"]["name"="Trinity Valley Road"]',
+        bbox: [50.53, -119.03, 50.56, -118.99],
+      },
+      downstreamKm: 0.05,
+      label: bilingual(
+        "50 m below the Trinity Valley Road bridge",
+        "Trinity Valley Road 大桥下游 50 米",
+      ),
     },
   },
 ];

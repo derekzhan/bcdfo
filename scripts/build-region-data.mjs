@@ -188,6 +188,20 @@ const slug = (value) =>
     .replace(/^-|-$/g, "")
     .slice(0, 48);
 
+// scripts/waterway-specs.mjs keys its hand-drawn reaches by spot id, so the rows
+// that carry a drawn reach get an id of their own instead of one derived from
+// wording DFO rewrites between seasons. A row that stops matching loses its
+// geometry, which tests/rendered-html.test.mjs reports as an unlinked reach.
+const DRAWN_IDS = [
+  { region: "3", water: "Fraser River", area: /Seton River/i, id: "r3-fraser-lillooet" },
+  { region: "3", water: "Thompson River", area: /Kamloops Lake outlet/i, id: "r3-thompson-upper" },
+  { region: "3", water: "Thompson River", area: /Skihist/i, id: "r3-thompson-lower" },
+  { region: "7", water: "Nechako River", area: /Foothills/i, id: "r7-nechako" },
+  { region: "8", water: "Shuswap River", area: /^\(middle\)/i, id: "r8-shuswap-middle" },
+  { region: "8", water: "Shuswap River", area: /Mara Bridge/i, id: "r8-shuswap-lower" },
+  { region: "8", water: "Shuswap River", area: /Trinity Valley/i, id: "r8-shuswap-trinity" },
+];
+
 function buildRegion(region, html) {
   const { rows } = parseTable(html);
   const notes = parseNotes(html);
@@ -219,8 +233,11 @@ function buildRegion(region, html) {
     const key = `${water}::${area}`;
     let spot = byKey.get(key);
     if (!spot) {
+      const drawn = DRAWN_IDS.find(
+        (entry) => entry.region === region.id && entry.water === water && entry.area.test(area),
+      );
       const base = slug(area ? `${water}-${area}` : water) || slug(water);
-      let id = `r${region.id}-${base}`;
+      let id = drawn ? drawn.id : `r${region.id}-${base}`;
       let suffix = 2;
       while (spots.some((existing) => existing.id === id)) id = `r${region.id}-${base}-${suffix++}`;
       spot = { id, region: region.id, water, area, section, rules: [], notes: [] };

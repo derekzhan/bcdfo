@@ -24,8 +24,6 @@ export const generatedRegions: RegionInfo[] = [
       t("The possession limit for all salmon from all waters is twice the daily limit. You cannot possess more than 8 salmon in total, except for salmon that are at your ordinary residence.", "The possession limit for all salmon from all waters is twice the daily limit. You cannot possess more than 8 salmon in total, except for salmon that are at your ordinary residence."),
       t("The total annual limit for chinook salmon over 50 cm is 10 fish from all fresh waters combined.", "The total annual limit for chinook salmon over 50 cm is 10 fish from all fresh waters combined."),
       t("Annual bait ban in effect in all streams of Region 1 as follows: All streams in Region 1 except: Quatse River; Somass River; Sproat River; Stamp River downstream of \"Girl Guide Falls\" (approximately 275 m upstream of the mouth of Beaver Creek), unless otherwise described below.", "Annual bait ban in effect in all streams of Region 1 as follows: All streams in Region 1 except: Quatse River; Somass River; Sproat River; Stamp River downstream of \"Girl Guide Falls\" (approximately 275 m upstream of the mouth of Beaver Creek), unless otherwise described below."),
-      t("Learn more about fishing for salmon in B.C.", "Learn more about fishing for salmon in B.C."),
-      t("Glossary of sport fishing terms", "Glossary of sport fishing terms"),
     ],
   },
   {
@@ -41,8 +39,6 @@ export const generatedRegions: RegionInfo[] = [
       t("You must be aware of these possession limits: The daily limit for all species of Pacific salmon from tidal and fresh waters combined is 4. Individual species limits also apply.", "You must be aware of these possession limits: The daily limit for all species of Pacific salmon from tidal and fresh waters combined is 4. Individual species limits also apply."),
       t("The possession limit for all salmon from all waters is twice the daily limit. You cannot possess more than 8 salmon in total, except for salmon that are at your ordinary residence.", "The possession limit for all salmon from all waters is twice the daily limit. You cannot possess more than 8 salmon in total, except for salmon that are at your ordinary residence."),
       t("The total annual limit for chinook salmon over 50 cm is 10 fish from all fresh waters combined.", "The total annual limit for chinook salmon over 50 cm is 10 fish from all fresh waters combined."),
-      t("Learn more about fishing for salmon in B.C.", "Learn more about fishing for salmon in B.C."),
-      t("Glossary of sport fishing terms", "Glossary of sport fishing terms"),
     ],
   },
   {
@@ -83,8 +79,6 @@ export const generatedRegions: RegionInfo[] = [
       t("The possession limit for all salmon from all waters is twice the daily limit. You cannot possess more than 8 salmon in total, except for salmon that are at your ordinary residence.", "The possession limit for all salmon from all waters is twice the daily limit. You cannot possess more than 8 salmon in total, except for salmon that are at your ordinary residence."),
       t("The total annual limit for chinook salmon over 50 cm is 10 fish from all fresh waters combined.", "The total annual limit for chinook salmon over 50 cm is 10 fish from all fresh waters combined."),
       t("Reminder: There is no fishing for eulachon in Region 6.", "Reminder: There is no fishing for eulachon in Region 6."),
-      t("Learn more about fishing for salmon in B.C.", "Learn more about fishing for salmon in B.C."),
-      t("Glossary of sport fishing terms", "Glossary of sport fishing terms"),
     ],
   },
   {
@@ -98,8 +92,6 @@ export const generatedRegions: RegionInfo[] = [
       t("No fishing is allowed within 100 meters of any government facility operated for counting, passing or rearing fish.", "No fishing is allowed within 100 meters of any government facility operated for counting, passing or rearing fish."),
       t("You must be aware of these possession limits: The daily limit for all species of Pacific salmon from tidal and fresh waters combined is 4. Individual species limits also apply.", "You must be aware of these possession limits: The daily limit for all species of Pacific salmon from tidal and fresh waters combined is 4. Individual species limits also apply."),
       t("The possession limit for all salmon from all waters is twice the daily limit. You cannot possess more than 8 salmon in total, except for salmon that are at your ordinary residence.", "The possession limit for all salmon from all waters is twice the daily limit. You cannot possess more than 8 salmon in total, except for salmon that are at your ordinary residence."),
-      t("Learn more about fishing for salmon in B.C.", "Learn more about fishing for salmon in B.C."),
-      t("Glossary of sport fishing terms", "Glossary of sport fishing terms"),
     ],
   },
   {
@@ -116,8 +108,6 @@ export const generatedRegions: RegionInfo[] = [
       t("The daily limit for all species of Pacific salmon from tidal and fresh waters combined is 4. Individual species limits also apply.", "The daily limit for all species of Pacific salmon from tidal and fresh waters combined is 4. Individual species limits also apply."),
       t("The possession limit for all salmon from all waters is twice the daily limit. You cannot possess more than 8 salmon in total, except for salmon that are at your ordinary residence.", "The possession limit for all salmon from all waters is twice the daily limit. You cannot possess more than 8 salmon in total, except for salmon that are at your ordinary residence."),
       t("The total annual limit for chinook salmon over 50 cm is 10 fish from all fresh waters combined.", "The total annual limit for chinook salmon over 50 cm is 10 fish from all fresh waters combined."),
-      t("Learn more about fishing for salmon in B.C.", "Learn more about fishing for salmon in B.C."),
-      t("Glossary of sport fishing terms", "Glossary of sport fishing terms"),
     ],
   },
 ];
@@ -669,7 +659,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r3-fraser-river-in-that-portion-of-the-fraser-river",
+    id: "r3-fraser-lillooet",
     region: "3",
     water: t("Fraser River", "Fraser River"),
     area: t("In that portion of the Fraser River from the confluence with the Seton River downstream to the fishing boundary signs located on both sides of the river approximately 4 km downstream of the town of Lillooet", "In that portion of the Fraser River from the confluence with the Seton River downstream to the fishing boundary signs located on both sides of the river approximately 4 km downstream of the town of Lillooet"),
@@ -703,7 +693,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r3-thompson-river-from-kamloops-lake-outlet-downstr",
+    id: "r3-thompson-upper",
     region: "3",
     water: t("Thompson River", "Thompson River"),
     area: t("From Kamloops Lake outlet downstream to the fishing boundary signs just downstream of Gold Pan Provincial Park Please note that no fishing is allowed in the following areas, year-round: Deadman - from the fishing boundary signs approximately 1 km downstream of the Hwy No. 1 Bridge at Savona to the CN rail bridge approximately 500 m downstream of the confluence with Deadman Creek. Juniper - from the fishing boundary signs approximately 1.5 km downstream from Juniper Beach Park downstream approximately 4 km to the fishing boundary signs located at 50°46.893' N and 121°08.110' W. Ashcroft - from the fishing boundary sign at the upstream side of the mouth of the Bonaparte River to Hwy 97C bridge in Ashcroft.", "From Kamloops Lake outlet downstream to the fishing boundary signs just downstream of Gold Pan Provincial Park Please note that no fishing is allowed in the following areas, year-round: Deadman - from the fishing boundary signs approximately 1 km downstream of the Hwy No. 1 Bridge at Savona to the CN rail bridge approximately 500 m downstream of the confluence with Deadman Creek. Juniper - from the fishing boundary signs approximately 1.5 km downstream from Juniper Beach Park downstream approximately 4 km to the fishing boundary signs located at 50°46.893' N and 121°08.110' W. Ashcroft - from the fishing boundary sign at the upstream side of the mouth of the Bonaparte River to Hwy 97C bridge in Ashcroft."),
@@ -715,7 +705,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r3-thompson-river-from-the-white-triangle-fishing-b",
+    id: "r3-thompson-lower",
     region: "3",
     water: t("Thompson River", "Thompson River"),
     area: t("From the white triangle fishing boundary signs just downstream of Gold Pan Provincial Park to the easterly border of the Skihist Ecological reserve along the Thompson River located at 50°15'23.0\"N 121°30'55.0\"W, this is approximately 5 km northeast of Lytton at Skihist Park.", "From the white triangle fishing boundary signs just downstream of Gold Pan Provincial Park to the easterly border of the Skihist Ecological reserve along the Thompson River located at 50°15'23.0\"N 121°30'55.0\"W, this is approximately 5 km northeast of Lytton at Skihist Park."),
@@ -2185,7 +2175,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r7-nechako-river-from-the-downstream-edge-of-the-fo",
+    id: "r7-nechako",
     region: "7",
     water: t("Nechako River", "Nechako River"),
     area: t("from the downstream edge of the Foothills Boulevard Bridge to the boundary signs at the confluence with the Fraser River", "from the downstream edge of the Foothills Boulevard Bridge to the boundary signs at the confluence with the Fraser River"),
@@ -2213,7 +2203,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r8-shuswap-river-middle-between-shuswap-falls-and-m",
+    id: "r8-shuswap-middle",
     region: "8",
     water: t("Shuswap River", "Shuswap River"),
     area: t("(middle) between Shuswap Falls and Mabel Lake except closed from the water survey station (located at 50°19.105' N and 118°48.857' W) approximately 200 m down stream of Shuswap Falls Hatchery to WTFB signs (located at 50°18.181' N and 118°49.105' W) one km down stream.", "(middle) between Shuswap Falls and Mabel Lake except closed from the water survey station (located at 50°19.105' N and 118°48.857' W) approximately 200 m down stream of Shuswap Falls Hatchery to WTFB signs (located at 50°18.181' N and 118°49.105' W) one km down stream."),
@@ -2222,7 +2212,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r8-shuswap-river-lower-upstream-from-white-triangul",
+    id: "r8-shuswap-lower",
     region: "8",
     water: t("Shuswap River", "Shuswap River"),
     area: t("(lower) upstream from white triangular fishing boundary signs above Mara Bridge to Mabel Lake.", "(lower) upstream from white triangular fishing boundary signs above Mara Bridge to Mabel Lake."),
@@ -2231,7 +2221,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r8-shuswap-river-lower-50-meters-upstream-of-the-tr",
+    id: "r8-shuswap-trinity",
     region: "8",
     water: t("Shuswap River", "Shuswap River"),
     area: t("(lower) 50 meters upstream of the Trinity Valley Road Bridge to 50 m downstream of the Trinity Valley Road Bridge.", "(lower) 50 meters upstream of the Trinity Valley Road Bridge to 50 m downstream of the Trinity Valley Road Bridge."),

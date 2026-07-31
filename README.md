@@ -48,12 +48,21 @@ Oceans Canada（DFO）BC 省 8 个淡水区的表格规定整理成更容易搜�
   River，则额外绘制该条规定河段。
 - 表格完全无法定位的条目（Fraser 主河道禁钓段、Khartoum Lake、Lois Lake、
   Little Campbell 禁钓段）只显示文字规定和位置标记。
+- 表格用米或公里给出的边界（例如「桥上游 50 米」）按河道实际里程插值到精确
+  位置，不取整到最近的测绘点：100 米的规定河段如果取整会画成 230 米。
+- 湖泊条目（Kamloops Lake、Mabel Lake、Osoyoos Lake 等）不画红线。湖是面而不是
+  河段，把湖岸线画成红线会被读成一条绕圈的河。「All Region 4 waters」这类没有
+  指名水域的条目同理。
+- 某一行的范围内部另有常年禁钓段时（Shuswap River 中段、Thompson River 上段的
+  Deadman / Juniper / Ashcroft），红线仍按该行写明的两端完整绘制，禁钓段只在
+  卡片原文中说明。DFO 对这些禁钓段的文字描述与它自己给出的坐标互相矛盾，
+  在几何上切口等于把我们的猜测当成规定。**出发前务必读完卡片上的边界原文。**
 - 所有标记坐标都来自生成的红线顶点，因此地图标记不可能与所绘河段脱节。
 - OpenStreetMap 几何只用于地图可视化，DFO 文字、现场标志及最新公告始终优先。
-- 目前只有 Region 2 完成了逐条河段的红线绘制与人工核对。其他区域列出完整
-  规定，但水域尚未定位，界面会明确标注「尚未定位 · 仅显示 DFO 表格中的规定」，
-  不会用名称猜测位置。切换到这些区域时，地图按该区大致范围取景，避免让读者
-  以为水域在上一个区附近。
+- 已完成逐条河段绘制与人工核对的是 Region 2 全部 22 条，加上 Region 3 的 5 条、
+  Region 7 的 1 条、Region 8 的 3 条。其余区域列出完整规定，但水域尚未定位，
+  界面会明确标注「尚未定位 · 仅显示 DFO 表格中的规定」，不会用名称猜测位置。
+  切换到这些区域时，地图按该区大致范围取景，避免让读者以为水域在上一个区附近。
 - 底图（OpenStreetMap 街道图或 Esri World Imagery 卫星影像）只影响背景显示，
   不改变红线坐标。
 
@@ -91,6 +100,11 @@ DFO 页面缓存在 `scripts/.cache/dfo/`。
 [`scripts/build-waterway-paths.mjs`](scripts/build-waterway-paths.mjs) 依据
 [`scripts/waterway-specs.mjs`](scripts/waterway-specs.mjs) 中的边界定义，从
 OpenStreetMap Overpass API 生成，请勿手工修改坐标。
+
+几何按水域 id 挂载：Region 2 用 `app/fishing-data.ts` 里手写的 id，其他区域用
+`scripts/build-region-data.mjs` 中 `DRAWN_IDS` 指定的固定 id。之所以不用生成器
+默认的、由 DFO 措辞派生的 id，是因为 DFO 改一个字就会让红线静默失联；
+`npm test` 会检查每条几何都能对应到一行 DFO 规定，失联时直接报错。
 
 重新生成方式：
 
@@ -186,6 +200,10 @@ npm run start
 - DFO 表格的 rowspan／colspan 还原正确（含无「具体范围」列的分节、
   跨列提示行）；
 - Region 2 表格的每一行要么有红线，要么在白名单里明确只用文字；
+- 每条红线几何都能对应到一行 DFO 规定（防止 DFO 改措辞后红线静默失联）；
+- Region 3／7／8 已绘制的河段都在，两条 Thompson 规定在 Goldpan 处端点重合、
+  既不留缝也不重叠，按米给出的 100 米河段实测在 90–110 米之间；
+- 湖泊和「All Region 4 waters」等无法画成河段的条目不会被赋予几何；
 - 未写具体范围的条目不会声明规定端点，标记为参考点；
 - 写明范围的条目每段红线都带有起止端点标签；
 - 所有标记（含参考点和端点）坐标都落在红线顶点上。
