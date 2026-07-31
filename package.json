@@ -9,10 +9,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "npm run build && node --test tests/rendered-html.test.mjs",
+    "test": "npm run build && node --test tests/dfo-table.test.mjs tests/rendered-html.test.mjs",
     "lint": "eslint . --ignore-pattern .next",
     "waterways": "node scripts/build-waterway-paths.mjs",
-    "waterways:report": "node scripts/build-waterway-paths.mjs --report"
+    "waterways:report": "node scripts/build-waterway-paths.mjs --report",
+    "regions": "node scripts/build-region-data.mjs",
+    "regions:report": "node scripts/build-region-data.mjs --report",
+    "regions:refresh": "node scripts/build-region-data.mjs --refresh"
   },
   "dependencies": {
     "leaflet": "^1.9.4",

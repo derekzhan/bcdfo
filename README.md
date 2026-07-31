@@ -1,18 +1,31 @@
-# BC Salmon Map · DFO Region 2
+# BC Salmon Map · DFO 淡水鲑鱼分区
 
 一个面向手机和桌面浏览器的双语鲑鱼钓场地图，将 Fisheries and
-Oceans Canada（DFO）Region 2 的表格规定整理成更容易搜索、筛选和导航的
-互动界面。
+Oceans Canada（DFO）BC 省 8 个淡水区的表格规定整理成更容易搜索、筛选和
+导航的互动界面。
 
 在线版本：[bc-salmon-map-region2.derekzhan.chatgpt.site](https://bc-salmon-map-region2.derekzhan.chatgpt.site)
 
-官方数据源：[DFO Region 2 recreational salmon fishing limits, openings and closures](https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region2-eng.html)
+官方数据源（页面顶部下拉列表可切换）：
+
+| 区域 | 水域条目 | 官方表格 |
+| --- | --- | --- |
+| Region 1 温哥华岛 | 56 | [region1](https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region1-eng.html) |
+| Region 2 低陆平原 | 26 | [region2](https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region2-eng.html) |
+| Region 3 汤普森-尼科拉 | 7 | [region3](https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region3-eng.html) |
+| Region 4 库特尼 | 1 | [region4](https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region4-eng.html) |
+| Region 5 卡里布 | 0（官方无表格，只有全区文字规定） | [region5](https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region5-eng.html) |
+| Region 6 斯基纳 | 136 | [region6](https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region6-eng.html) |
+| Region 7 奥米内卡-皮斯河 | 1 | [region7](https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region7-eng.html) |
+| Region 8 奥卡纳根 | 5 | [region8](https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region8-eng.html) |
 
 ## 功能
 
 - 中英文界面切换
 - 支持手机和桌面浏览器的响应式布局
-- 按水域、边界、Chinook、Coho、当天条目及禁钓条目筛选
+- 顶部下拉列表切换 DFO 区域，列表、筛选器、地图和全区规定同步切换
+- 按水域、边界、鱼种（帝王鲑／银鲑／红鲑／粉鲑／狗鲑，仅显示该区实际出现的
+  鱼种）、当天条目及禁钓条目筛选
 - 在地图上显示 DFO 表格中的水域位置和明确规定河段
 - 底图可在街道图与高清卫星影像之间切换，便于查看真实河道和进入路线
 - 展示季节、保留限额、不得保留、渔具限制和禁钓规定
@@ -37,10 +50,43 @@ Oceans Canada（DFO）Region 2 的表格规定整理成更容易搜索、筛选�
   Little Campbell 禁钓段）只显示文字规定和位置标记。
 - 所有标记坐标都来自生成的红线顶点，因此地图标记不可能与所绘河段脱节。
 - OpenStreetMap 几何只用于地图可视化，DFO 文字、现场标志及最新公告始终优先。
+- 目前只有 Region 2 完成了逐条河段的红线绘制与人工核对。其他区域列出完整
+  规定，但水域尚未定位，界面会明确标注「尚未定位 · 仅显示 DFO 表格中的规定」，
+  不会用名称猜测位置。切换到这些区域时，地图按该区大致范围取景，避免让读者
+  以为水域在上一个区附近。
 - 底图（OpenStreetMap 街道图或 Esri World Imagery 卫星影像）只影响背景显示，
   不改变红线坐标。
 
-规定和双语文字位于 [`app/fishing-data.ts`](app/fishing-data.ts)。红线几何位于
+## 规定数据来源
+
+- Region 2 的规定与双语文字**手工维护**在
+  [`app/fishing-data.ts`](app/fishing-data.ts)，因为它的中文翻译和红线锚点都是
+  逐行对照官网表格、并用卫星影像核对过的。
+- 其余 7 个区由 [`scripts/build-region-data.mjs`](scripts/build-region-data.mjs)
+  从 DFO 页面抓取生成到 [`app/region-data.generated.ts`](app/region-data.generated.ts)，
+  请勿手工编辑。解析器按 `rowspan` / `colspan` 还原表格网格，因此续行不会把
+  限额挂到错误的水域上。
+- 生成的数据里，**水域名称和边界描述保留 DFO 英文原文**，只有鱼种、日期和
+  限额措辞做中文化。长段边界描述属于法律文字，译歪的后果是有人按错的范围
+  下杆；生成器如果遇到没有对应翻译规则的限额措辞，会原样保留英文并在报告
+  里列出。
+
+```bash
+# 打印各区条目数量，并列出没有匹配到翻译规则的限额措辞，不写文件
+npm run regions:report
+
+# 重新生成 app/region-data.generated.ts
+npm run regions
+
+# 重新下载 DFO 页面后再生成（DFO 更新规定后使用）
+npm run regions:refresh
+```
+
+DFO 页面缓存在 `scripts/.cache/dfo/`。
+
+## 红线几何
+
+红线几何位于
 [`app/waterway-paths.ts`](app/waterway-paths.ts)，由
 [`scripts/build-waterway-paths.mjs`](scripts/build-waterway-paths.mjs) 依据
 [`scripts/waterway-specs.mjs`](scripts/waterway-specs.mjs) 中的边界定义，从
@@ -75,7 +121,7 @@ python3 scripts/preview-map.py 14 scripts/preview.png <spot-id…> --satellite
 
 出发前请务必核对：
 
-1. DFO Region 2 官方表格和季中 Fishery Notices；
+1. 对应区域的 DFO 官方表格和季中 Fishery Notices；
 2. B.C. Freshwater Fishing Regulations Synopsis；
 3. 有效钓鱼执照及适用附加许可；
 4. 现场边界标志、禁钓标志和政府设施周围的限制。
@@ -134,7 +180,12 @@ npm run start
 
 - 页面能够正确服务端渲染；
 - DFO 官方来源、双语内容和全区通用规定仍然存在；
-- DFO 表格的每一行要么有红线，要么在白名单里明确只用文字；
+- 8 个区都出现在下拉列表里，且水域数量与官方表格一致；
+- 生成数据的水域 id 带区号、互不冲突，每条规定都有鱼种和有效的规定分类；
+- 尚未定位的条目不会给出导航按钮，也不会退化成 [0, 0] 坐标；
+- DFO 表格的 rowspan／colspan 还原正确（含无「具体范围」列的分节、
+  跨列提示行）；
+- Region 2 表格的每一行要么有红线，要么在白名单里明确只用文字；
 - 未写具体范围的条目不会声明规定端点，标记为参考点；
 - 写明范围的条目每段红线都带有起止端点标签；
 - 所有标记（含参考点和端点）坐标都落在红线顶点上。
@@ -143,11 +194,14 @@ npm run start
 
 ```text
 app/
-  FishingExplorer.tsx        互动地图、筛选器和详情界面
-  fishing-data.ts            DFO 表格整理后的双语规定与全区通用规定
+  FishingExplorer.tsx        互动地图、区域下拉列表、筛选器和详情界面
+  fishing-data.ts            Region 2 手工维护的双语规定、类型与区域清单
+  region-data.generated.ts   其余 7 个区的生成规定（勿手工编辑）
   waterway-paths.ts          生成的 OSM 河段几何（勿手工编辑）
   globals.css                全局及响应式样式
 scripts/
+  dfo-regions.mjs            DFO 页面抓取与 rowspan/colspan 表格解析
+  build-region-data.mjs      由 DFO 表格生成 region-data.generated.ts
   waterway-specs.mjs         每行 DFO 条目对应的水域与边界定义
   build-waterway-paths.mjs   由 Overpass 生成 waterway-paths.ts
   overpass.mjs               带缓存和限速处理的 Overpass 客户端
@@ -156,7 +210,8 @@ scripts/
   find-places.mjs            用 Nominatim 校验地名坐标
   preview-map.py             把生成的红线叠加到 OSM 瓦片上预览
 tests/
-  rendered-html.test.mjs     页面和地图数据回归测试
+  dfo-table.test.mjs         DFO 表格解析回归测试
+  rendered-html.test.mjs     页面、区域数据和地图数据回归测试
 ```
 
 ## 数据与署名
@@ -164,5 +219,6 @@ tests/
 - 渔业规定来源：Fisheries and Oceans Canada
 - 地图底图及河道几何：© OpenStreetMap contributors，数据遵循 ODbL
 
-DFO 规定可能随季节和 Fishery Notice 更新。更新本项目数据时，应同时更新
-测试，并重新核对所有地图边界，不能仅依靠水域名称自动生成整条红线。
+DFO 规定可能随季节和 Fishery Notice 更新。更新本项目数据时，先跑
+`npm run regions:refresh` 重新抓取表格，再更新测试；地图边界必须重新核对，
+不能仅依靠水域名称自动生成整条红线。

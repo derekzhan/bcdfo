@@ -1,12 +1,21 @@
+import { generatedRegions, generatedSpots } from "./region-data.generated";
 import { waterwayPaths } from "./waterway-paths";
 
 export type Language = "en" | "zh";
 export type LocalizedText = { en: string; zh: string };
-export type RuleKind = "retain" | "release" | "gear" | "closed";
-export type Species = "Chinook" | "Coho" | "All";
+export type RuleKind = "retain" | "release" | "gear" | "closed" | "pending";
+export type Species =
+  | "Chinook"
+  | "Coho"
+  | "Sockeye"
+  | "Pink"
+  | "Chum"
+  | "Steelhead"
+  | "Eulachon"
+  | "All";
 
 export type FishingRule = {
-  species: Species;
+  species: Species[];
   season: LocalizedText;
   regulation: LocalizedText;
   kind: RuleKind;
@@ -17,11 +26,25 @@ export type FishingRule = {
 
 export type FishingSpot = {
   id: string;
+  // Which DFO freshwater region publishes this row.
+  region: string;
   water: LocalizedText;
   area: LocalizedText;
-  coordinates: [number, number];
+  // Absent until a water has been located; those rows stay text-only.
+  coordinates?: [number, number];
   rules: FishingRule[];
+  // Region 6 groups its table into lettered sections.
+  section?: LocalizedText;
+  notes?: LocalizedText[];
   sourceAnchor?: string;
+};
+
+export type RegionInfo = {
+  id: string;
+  name: LocalizedText;
+  sourceUrl: string;
+  waters: number;
+  notes: LocalizedText[];
 };
 
 export type BoundaryPoint = {
@@ -34,7 +57,7 @@ export type BoundaryPoint = {
 const t = (en: string, zh: string): LocalizedText => ({ en, zh });
 
 const rule = (
-  species: Species,
+  species: Species | Species[],
   seasonEn: string,
   seasonZh: string,
   regulationEn: string,
@@ -44,7 +67,7 @@ const rule = (
   end?: [number, number],
   always?: boolean,
 ): FishingRule => ({
-  species,
+  species: Array.isArray(species) ? species : [species],
   season: t(seasonEn, seasonZh),
   regulation: t(regulationEn, regulationZh),
   kind,
@@ -53,9 +76,14 @@ const rule = (
   always,
 });
 
-export const fishingSpots: FishingSpot[] = [
+// Region 2 stays hand written: its Chinese wording and its OSM boundary anchors
+// were checked row by row against the published table, so it is not regenerated.
+// scripts/build-region-data.mjs produces every other region, and a test asserts
+// the DFO table behind this list has not changed underneath us.
+export const region2Spots: FishingSpot[] = [
   {
     id: "alouette-upper",
+    region: "2",
     water: t("Alouette River and tributaries", "Alouette 河及其支流"),
     area: t(
       "Upstream of the 216th Street bridge to a line between two fishing boundary signs at Allco Park",
@@ -70,6 +98,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "alouette-lower",
+    region: "2",
     water: t("Alouette River and tributaries", "Alouette 河及其支流"),
     area: t(
       "Downstream of the 216th Street bridge to the confluence of the Pitt River",
@@ -82,6 +111,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "north-alouette",
+    region: "2",
     water: t("Alouette River and tributaries", "Alouette 河及其支流"),
     area: t("North Alouette and tributaries", "North Alouette 河及其支流"),
     coordinates: [49.2588, -122.601],
@@ -92,6 +122,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "ashlu-creek",
+    region: "2",
     water: t("Ashlu Creek", "Ashlu Creek"),
     area: t("Entire listed water", "该水域"),
     coordinates: [49.90061, -123.30329],
@@ -102,6 +133,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "capilano",
+    region: "2",
     water: t("Capilano River", "Capilano River"),
     area: t("Including tributaries", "包括支流"),
     coordinates: [49.331, -123.121],
@@ -115,6 +147,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "chapman",
+    region: "2",
     water: t("Chapman Creek", "Chapman Creek"),
     area: t(
       "Upstream of tidal-water boundary signs below the Hwy 101 Bridge to 100 m below the falls; the falls are about 550 m upstream of the powerline crossing",
@@ -128,6 +161,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "cheakamus",
+    region: "2",
     water: t("Cheakamus River", "Cheakamus River"),
     area: t("Entire listed water", "该水域"),
     coordinates: [49.846, -123.144],
@@ -138,6 +172,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "chehalis",
+    region: "2",
     water: t("Chehalis River", "Chehalis River"),
     area: t(
       "Downstream of the logging bridge 2.4 km downstream of Chehalis Lake, including tributaries to that part",
@@ -153,6 +188,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "chilliwack-vedder",
+    region: "2",
     water: t("Chilliwack/Vedder River (including Sumas River)", "Chilliwack／Vedder River（包括 Sumas River）"),
     area: t(
       "From boundary signs 100 m downstream of the Chilliwack–Slesse confluence, downstream; includes Sumas River from Barrow Town Pump Station to boundary signs near the Fraser confluence",
@@ -169,6 +205,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "coquitlam",
+    region: "2",
     water: t("Coquitlam River", "Coquitlam River"),
     area: t("Entire listed water", "该水域"),
     coordinates: [49.284, -122.789],
@@ -179,6 +216,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "de-boville",
+    region: "2",
     water: t("De Boville Slough", "De Boville Slough"),
     area: t("Downstream of the confluence of Cedar Creek and Hyde Creek", "从 Cedar Creek 与 Hyde Creek 汇流处向下游"),
     coordinates: [49.272, -122.731],
@@ -188,6 +226,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "fraser-mission",
+    region: "2",
     water: t("Fraser River", "Fraser River"),
     area: t("Mainstem waters upstream of the CPR Bridge at Mission, BC", "Mission 的 CPR 铁路桥以上 Fraser River 主河道"),
     coordinates: [49.164, -122.19],
@@ -197,6 +236,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "harrison-upper",
+    region: "2",
     water: t("Harrison River", "Harrison River"),
     area: t("From the outlet of Harrison Lake downstream to the Highway 7 Bridge", "从 Harrison Lake 出口向下游至 Highway 7 大桥"),
     coordinates: [49.295, -121.938],
@@ -206,6 +246,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "harrison-lower",
+    region: "2",
     water: t("Harrison River", "Harrison River"),
     area: t("From the Highway 7 Bridge downstream to the Fraser River confluence", "从 Highway 7 大桥向下游至 Fraser River 汇流处"),
     coordinates: [49.252, -121.95],
@@ -215,6 +256,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "kanaka",
+    region: "2",
     water: t("Kanaka Creek", "Kanaka Creek"),
     area: t("Downstream of the 112th Street bridge", "112th Street 大桥以下河段"),
     coordinates: [49.205, -122.498],
@@ -224,6 +266,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "khartoum",
+    region: "2",
     water: t("Khartoum Lake", "Khartoum Lake"),
     area: t("Entire lake", "全湖"),
     coordinates: [49.88536, -124.09835],
@@ -235,6 +278,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "little-campbell",
+    region: "2",
     water: t("Little Campbell River", "Little Campbell River"),
     area: t("Downstream of 12th Avenue, including tributaries to that part", "12th Avenue 以下河段，包括汇入该河段的支流"),
     coordinates: [49.02392, -122.71943],
@@ -247,6 +291,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "little-campbell-closure",
+    region: "2",
     water: t("Little Campbell River", "Little Campbell River"),
     area: t(
       "From a line between two fishing boundary signs downstream to the pedestrian bridge at the foot of Stayte Road",
@@ -259,6 +304,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "lois",
+    region: "2",
     water: t("Lois Lake", "Lois Lake"),
     area: t("Entire lake", "全湖"),
     coordinates: [49.83389, -124.25835],
@@ -270,6 +316,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "mamquam",
+    region: "2",
     water: t("Mamquam River", "Mamquam River"),
     area: t("Entire listed water", "该水域"),
     coordinates: [49.721, -123.13],
@@ -280,6 +327,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "nicomekl",
+    region: "2",
     water: t("Nicomekl River", "Nicomekl River"),
     area: t("Downstream of 208th Street", "208th Street 以下河段"),
     coordinates: [49.10053, -122.64402],
@@ -291,6 +339,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "nicomen",
+    region: "2",
     water: t("Nicomen (including Dewdney) Slough", "Nicomen Slough（包括 Dewdney Slough）"),
     area: t("From the confluence of Siddle (Bell's) Creek downstream to the Fraser River", "从 Siddle（Bell's）Creek 汇流处向下游至 Fraser River"),
     coordinates: [49.169, -122.075],
@@ -301,6 +350,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "norrish",
+    region: "2",
     water: t("Norrish (Suicide) Creek", "Norrish（Suicide）Creek"),
     area: t("Entire listed water", "该水域"),
     coordinates: [49.172778, -122.135278],
@@ -310,6 +360,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "serpentine",
+    region: "2",
     water: t("Serpentine River", "Serpentine River"),
     area: t("Downstream of 168th Street at Bothwell Park", "Bothwell Park 的 168th Street 以下河段"),
     coordinates: [49.115, -122.759],
@@ -321,6 +372,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "squamish",
+    region: "2",
     water: t("Squamish River (including Powerhouse Channel)", "Squamish River（包括 Powerhouse Channel）"),
     area: t("Entire listed water", "该水域"),
     coordinates: [49.758, -123.141],
@@ -331,6 +383,7 @@ export const fishingSpots: FishingSpot[] = [
   },
   {
     id: "stave",
+    region: "2",
     water: t("Stave River", "Stave River"),
     area: t(
       "Downstream of the B.C. Hydro Dam to the CPR Railway Bridge, excluding the Ruskin and Northrop spawning channels described by DFO",
@@ -345,6 +398,8 @@ export const fishingSpots: FishingSpot[] = [
 
 export const sourceUrl =
   "https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region2-eng.html";
+
+export const defaultRegionId = "2";
 
 // The notes DFO prints above the Region 2 table; they apply to every row below.
 export const regionRules: LocalizedText[] = [
@@ -386,6 +441,42 @@ export const regionRules: LocalizedText[] = [
   ),
 ];
 
+const region2: RegionInfo = {
+  id: "2",
+  name: t("Lower Mainland", "低陆平原"),
+  sourceUrl,
+  waters: region2Spots.length,
+  notes: regionRules,
+};
+
+// Camera framing only, so the map opens over the right part of BC when a region
+// has no mapped waters yet. These are deliberately generous and carry no
+// regulatory meaning—DFO's own wording is the boundary.
+export const regionExtents: Record<string, [[number, number], [number, number]]> = {
+  "1": [[48.3, -128.6], [51.0, -123.0]],
+  "2": [[48.9, -124.6], [50.4, -121.0]],
+  "3": [[49.2, -122.2], [52.4, -118.8]],
+  "4": [[48.9, -118.6], [51.7, -113.9]],
+  "5": [[51.2, -126.2], [54.1, -119.8]],
+  "6": [[52.0, -134.6], [57.6, -124.8]],
+  "7": [[53.0, -127.2], [58.6, -118.8]],
+  "8": [[48.9, -120.6], [50.9, -117.9]],
+};
+
+// Region 2 first because it is the only one with hand-verified reaches; the rest
+// follow DFO's own numbering.
+export const regions: RegionInfo[] = [region2, ...generatedRegions].sort(
+  (a, b) => Number(a.id) - Number(b.id),
+);
+
+export const fishingSpots: FishingSpot[] = [...region2Spots, ...generatedSpots];
+
+export const spotsForRegion = (regionId: string) =>
+  fishingSpots.filter((spot) => spot.region === regionId);
+
+export const regionById = (regionId: string) =>
+  regions.find((region) => region.id === regionId) ?? region2;
+
 // Only the rows whose DFO boundary cannot be placed on a map line need a
 // hand-written point; everything else is derived from the generated geometry so
 // the marker can never drift away from the drawn reach.
@@ -416,7 +507,9 @@ const referencePoints: Record<string, BoundaryPoint> = {
   },
 };
 
-export function getBoundaryStart(spot: FishingSpot): BoundaryPoint {
+// Null when DFO's wording has not been tied to a location yet: those rows are
+// listed with their regulations but cannot be drawn.
+export function getBoundaryStart(spot: FishingSpot): BoundaryPoint | null {
   const waterway = waterwayPaths[spot.id];
   if (waterway) {
     return {
@@ -426,14 +519,15 @@ export function getBoundaryStart(spot: FishingSpot): BoundaryPoint {
       approximate: waterway.pinApproximate,
     };
   }
-  return (
-    referencePoints[spot.id] ?? {
-      coordinates: spot.coordinates,
-      label: spot.area,
-      kind: "reference",
-      approximate: true,
-    }
-  );
+  const reference = referencePoints[spot.id];
+  if (reference) return reference;
+  if (!spot.coordinates) return null;
+  return {
+    coordinates: spot.coordinates,
+    label: spot.area,
+    kind: "reference",
+    approximate: true,
+  };
 }
 
 export function isRuleActive(rule: FishingRule, date = new Date()) {
