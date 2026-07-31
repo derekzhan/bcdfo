@@ -9,6 +9,24 @@ import type { FishingSpot, LocalizedText, RegionInfo } from "./fishing-data";
 
 const t = (en: string, zh: string): LocalizedText => ({ en, zh });
 
+// The date DFO last edited each region's page, region 2 included.
+export const sourceModified: Record<string, string> = {
+  "1": "2026-05-22",
+  "2": "2026-04-01",
+  "3": "2026-04-01",
+  "4": "2025-04-01",
+  "5": "2016-10-18",
+  "6": "2026-07-29",
+  "7": "2026-04-01",
+  "8": "2025-04-01",
+};
+
+// Region 2's rules are transcribed by hand, so CI watches this hash of its
+// published table to catch an edit that no generator would pick up.
+export const handWrittenFingerprints: Record<string, string> = {
+  "2": "13ad63c6238a8be2",
+};
+
 export const generatedRegions: RegionInfo[] = [
   {
     id: "1",

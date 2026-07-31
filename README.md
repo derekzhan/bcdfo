@@ -91,7 +91,26 @@ npm run regions
 npm run regions:refresh
 ```
 
-DFO 页面缓存在 `scripts/.cache/dfo/`。
+DFO 页面缓存在 `scripts/.cache/dfo/`，不加 `--refresh` 就只读缓存、不联网。
+
+### 自动跟随 DFO 更新
+
+[`.github/workflows/refresh-dfo.yml`](.github/workflows/refresh-dfo.yml) 每天
+重新下载 8 个区的页面并重新生成数据，**只有 `npm test` 全部通过才会提交推送**，
+推送后由 Vercel 自动部署。测试里带绝对下限断言（水域数 150+、规定数 250+、
+八个区齐全、Region 2 恰好 26 个），所以 DFO 改版导致解析退化时会让流程失败，
+而不是把空表推上线。也可在 Actions 页面手动触发。
+
+Region 2 是唯一手工维护的区（见下），生成器不会碰它。为此生成器会把 Region 2
+**已解析规定行的哈希**写进数据文件：DFO 一旦改动那张表，哈希变化会让流程自动
+开一个 issue 提醒人工转录。哈希只覆盖规定内容，页脚或导航改动不会误报。
+
+界面上「本区 DFO 页面更新于 …」取自各区页面自带的 `dateModified`，按当前所选
+区域显示。各区差异很大——Region 6 会在季中更新，Region 5 自 2016 年未变——
+所以全站共用一个日期会谎报新鲜度。
+
+需要注意：这些表格之外，DFO 还会通过季中 Fishery Notices 临时开关河，那部分
+不在本项目覆盖范围内，页面免责声明已提示读者核对公告。
 
 ## 红线几何
 

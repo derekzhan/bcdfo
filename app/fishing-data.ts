@@ -1,4 +1,4 @@
-import { generatedRegions, generatedSpots } from "./region-data.generated";
+import { generatedRegions, generatedSpots, sourceModified } from "./region-data.generated";
 import { waterwayPaths } from "./waterway-paths";
 
 export type Language = "en" | "zh";
@@ -476,6 +476,22 @@ export const spotsForRegion = (regionId: string) =>
 
 export const regionById = (regionId: string) =>
   regions.find((region) => region.id === regionId) ?? region2;
+
+// DFO edits each region's page on its own schedule—Region 6 in season, Region 5
+// not since 2016—so the freshness a reader is told about has to be the one for
+// the region they are actually looking at.
+export function sourceModifiedFor(regionId: string, language: Language) {
+  const iso = sourceModified[regionId];
+  if (!iso) return null;
+  const [year, month, day] = iso.split("-").map(Number);
+  if (language === "zh") return `${year}年${month}月${day}日`;
+  return new Date(Date.UTC(year, month - 1, day)).toLocaleDateString("en-CA", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}
 
 // Only the rows whose DFO boundary cannot be placed on a map line need a
 // hand-written point; everything else is derived from the generated geometry so

@@ -30,6 +30,7 @@ import {
   regionById,
   regionExtents,
   regions,
+  sourceModifiedFor,
   type FishingSpot,
   type Language,
   type Species,
@@ -77,7 +78,7 @@ const ui = {
     results: "DFO waters",
     active: "listed today",
     source: "Official DFO table",
-    updated: "Source modified Apr 1, 2026",
+    updated: "DFO page modified ",
     mapHint: "Tap a start marker or select a water",
     details: "Rules & limits",
     area: "Regulated area",
@@ -139,7 +140,7 @@ const ui = {
     results: "个 DFO 水域",
     active: "个在表列日期内",
     source: "DFO 官方表格",
-    updated: "来源更新于 2026年4月1日",
+    updated: "本区 DFO 页面更新于 ",
     mapHint: "点击起点标记或选择水域",
     details: "规定与限额",
     area: "适用范围",
@@ -698,7 +699,7 @@ export default function FishingExplorer() {
             <strong>{activeCount}</strong>
           </div>
           <div className="intro-meta">
-            <span>{ui[language].updated}</span>
+            <span>{`${ui[language].updated}${sourceModifiedFor(regionId, language) ?? "—"}`}</span>
             <span className="source-note"><Check size={12} />{ui[language].sourceNote}</span>
           </div>
         </div>

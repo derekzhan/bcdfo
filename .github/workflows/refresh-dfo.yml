@@ -1,0 +1,114 @@
+# Re-downloads the DFO freshwater salmon tables, regenerates the typed data and
+# pushes it, so the published rules never sit behind the source.
+#
+# Nothing is committed unless the full suite passes on the refreshed data. The
+# suite asserts floors—150+ waters, 250+ rules, all eight regions, 26 for
+# Region 2—so a DFO markup change that collapses the parser fails the run
+# instead of deploying an empty table.
+name: Refresh DFO tables
+
+on:
+  # DFO edits pages mid-season on no schedule of its own—Region 6 was last
+  # touched on a Wednesday—so check daily rather than let a change sit for most
+  # of a week. 13:17 UTC is early morning in BC.
+  schedule:
+    - cron: "17 13 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: refresh-dfo
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Re-download the DFO tables
+        run: |
+          set -eo pipefail
+          npm run regions:refresh | tee /tmp/regions.log
+
+      - name: Build and test against the refreshed data
+        run: npm test
+
+      - name: Push the refreshed tables
+        id: refresh
+        run: |
+          set -eo pipefail
+          if git diff --quiet -- app/region-data.generated.ts; then
+            echo "DFO published no changes."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+          # The hash covers Region 2's parsed rules, which no generator writes,
+          # so a change there needs a human to transcribe it.
+          if git diff -U0 -- app/region-data.generated.ts | grep -qE '^\+ +"2": "[0-9a-f]{16}",$'; then
+            echo "region2=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "region2=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/region-data.generated.ts
+          git commit --file - <<EOF
+          Refresh the DFO tables
+
+          $(grep -E '^region[0-9]' /tmp/regions.log)
+          EOF
+          git push
+
+      - name: Ask for a human to transcribe Region 2
+        if: steps.refresh.outputs.region2 == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const url = "https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region2-eng.html";
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: "DFO edited the Region 2 table",
+              body: [
+                "DFO changed the published Region 2 rules. Region 2 is the one table",
+                "transcribed by hand, so the refresh could not apply it.",
+                "",
+                `Compare [the DFO page](${url}) against \`region2Spots\` and \`regionRules\``,
+                "in `app/fishing-data.ts`, then check whether any reach in",
+                "`scripts/waterway-specs.mjs` needs its boundaries moved.",
+                "",
+                "Region 2 opens by default, so until this is done most visitors see",
+                "stale rules.",
+              ].join("\n"),
+            });
+
+      - name: Report what happened
+        if: always()
+        run: |
+          {
+            echo "### DFO refresh"
+            echo
+            if [ "${{ steps.refresh.outputs.changed }}" = "true" ]; then
+              echo "Pushed refreshed tables."
+            else
+              echo "No change published."
+            fi
+            echo
+            echo '```'
+            cat /tmp/regions.log 2>/dev/null || echo "the refresh did not run"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

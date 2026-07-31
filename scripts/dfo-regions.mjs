@@ -70,6 +70,16 @@ export function text(html) {
     .trim();
 }
 
+// Every page carries the date DFO last touched it in a machine readable
+// footer, and the dates differ sharply per region: Region 6 is edited in
+// season while Region 5 has stood since 2016. Reporting one date for the whole
+// site would misstate how fresh most regions are.
+export function parseDateModified(html) {
+  const match = html.match(/dateModified"?>\s*(\d{4}-\d{2}-\d{2})/i);
+  if (!match) throw new Error("no dateModified in the DFO page");
+  return match[1];
+}
+
 // Walks the table honouring rowspan/colspan so every logical row comes back as
 // a full five column record, and rows that are really section banners come back
 // as headings instead of data.

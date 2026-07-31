@@ -311,6 +311,40 @@ test("carries every generated region row into typed data", async () => {
   assert.doesNotMatch(generated, /禁止垂钓salmon/);
 });
 
+test("dates each region from its own DFO page", async () => {
+  const [html, generated, explorer, data] = await Promise.all([
+    (await render()).text(),
+    readFile(new URL("../app/region-data.generated.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/FishingExplorer.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/fishing-data.ts", import.meta.url), "utf8"),
+  ]);
+
+  // DFO edits each page on its own schedule, so one hard-coded date would
+  // misstate freshness everywhere but the region it was copied from—and a
+  // scheduled refresh would ship new rules under the old date.
+  assert.doesNotMatch(explorer, /updated: "[^"]*20\d\d/, "the source date is hard-coded again");
+  assert.match(data, /sourceModifiedFor/);
+
+  const dates = Object.fromEntries(
+    [...generated.matchAll(/^ {2}"(\d)": "(\d{4}-\d{2}-\d{2})",$/gm)].map((m) => [m[1], m[2]]),
+  );
+  assert.deepEqual(Object.keys(dates).sort(), ["1", "2", "3", "4", "5", "6", "7", "8"]);
+  // Region 2 is not generated, yet its date has to be carried anyway because it
+  // is the region that opens first.
+  assert.ok(dates["2"], "region 2 has no source date");
+  assert.ok(
+    new Set(Object.values(dates)).size > 1,
+    "every region reporting one date means the per-page date was lost",
+  );
+
+  // Region 2 opens by default, so its date is the one in the first render.
+  const [year, month, day] = dates["2"].split("-").map(Number);
+  assert.match(html, new RegExp(`${year}年${month}月${day}日`));
+
+  // The hand-maintained table needs a signal a generator cannot give.
+  assert.match(generated, /handWrittenFingerprints[\s\S]*?"2": "[0-9a-f]{16}"/);
+});
+
 test("says so plainly where a region is listed but not yet drawn", async () => {
   const explorer = await readFile(new URL("../app/FishingExplorer.tsx", import.meta.url), "utf8");
   const data = await readFile(new URL("../app/fishing-data.ts", import.meta.url), "utf8");
