@@ -127,8 +127,8 @@ const ui = {
     tileError: "Base map tiles failed to load—check your connection",
   },
   zh: {
-    eyebrow: "DFO 淡水鲑鱼分区",
-    title: "鲑鱼钓场指南",
+    eyebrow: "DFO 淡水三文鱼分区",
+    title: "三文鱼钓场指南",
     subtitle: "把官方表格变成好查、好懂、可导航的钓场地图。",
     search: "搜索河流、湖泊或边界…",
     all: "全部水域",
@@ -155,10 +155,10 @@ const ui = {
     retain: "允许按限额保留",
     release: "不得保留",
     gear: "渔具限制",
-    closed: "禁止垂钓鲑鱼",
+    closed: "禁止垂钓三文鱼",
     pending: "DFO 尚未公布，待定",
     disclaimer: "红线严格裁剪到 DFO 表格写明的边界；表格未写具体范围时，红线覆盖该水域已测绘的全部主河道。红线基于 OpenStreetMap 几何，仅供直观参考，并非法律边界。DFO 未给出可定位范围的条目只显示文字与位置标记。出发前请核对文字范围、季中公告、省级规定及现场标志。",
-    sourceNote: "仅限鲑鱼规定",
+    sourceNote: "仅限三文鱼规定",
     locate: "显示我的位置",
     waters: "个 DFO 水域",
     liveNow: "个当前有条目",
@@ -172,7 +172,7 @@ const ui = {
     textOnlyRange: "仅按 DFO 文字说明，不推测绘制边界",
     rangeStart: "起点",
     rangeEnd: "终点",
-    closedRange: "高亮河段禁止垂钓鲑鱼",
+    closedRange: "高亮河段禁止垂钓三文鱼",
     entireRange: "DFO 表格列出整条水域 · 已绘制全部主河道",
     regionTitle: "全区通用 DFO 规定",
     region: "DFO 区域",
@@ -208,7 +208,7 @@ const speciesName: Record<Language, Record<Species, string>> = {
     Chum: "狗鲑",
     Steelhead: "虹鳟",
     Eulachon: "油胡瓜鱼",
-    All: "所有鲑鱼",
+    All: "所有三文鱼",
   },
 };
 
@@ -660,7 +660,7 @@ export default function FishingExplorer() {
           <div className="brand-mark"><Waves size={21} /></div>
           <div className="brand-copy">
             <span>{`${language === "zh" ? "DFO 第 " + region.id + " 区" : "DFO Region " + region.id} · ${region.name[language]}`}</span>
-            <strong>{language === "zh" ? "BC 鲑鱼地图" : "BC Salmon Map"}</strong>
+            <strong>{language === "zh" ? "BC 三文鱼地图" : "BC Salmon Map"}</strong>
           </div>
         </div>
         <div className="topbar-spacer" />

@@ -37,10 +37,10 @@ const SPECIES_ZH = {
   Chum: "狗鲑",
   Steelhead: "虹鳟",
   Eulachon: "油胡瓜鱼",
-  All: "所有鲑鱼",
+  All: "所有三文鱼",
 };
 // Not a species row, but DFO uses the bare word in limit text.
-const GENERIC_ZH = { salmon: "鲑鱼", finfish: "所有鱼类" };
+const GENERIC_ZH = { salmon: "三文鱼", finfish: "所有鱼类" };
 
 function parseSpecies(cell, limits) {
   const source = cell || (limits.match(/for ([a-z, ]+?)(?: salmon)?$/i)?.[1] ?? "");
@@ -96,7 +96,7 @@ const LIMIT_RULES = [
   [/^no natural bait allowed$/i, () => "禁止使用天然饵料"],
   [/^fly[- ]fishing only$/i, () => "仅可使用假蝇钓法"],
   [/^finfish closure$/i, () => "禁止垂钓所有鱼类"],
-  [/^open for salmon catch and release$/i, () => "可垂钓鲑鱼，但须钓获即放"],
+  [/^open for salmon catch and release$/i, () => "可垂钓三文鱼，但须钓获即放"],
   [/^single,? barbless hook$/i, () => "仅可使用单枚无倒刺鱼钩"],
   [
     /^single,? barbless hook in tidal and non-tidal portions of all streams$/i,

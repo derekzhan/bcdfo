@@ -174,7 +174,7 @@ export const generatedSpots: FishingSpot[] = [
     water: t("Comox Lake", "Comox Lake"),
     area: t("Entire listed water", "整条列出的水域"),
     rules: [
-      { species: ["All"], season: t("July 1 to Mar 31", "7月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [7, 1], end: [3, 31] },
+      { species: ["All"], season: t("July 1 to Mar 31", "7月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [7, 1], end: [3, 31] },
     ],
   },
   {
@@ -204,7 +204,7 @@ export const generatedSpots: FishingSpot[] = [
     water: t("Cowichan River", "Cowichan River"),
     area: t("from 66 Mile Trestle downstream to the white triangle boundary sign located in Sandy Pool Regional Park", "from 66 Mile Trestle downstream to the white triangle boundary sign located in Sandy Pool Regional Park"),
     rules: [
-      { species: ["All"], season: t("Sep 1 to July 14", "9月1日–7月14日"), regulation: t("Open for salmon catch and release", "可垂钓鲑鱼，但须钓获即放"), kind: "release", start: [9, 1], end: [7, 14] },
+      { species: ["All"], season: t("Sep 1 to July 14", "9月1日–7月14日"), regulation: t("Open for salmon catch and release", "可垂钓三文鱼，但须钓获即放"), kind: "release", start: [9, 1], end: [7, 14] },
       { species: ["Coho"], season: t("Nov 1 to Dec 31", "11月1日–12月31日"), regulation: t("1 per day", "每日 1 条"), kind: "retain", start: [11, 1], end: [12, 31] },
       { species: ["Chum"], season: t("To be determined", "待定"), regulation: t("To be determined", "待定"), kind: "pending" },
     ],
@@ -328,7 +328,7 @@ export const generatedSpots: FishingSpot[] = [
     water: t("Nitinat River", "Nitinat River"),
     area: t("upstream of Parker Creek", "upstream of Parker Creek"),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -426,7 +426,7 @@ export const generatedSpots: FishingSpot[] = [
     water: t("Qualicum River", "Qualicum River"),
     area: t("downstream of the upper weir (located approximately 125 m downstream of the E&N railway bridge) to the QFN boundary fence located approximately 100 m downstream of the hatchery counting fence", "downstream of the upper weir (located approximately 125 m downstream of the E&N railway bridge) to the QFN boundary fence located approximately 100 m downstream of the hatchery counting fence"),
     rules: [
-      { species: ["All"], season: t("Aug 15 to Oct 15", "8月15日–10月15日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [8, 15], end: [10, 15] },
+      { species: ["All"], season: t("Aug 15 to Oct 15", "8月15日–10月15日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [8, 15], end: [10, 15] },
     ],
   },
   {
@@ -435,7 +435,7 @@ export const generatedSpots: FishingSpot[] = [
     water: t("Qualicum River", "Qualicum River"),
     area: t("waters below the QFN boundary fence, downstream to the Hwy 19A bridge", "waters below the QFN boundary fence, downstream to the Hwy 19A bridge"),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -472,7 +472,7 @@ export const generatedSpots: FishingSpot[] = [
     water: t("Reay Creek", "Reay Creek"),
     area: t("Entire listed water", "整条列出的水域"),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -508,7 +508,7 @@ export const generatedSpots: FishingSpot[] = [
     water: t("Shawnigan Creek", "Shawnigan Creek"),
     area: t("Entire listed water", "整条列出的水域"),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -555,7 +555,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("Entire listed water", "整条列出的水域"),
     rules: [
       { species: ["All"], season: t("May 1 to Oct 31", "5月1日–10月31日"), regulation: t("Bait ban", "禁止使用饵料"), kind: "gear", start: [5, 1], end: [10, 31] },
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No retention of salmon", "不得保留鲑鱼"), kind: "release", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No retention of salmon", "不得保留三文鱼"), kind: "release", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -646,7 +646,7 @@ export const generatedSpots: FishingSpot[] = [
     water: t("Bridge River", "Bridge River"),
     area: t("Entire listed water", "整条列出的水域"),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -655,7 +655,7 @@ export const generatedSpots: FishingSpot[] = [
     water: t("Clearwater River", "Clearwater River"),
     area: t("Entire listed water", "整条列出的水域"),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -743,7 +743,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("Entire listed water", "整条列出的水域"),
     section: t("B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace.", "B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace."),
     rules: [
-      { species: ["All"], season: t("Jan 1 to Jun 15", "1月1日–6月15日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [1, 1], end: [6, 15] },
+      { species: ["All"], season: t("Jan 1 to Jun 15", "1月1日–6月15日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [1, 1], end: [6, 15] },
       { species: ["Coho"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for coho", "禁止垂钓银鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
       { species: ["Sockeye"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for sockeye", "禁止垂钓红鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
       { species: ["Chinook"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for chinook", "禁止垂钓帝王鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
@@ -835,7 +835,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("Bulkley River and Morice River waters within the four white triangular fishing boundary signs located at the confluence of the Bulkley River and Morice River (locally known as “the Forks”). The closure starts 100 meters upstream of the confluence and ends approximately 1 kilometre downstream", "Bulkley River and Morice River waters within the four white triangular fishing boundary signs located at the confluence of the Bulkley River and Morice River (locally known as “the Forks”). The closure starts 100 meters upstream of the confluence and ends approximately 1 kilometre downstream"),
     section: t("B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace.", "B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace."),
     rules: [
-      { species: ["All"], season: t("Jun 16 to Aug 15", "6月16日–8月15日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [6, 16], end: [8, 15] },
+      { species: ["All"], season: t("Jun 16 to Aug 15", "6月16日–8月15日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [6, 16], end: [8, 15] },
     ],
   },
   {
@@ -909,7 +909,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("including tributaries", "including tributaries"),
     section: t("B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace.", "B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace."),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -929,7 +929,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("from fishing boundary signs posted near the outlet of Morice Lake to Gosnell Creek", "from fishing boundary signs posted near the outlet of Morice Lake to Gosnell Creek"),
     section: t("B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace.", "B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace."),
     rules: [
-      { species: ["All"], season: t("Jan 1 to Sep 30", "1月1日–9月30日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [1, 1], end: [9, 30] },
+      { species: ["All"], season: t("Jan 1 to Sep 30", "1月1日–9月30日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [1, 1], end: [9, 30] },
     ],
   },
   {
@@ -939,7 +939,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("from Gosnell Creek to Lamprey Creek", "from Gosnell Creek to Lamprey Creek"),
     section: t("B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace.", "B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace."),
     rules: [
-      { species: ["All"], season: t("Jan 1 to Aug 31", "1月1日–8月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [1, 1], end: [8, 31] },
+      { species: ["All"], season: t("Jan 1 to Aug 31", "1月1日–8月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [1, 1], end: [8, 31] },
       { species: ["Coho"], season: t("Sep 1 to Sep 30", "9月1日–9月30日"), regulation: t("4 per day, only 2 over 50 cm. Fly-fishing only.", "每日 4 条，其中超过 50 厘米者最多 2 条；仅可使用假蝇钓法"), kind: "retain", start: [9, 1], end: [9, 30] },
     ],
   },
@@ -995,7 +995,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("Bulkley River and Morice River waters within the four white triangular fishing boundary signs located at the confluence of the Bulkley River and Morice River (locally known as “the Forks”). The closure starts 100 meters upstream of the confluence and ends approximately 1 kilometre downstream", "Bulkley River and Morice River waters within the four white triangular fishing boundary signs located at the confluence of the Bulkley River and Morice River (locally known as “the Forks”). The closure starts 100 meters upstream of the confluence and ends approximately 1 kilometre downstream"),
     section: t("B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace.", "B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace."),
     rules: [
-      { species: ["All"], season: t("Jun 16 to Aug 15", "6月16日–8月15日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [6, 16], end: [8, 15] },
+      { species: ["All"], season: t("Jun 16 to Aug 15", "6月16日–8月15日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [6, 16], end: [8, 15] },
     ],
   },
   {
@@ -1016,7 +1016,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("downstream of fishing boundary signs located approx. 25 m downstream of fish counting fence", "downstream of fishing boundary signs located approx. 25 m downstream of fish counting fence"),
     section: t("B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace.", "B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace."),
     rules: [
-      { species: ["All"], season: t("Aug 15 to Sep 15", "8月15日–9月15日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [8, 15], end: [9, 15] },
+      { species: ["All"], season: t("Aug 15 to Sep 15", "8月15日–9月15日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [8, 15], end: [9, 15] },
       { species: ["Sockeye"], season: t("Apr 1 to July 31", "4月1日–7月31日"), regulation: t("No fishing for sockeye", "禁止垂钓红鲑"), kind: "closed", start: [4, 1], end: [7, 31] },
       { species: ["Sockeye"], season: t("Aug 1 to Aug 14", "8月1日–8月14日"), regulation: t("2 per day FN0679", "每日 2 条（FN0679）"), kind: "retain", start: [8, 1], end: [8, 14] },
     ],
@@ -1048,7 +1048,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("mainstem waters only, upstream of Cedarvale", "mainstem waters only, upstream of Cedarvale"),
     section: t("B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace.", "B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace."),
     rules: [
-      { species: ["All"], season: t("Jan 1 to May 31", "1月1日–5月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [1, 1], end: [5, 31] },
+      { species: ["All"], season: t("Jan 1 to May 31", "1月1日–5月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [1, 1], end: [5, 31] },
       { species: ["Chinook"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for chinook", "禁止垂钓帝王鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
@@ -1100,7 +1100,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("all waters within the 4 triangular fishing boundary signs located at the confluence of the Kispiox River with the Skeena River", "all waters within the 4 triangular fishing boundary signs located at the confluence of the Kispiox River with the Skeena River"),
     section: t("B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace.", "B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace."),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -1110,7 +1110,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("mainstem waters near the Kitwanga River mouth, from Mill Creek upstream to the Highway 37 Bridge", "mainstem waters near the Kitwanga River mouth, from Mill Creek upstream to the Highway 37 Bridge"),
     section: t("B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace.", "B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace."),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -1449,7 +1449,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("mainstem waters near the Kitsumkalum River mouth, from the confluence with the Zymagotitz River (also known as Zymachord River) upstream to the Classified Waters boundary at the top of Hell’s Gate.", "mainstem waters near the Kitsumkalum River mouth, from the confluence with the Zymagotitz River (also known as Zymachord River) upstream to the Classified Waters boundary at the top of Hell’s Gate."),
     section: t("B(ii). Skeena River Watershed-Waters downstream of CNR Railway Bridge at Terrace.", "B(ii). Skeena River Watershed-Waters downstream of CNR Railway Bridge at Terrace."),
     rules: [
-      { species: ["All"], season: t("Jul 1 to Aug 31", "7月1日–8月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [7, 1], end: [8, 31] },
+      { species: ["All"], season: t("Jul 1 to Aug 31", "7月1日–8月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [7, 1], end: [8, 31] },
       { species: ["Sockeye"], season: t("Sep 1 to Sep 15", "9月1日–9月15日"), regulation: t("2 per day FN0679", "每日 2 条（FN0679）"), kind: "retain", start: [9, 1], end: [9, 15] },
     ],
   },
@@ -1595,7 +1595,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("including tributaries", "including tributaries"),
     section: t("C. Nass River Watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:", "C. Nass River Watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:"),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -1616,7 +1616,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("mainstem waters near the Meziadin River confluence, from white triangular fishing boundary signs located downstream of the Meziadin River confluence,and upstream to the Hwy 37 Bridge.", "mainstem waters near the Meziadin River confluence, from white triangular fishing boundary signs located downstream of the Meziadin River confluence,and upstream to the Hwy 37 Bridge."),
     section: t("C. Nass River Watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:", "C. Nass River Watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:"),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Sep 15", "4月1日–9月15日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [9, 15] },
+      { species: ["All"], season: t("Apr 1 to Sep 15", "4月1日–9月15日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [9, 15] },
     ],
   },
   {
@@ -1636,7 +1636,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("Entire listed water", "整条列出的水域"),
     section: t("C. Nass River Watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:", "C. Nass River Watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:"),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -1646,7 +1646,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("Entire listed water", "整条列出的水域"),
     section: t("C. Nass River Watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:", "C. Nass River Watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:"),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -1656,7 +1656,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("upstream of Nisga’a Hwy Bridge", "upstream of Nisga’a Hwy Bridge"),
     section: t("C. Nass River Watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:", "C. Nass River Watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:"),
     rules: [
-      { species: ["All"], season: t("Aug 1 to Dec 31", "8月1日–12月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [8, 1], end: [12, 31] },
+      { species: ["All"], season: t("Aug 1 to Dec 31", "8月1日–12月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [8, 1], end: [12, 31] },
     ],
   },
   {
@@ -1791,8 +1791,8 @@ export const generatedSpots: FishingSpot[] = [
     area: t("including tributaries", "including tributaries"),
     section: t("E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:", "E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:"),
     rules: [
-      { species: ["All"], season: t("Jan 1 to Aug 15", "1月1日–8月15日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [1, 1], end: [8, 15] },
-      { species: ["All"], season: t("Oct 1 to Dec 31", "10月1日–12月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [10, 1], end: [12, 31] },
+      { species: ["All"], season: t("Jan 1 to Aug 15", "1月1日–8月15日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [1, 1], end: [8, 15] },
+      { species: ["All"], season: t("Oct 1 to Dec 31", "10月1日–12月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [10, 1], end: [12, 31] },
       { species: ["All"], season: t("Jun 1 to Jun 14", "6月1日–6月14日"), regulation: t("No natural bait allowed", "禁止使用天然饵料"), kind: "gear", start: [6, 1], end: [6, 14] },
       { species: ["All"], season: t("Aug 2 to Oct 15", "8月2日–10月15日"), regulation: t("No natural bait allowed", "禁止使用天然饵料"), kind: "gear", start: [8, 2], end: [10, 15] },
       { species: ["Sockeye", "Pink", "Chum"], season: t("Aug 16 to Sep 30", "8月16日–9月30日"), regulation: t("No fishing for sockeye, pink, chum.", "禁止垂钓红鲑、粉鲑、狗鲑"), kind: "closed", start: [8, 16], end: [9, 30] },
@@ -1806,7 +1806,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("Entire listed water", "整条列出的水域"),
     section: t("E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:", "E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:"),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -1856,7 +1856,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("including tributaries", "including tributaries"),
     section: t("E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:", "E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:"),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -1909,7 +1909,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("on west bank between signs at Kitimat hatchery outfall.", "on west bank between signs at Kitimat hatchery outfall."),
     section: t("E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:", "E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:"),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -1934,7 +1934,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("upstream of Highway #37 bridge.", "upstream of Highway #37 bridge."),
     section: t("E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:", "E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:"),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for Salmon.", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for Salmon.", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -1975,7 +1975,7 @@ export const generatedSpots: FishingSpot[] = [
     section: t("E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:", "E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:"),
     rules: [
       { species: ["All"], season: t("Jan 1 to Dec 31", "1月1日–12月31日"), regulation: t("No natural bait allowed", "禁止使用天然饵料"), kind: "gear", start: [1, 1], end: [12, 31] },
-      { species: ["All"], season: t("Aug 1 to Oct 31", "8月1日–10月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [8, 1], end: [10, 31] },
+      { species: ["All"], season: t("Aug 1 to Oct 31", "8月1日–10月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [8, 1], end: [10, 31] },
       { species: ["Chinook"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for chinook", "禁止垂钓帝王鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
@@ -2082,7 +2082,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("including tributaries", "including tributaries"),
     section: t("E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:", "E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:"),
     rules: [
-      { species: ["All"], season: t("Aug 20 to Sep 15", "8月20日–9月15日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [8, 20], end: [9, 15] },
+      { species: ["All"], season: t("Aug 20 to Sep 15", "8月20日–9月15日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [8, 20], end: [9, 15] },
     ],
   },
   {
@@ -2092,7 +2092,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("Entire listed water", "整条列出的水域"),
     section: t("E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:", "E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:"),
     rules: [
-      { species: ["All"], season: t("Jul 24 to Aug 14", "7月24日–8月14日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [7, 24], end: [8, 14] },
+      { species: ["All"], season: t("Jul 24 to Aug 14", "7月24日–8月14日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [7, 24], end: [8, 14] },
       { species: ["Chinook"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for chinook", "禁止垂钓帝王鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
       { species: ["Coho"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("2 per day", "每日 2 条"), kind: "retain", start: [4, 1], end: [3, 31], always: true },
       { species: ["Sockeye"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for sockeye", "禁止垂钓红鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
@@ -2105,7 +2105,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("Blanchard River", "Blanchard River"),
     section: t("E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:", "E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:"),
     rules: [
-      { species: ["All"], season: t("Jul 24 to Aug 14", "7月24日–8月14日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [7, 24], end: [8, 14] },
+      { species: ["All"], season: t("Jul 24 to Aug 14", "7月24日–8月14日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [7, 24], end: [8, 14] },
       { species: ["Chinook"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for chinook", "禁止垂钓帝王鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
       { species: ["Coho"], season: t("Aug 15 to Jul 23", "8月15日–7月23日"), regulation: t("2 per day", "每日 2 条"), kind: "retain", start: [8, 15], end: [7, 23] },
       { species: ["Sockeye"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for sockeye", "禁止垂钓红鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
@@ -2118,7 +2118,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("Kwatini Creek, Stanley Creek and Goat Creek", "Kwatini Creek, Stanley Creek and Goat Creek"),
     section: t("E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:", "E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:"),
     rules: [
-      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
   },
   {
@@ -2128,7 +2128,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("Tatshenshini mainstem and all other tributaries", "Tatshenshini mainstem and all other tributaries"),
     section: t("E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:", "E. Other Mainland Watersheds, except for the Fraser River watershed – Section \"A\" applies if stream, specific area, time period, quotas or other species restrictions are not listed in the following sections:"),
     rules: [
-      { species: ["All"], season: t("Jul 24 to Aug 14", "7月24日–8月14日"), regulation: t("No fishing for salmon", "禁止垂钓鲑鱼"), kind: "closed", start: [7, 24], end: [8, 14] },
+      { species: ["All"], season: t("Jul 24 to Aug 14", "7月24日–8月14日"), regulation: t("No fishing for salmon", "禁止垂钓三文鱼"), kind: "closed", start: [7, 24], end: [8, 14] },
       { species: ["Chinook"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for chinook", "禁止垂钓帝王鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
       { species: ["Coho"], season: t("Aug 15 to Jul 23", "8月15日–7月23日"), regulation: t("2 per day", "每日 2 条"), kind: "retain", start: [8, 15], end: [7, 23] },
       { species: ["Sockeye"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for sockeye", "禁止垂钓红鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },

@@ -231,7 +231,7 @@ export const region2Spots: FishingSpot[] = [
     area: t("Mainstem waters upstream of the CPR Bridge at Mission, BC", "Mission 的 CPR 铁路桥以上 Fraser River 主河道"),
     coordinates: [49.164, -122.19],
     rules: [
-      rule("All", "Apr 1 until further notice", "4月1日起，直至另行通知", "No fishing for salmon", "禁止垂钓鲑鱼", "closed", undefined, undefined, true),
+      rule("All", "Apr 1 until further notice", "4月1日起，直至另行通知", "No fishing for salmon", "禁止垂钓三文鱼", "closed", undefined, undefined, true),
     ],
   },
   {
@@ -299,7 +299,7 @@ export const region2Spots: FishingSpot[] = [
     ),
     coordinates: [49.015, -122.853],
     rules: [
-      rule("All", "Aug 15–Sep 30", "8月15日–9月30日", "No fishing for salmon", "禁止垂钓鲑鱼", "closed", [8, 15], [9, 30]),
+      rule("All", "Aug 15–Sep 30", "8月15日–9月30日", "No fishing for salmon", "禁止垂钓三文鱼", "closed", [8, 15], [9, 30]),
     ],
   },
   {
@@ -405,7 +405,7 @@ export const defaultRegionId = "2";
 export const regionRules: LocalizedText[] = [
   t(
     "You can only fish for salmon in Region 2 during daylight hours.",
-    "第 2 区仅可在白天垂钓鲑鱼。",
+    "第 2 区仅可在白天垂钓三文鱼。",
   ),
   t(
     "No fishing within 100 m of any government facility operated for counting, passing or rearing fish.",
@@ -413,11 +413,11 @@ export const regionRules: LocalizedText[] = [
   ),
   t(
     "The daily limit for all species of Pacific salmon from tidal and fresh waters combined is 4; individual species limits also apply.",
-    "潮水与淡水合计，所有太平洋鲑鱼每日上限为 4 条；同时仍须遵守各鱼种的单独限额。",
+    "潮水与淡水合计，所有太平洋三文鱼每日上限为 4 条；同时仍须遵守各鱼种的单独限额。",
   ),
   t(
     "The possession limit is twice the daily limit: you cannot possess more than 8 salmon in total, except salmon kept at your ordinary residence.",
-    "持有上限为每日限额的两倍：合计不得持有超过 8 条鲑鱼，存放在常住居所的鲑鱼除外。",
+    "持有上限为每日限额的两倍：合计不得持有超过 8 条三文鱼，存放在常住居所的三文鱼除外。",
   ),
   t(
     "The annual limit is 10 chinook over 50 cm from all fresh waters combined.",
@@ -437,7 +437,7 @@ export const regionRules: LocalizedText[] = [
   ),
   t(
     "There is no fishing for salmon in Region 2 waters flowing into Areas 28 and 29 except the opportunities listed here, and unless stated otherwise the daily limit for waters flowing into Areas 13, 15 and 16 is zero.",
-    "除本表列出的机会外，流入 28 区和 29 区的第 2 区水域禁止垂钓鲑鱼；除另有说明外，流入 13、15、16 区的水域每日限额为 0。",
+    "除本表列出的机会外，流入 28 区和 29 区的第 2 区水域禁止垂钓三文鱼；除另有说明外，流入 13、15、16 区的水域每日限额为 0。",
   ),
 ];
 

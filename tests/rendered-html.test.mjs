@@ -72,7 +72,7 @@ test("server-renders the bilingual salmon explorer", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>BC Salmon Map/);
-  assert.match(html, /鲑鱼钓场指南/);
+  assert.match(html, /三文鱼钓场指南/);
   assert.match(html, /Alouette/);
   assert.match(html, /Official DFO table|DFO 官方表格/);
   assert.match(html, /region2-eng\.html/);

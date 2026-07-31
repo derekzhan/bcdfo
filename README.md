@@ -1,6 +1,6 @@
-# BC Salmon Map · DFO 淡水鲑鱼分区
+# BC Salmon Map · DFO 淡水三文鱼分区
 
-一个面向手机和桌面浏览器的双语鲑鱼钓场地图，将 Fisheries and
+一个面向手机和桌面浏览器的双语三文鱼钓场地图，将 Fisheries and
 Oceans Canada（DFO）BC 省 8 个淡水区的表格规定整理成更容易搜索、筛选和
 导航的互动界面。
 
