@@ -40,7 +40,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
+    // Translation extensions stamp their own attributes on <html> before React
+    // hydrates; suppressing here covers only this element's own attributes.
+    <html lang="zh-CN" suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );

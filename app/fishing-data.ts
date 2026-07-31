@@ -530,10 +530,25 @@ export function getBoundaryStart(spot: FishingSpot): BoundaryPoint | null {
   };
 }
 
+// DFO writes its openings as BC local dates, and the server renders in UTC, so
+// both have to resolve "today" in Pacific time or the two disagree all evening.
+const pacificDate = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "America/Vancouver",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+export function monthDay(date: Date) {
+  const parts = pacificDate.formatToParts(date);
+  const month = Number(parts.find((part) => part.type === "month")?.value);
+  const day = Number(parts.find((part) => part.type === "day")?.value);
+  return month * 100 + day;
+}
+
 export function isRuleActive(rule: FishingRule, date = new Date()) {
   if (rule.always) return true;
   if (!rule.start || !rule.end) return false;
-  const value = (date.getMonth() + 1) * 100 + date.getDate();
+  const value = monthDay(date);
   const start = rule.start[0] * 100 + rule.start[1];
   const end = rule.end[0] * 100 + rule.end[1];
   return start <= end ? value >= start && value <= end : value >= start || value <= end;

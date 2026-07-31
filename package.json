@@ -9,7 +9,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "npm run build && node --test tests/dfo-table.test.mjs tests/rendered-html.test.mjs",
+    "test": "npm run build && node --test tests/dfo-table.test.mjs tests/rendered-html.test.mjs tests/rule-dates.test.mjs",
     "lint": "eslint . --ignore-pattern .next",
     "waterways": "node scripts/build-waterway-paths.mjs",
     "waterways:report": "node scripts/build-waterway-paths.mjs --report",
