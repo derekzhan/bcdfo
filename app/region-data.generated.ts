@@ -13,7 +13,7 @@ const t = (en: string, zh: string): LocalizedText => ({ en, zh });
 export const sourceModified: Record<string, string> = {
   "1": "2026-05-22",
   "2": "2026-04-01",
-  "3": "2026-04-01",
+  "3": "2026-08-14",
   "4": "2025-04-01",
   "5": "2016-10-18",
   "6": "2026-07-29",
@@ -704,7 +704,7 @@ export const generatedSpots: FishingSpot[] = [
     water: t("South Thompson River", "South Thompson River"),
     area: t("From the green can buoy near outlet of Little River, including Little Shuswap Lake, to the fishing white triangle fishing boundary approximately 100 m downstream of Campbell Creek.", "From the green can buoy near outlet of Little River, including Little Shuswap Lake, to the fishing white triangle fishing boundary approximately 100 m downstream of Campbell Creek."),
     rules: [
-      { species: ["Chinook"], season: t("Aug 16 to Sep 22", "8月16日–9月22日"), regulation: t("4 per day, only 2 over 50 cm. Monthly limit of 6 over 50 cm from the South Thompson River.", "每日 4 条，其中超过 50 厘米者最多 2 条；South Thompson River 每月最多保留 6 条超过 50 厘米者"), kind: "retain", start: [8, 16], end: [9, 22] },
+      { species: ["Chinook"], season: t("Aug 16 to Sep 22", "8月16日–9月22日"), regulation: t("4 per day, only 2 over 50 cm.", "每日 4 条，其中超过 50 厘米者最多 2 条"), kind: "retain", start: [8, 16], end: [9, 22] },
       { species: ["Pink"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for pink", "禁止垂钓粉鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
       { species: ["Coho"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for coho", "禁止垂钓银鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
       { species: ["Sockeye"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("To be determined", "待定"), kind: "pending", start: [4, 1], end: [3, 31], always: true },
