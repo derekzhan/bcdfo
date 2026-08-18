@@ -16,7 +16,7 @@ export const sourceModified: Record<string, string> = {
   "3": "2026-08-14",
   "4": "2025-04-01",
   "5": "2016-10-18",
-  "6": "2026-07-29",
+  "6": "2026-08-17",
   "7": "2026-04-01",
   "8": "2025-04-01",
 };
@@ -799,7 +799,8 @@ export const generatedSpots: FishingSpot[] = [
       { species: ["All"], season: t("Jan 1 to Dec 31", "1月1日–12月31日"), regulation: t("No natural bait allowed", "禁止使用天然饵料"), kind: "gear", start: [1, 1], end: [12, 31] },
       { species: ["Chinook"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for chinook", "禁止垂钓帝王鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
       { species: ["Sockeye"], season: t("Apr 1 to July 31", "4月1日–7月31日"), regulation: t("No fishing for Sockeye", "禁止垂钓红鲑"), kind: "closed", start: [4, 1], end: [7, 31] },
-      { species: ["Sockeye"], season: t("Aug 1 to Aug 31", "8月1日–8月31日"), regulation: t("2 per day FN0793", "每日 2 条（FN0793）"), kind: "retain", start: [8, 1], end: [8, 31] },
+      { species: ["Sockeye"], season: t("Aug 1 to Aug 16", "8月1日–8月16日"), regulation: t("2 per day FN0793", "每日 2 条（FN0793）"), kind: "retain", start: [8, 1], end: [8, 16] },
+      { species: ["Sockeye"], season: t("Aug 17 to Mar 31", "8月17日–3月31日"), regulation: t("No fishing for salmon FN0869", "禁止垂钓三文鱼（FN0869）"), kind: "closed", start: [8, 17], end: [3, 31] },
       { species: ["Coho"], season: t("Jul 15 to Oct 15", "7月15日–10月15日"), regulation: t("4 per day, only 2 over 50 cm.", "每日 4 条，其中超过 50 厘米者最多 2 条"), kind: "retain", start: [7, 15], end: [10, 15] },
     ],
   },
@@ -1108,7 +1109,8 @@ export const generatedSpots: FishingSpot[] = [
     section: t("B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace.", "B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace."),
     rules: [
       { species: ["Sockeye"], season: t("July 10 to July 28", "7月10日–7月28日"), regulation: t("2 per day FN0679", "每日 2 条（FN0679）"), kind: "retain", start: [7, 10], end: [7, 28] },
-      { species: ["Sockeye"], season: t("July 29 to Sep 15", "7月29日–9月15日"), regulation: t("4 per day FN0787", "每日 4 条（FN0787）"), kind: "retain", start: [7, 29], end: [9, 15] },
+      { species: ["Sockeye"], season: t("July 29 to Aug 16", "7月29日–8月16日"), regulation: t("4 per day FN0787", "每日 4 条（FN0787）"), kind: "retain", start: [7, 29], end: [8, 16] },
+      { species: ["Sockeye"], season: t("Aug 17 to Sep 15", "8月17日–9月15日"), regulation: t("2 per day FN0868", "每日 2 条（FN0868）"), kind: "retain", start: [8, 17], end: [9, 15] },
     ],
   },
   {
@@ -1455,7 +1457,8 @@ export const generatedSpots: FishingSpot[] = [
       { species: ["Chinook"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for chinook", "禁止垂钓帝王鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
       { species: ["Sockeye"], season: t("Apr 1 to July 9", "4月1日–7月9日"), regulation: t("No fishing for sockeye", "禁止垂钓红鲑"), kind: "closed", start: [4, 1], end: [7, 9] },
       { species: ["Sockeye"], season: t("July 10 to July 28", "7月10日–7月28日"), regulation: t("2 per day FN0679", "每日 2 条（FN0679）"), kind: "retain", start: [7, 10], end: [7, 28] },
-      { species: ["Sockeye"], season: t("July 29 to Sep 15", "7月29日–9月15日"), regulation: t("4 per day FN0787", "每日 4 条（FN0787）"), kind: "retain", start: [7, 29], end: [9, 15] },
+      { species: ["Sockeye"], season: t("July 29 to Aug 16", "7月29日–8月16日"), regulation: t("4 per day FN0787", "每日 4 条（FN0787）"), kind: "retain", start: [7, 29], end: [8, 16] },
+      { species: ["Sockeye"], season: t("Aug 17 to Sep 15", "8月17日–9月15日"), regulation: t("2 per day FN0868", "每日 2 条（FN0868）"), kind: "retain", start: [8, 17], end: [9, 15] },
       { species: ["Pink"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("2 per day", "每日 2 条"), kind: "retain", start: [4, 1], end: [3, 31], always: true },
       { species: ["Chum"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for chum", "禁止垂钓狗鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
