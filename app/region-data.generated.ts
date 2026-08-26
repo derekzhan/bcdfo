@@ -11,7 +11,7 @@ const t = (en: string, zh: string): LocalizedText => ({ en, zh });
 
 // The date DFO last edited each region's page, region 2 included.
 export const sourceModified: Record<string, string> = {
-  "1": "2026-08-24",
+  "1": "2026-08-25",
   "2": "2026-04-01",
   "3": "2026-08-14",
   "4": "2025-04-01",
@@ -32,7 +32,7 @@ export const generatedRegions: RegionInfo[] = [
     id: "1",
     name: t("Vancouver Island", "温哥华岛"),
     sourceUrl: "https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region1-eng.html",
-    waters: 58,
+    waters: 57,
     notes: [
       t("No fishing is allowed within 100 meters of any government facility operated for counting, passing or rearing fish unless otherwise stated.", "No fishing is allowed within 100 meters of any government facility operated for counting, passing or rearing fish unless otherwise stated."),
       t("You must be aware of these measurements: All retained chinook and sockeye must measure 30 cm or more from tip of nose to tail fork", "You must be aware of these measurements: All retained chinook and sockeye must measure 30 cm or more from tip of nose to tail fork"),
@@ -132,9 +132,9 @@ export const generatedRegions: RegionInfo[] = [
 
 export const generatedSpots: FishingSpot[] = [
   {
-    id: "r1-adam-river",
+    id: "r1-adam-and-eve-rivers",
     region: "1",
-    water: t("Adam River", "Adam River"),
+    water: t("Adam and Eve Rivers", "Adam and Eve Rivers"),
     area: t("Entire listed water", "整条列出的水域"),
     rules: [
       { species: ["Pink"], season: t("Aug 25 to Sep 30", "8月25日–9月30日"), regulation: t("4 pink per day FN0905", "4 pink per day FN0905"), kind: "retain", start: [8, 25], end: [9, 30] },
@@ -245,15 +245,6 @@ export const generatedSpots: FishingSpot[] = [
       { species: ["All"], season: t("Sep 1 to Nov 15", "9月1日–11月15日"), regulation: t("No fishing", "禁止垂钓"), kind: "closed", start: [9, 1], end: [11, 15] },
       { species: ["Coho"], season: t("Nov 16 to Dec 31", "11月16日–12月31日"), regulation: t("1 per day", "每日 1 条"), kind: "retain", start: [11, 16], end: [12, 31] },
       { species: ["Chum"], season: t("To be determined", "待定"), regulation: t("To be determined", "待定"), kind: "pending" },
-    ],
-  },
-  {
-    id: "r1-eve-river",
-    region: "1",
-    water: t("Eve River", "Eve River"),
-    area: t("Entire listed water", "整条列出的水域"),
-    rules: [
-      { species: ["Pink"], season: t("Aug 25 to Sep 30", "8月25日–9月30日"), regulation: t("4 pink per day FN0905", "4 pink per day FN0905"), kind: "retain", start: [8, 25], end: [9, 30] },
     ],
   },
   {
