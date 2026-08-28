@@ -16,7 +16,7 @@ export const sourceModified: Record<string, string> = {
   "3": "2026-08-14",
   "4": "2025-04-01",
   "5": "2016-10-18",
-  "6": "2026-08-21",
+  "6": "2026-08-28",
   "7": "2026-04-01",
   "8": "2025-04-01",
 };
@@ -795,7 +795,8 @@ export const generatedSpots: FishingSpot[] = [
     section: t("B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace.", "B. Part (i): Skeena River Watershed-Waters upstream of CNR Railway Bridge at Terrace."),
     rules: [
       { species: ["Sockeye"], season: t("Apr 1 to July 31", "4月1日–7月31日"), regulation: t("No fishing for sockeye", "禁止垂钓红鲑"), kind: "closed", start: [4, 1], end: [7, 31] },
-      { species: ["Sockeye"], season: t("Aug 1 to Sep 15", "8月1日–9月15日"), regulation: t("2 per day FN0679", "每日 2 条（FN0679）"), kind: "retain", start: [8, 1], end: [9, 15] },
+      { species: ["Sockeye"], season: t("Aug 1 to Aug 27", "8月1日–8月27日"), regulation: t("2 per day FN0679", "每日 2 条（FN0679）"), kind: "retain", start: [8, 1], end: [8, 27] },
+      { species: ["Sockeye"], season: t("Aug 28 to Mar 31", "8月28日–3月31日"), regulation: t("No fishing for sockeye FN0919", "禁止垂钓红鲑（FN0919）"), kind: "closed", start: [8, 28], end: [3, 31] },
     ],
   },
   {
@@ -1121,7 +1122,8 @@ export const generatedSpots: FishingSpot[] = [
     rules: [
       { species: ["Sockeye"], season: t("July 10 to July 28", "7月10日–7月28日"), regulation: t("2 per day FN0679", "每日 2 条（FN0679）"), kind: "retain", start: [7, 10], end: [7, 28] },
       { species: ["Sockeye"], season: t("July 29 to Aug 16", "7月29日–8月16日"), regulation: t("4 per day FN0787", "每日 4 条（FN0787）"), kind: "retain", start: [7, 29], end: [8, 16] },
-      { species: ["Sockeye"], season: t("Aug 17 to Sep 15", "8月17日–9月15日"), regulation: t("2 per day FN0868", "每日 2 条（FN0868）"), kind: "retain", start: [8, 17], end: [9, 15] },
+      { species: ["Sockeye"], season: t("Aug 17 to Aug 27", "8月17日–8月27日"), regulation: t("2 per day FN0868", "每日 2 条（FN0868）"), kind: "retain", start: [8, 17], end: [8, 27] },
+      { species: ["Sockeye"], season: t("Aug 28 to Mar 31", "8月28日–3月31日"), regulation: t("No fishing for sockeye FN0919", "禁止垂钓红鲑（FN0919）"), kind: "closed", start: [8, 28], end: [3, 31] },
     ],
   },
   {
@@ -1469,7 +1471,8 @@ export const generatedSpots: FishingSpot[] = [
       { species: ["Sockeye"], season: t("Apr 1 to July 9", "4月1日–7月9日"), regulation: t("No fishing for sockeye", "禁止垂钓红鲑"), kind: "closed", start: [4, 1], end: [7, 9] },
       { species: ["Sockeye"], season: t("July 10 to July 28", "7月10日–7月28日"), regulation: t("2 per day FN0679", "每日 2 条（FN0679）"), kind: "retain", start: [7, 10], end: [7, 28] },
       { species: ["Sockeye"], season: t("July 29 to Aug 16", "7月29日–8月16日"), regulation: t("4 per day FN0787", "每日 4 条（FN0787）"), kind: "retain", start: [7, 29], end: [8, 16] },
-      { species: ["Sockeye"], season: t("Aug 17 to Sep 15", "8月17日–9月15日"), regulation: t("2 per day FN0868", "每日 2 条（FN0868）"), kind: "retain", start: [8, 17], end: [9, 15] },
+      { species: ["Sockeye"], season: t("Aug 17 to Aug 27", "8月17日–8月27日"), regulation: t("2 per day FN0868", "每日 2 条（FN0868）"), kind: "retain", start: [8, 17], end: [8, 27] },
+      { species: ["Sockeye"], season: t("Aug 28 to Mar 31", "8月28日–3月31日"), regulation: t("No fishing for sockeye FN0919", "禁止垂钓红鲑（FN0919）"), kind: "closed", start: [8, 28], end: [3, 31] },
       { species: ["Pink"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("2 per day", "每日 2 条"), kind: "retain", start: [4, 1], end: [3, 31], always: true },
       { species: ["Chum"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for chum", "禁止垂钓狗鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
     ],
