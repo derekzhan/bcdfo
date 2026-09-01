@@ -11,7 +11,7 @@ const t = (en: string, zh: string): LocalizedText => ({ en, zh });
 
 // The date DFO last edited each region's page, region 2 included.
 export const sourceModified: Record<string, string> = {
-  "1": "2026-08-25",
+  "1": "2026-08-31",
   "2": "2026-04-01",
   "3": "2026-08-14",
   "4": "2025-04-01",
@@ -155,7 +155,7 @@ export const generatedSpots: FishingSpot[] = [
     water: t("Campbell River", "Campbell River"),
     area: t("downstream of the confluence with the Quinsam River", "downstream of the confluence with the Quinsam River"),
     rules: [
-      { species: ["Coho"], season: t("Oct 1 to Dec 31", "10月1日–12月31日"), regulation: t("4 hatchery marked only per day, 2 of which may be greater than 40 cm", "每日 4 条有孵化场标记的鱼，其中超过 40 厘米者最多 2 条"), kind: "retain", start: [10, 1], end: [12, 31] },
+      { species: ["Coho"], season: t("Sept 1 to Dec 31", "9月1日–12月31日"), regulation: t("4 hatchery-marked per day FN0939", "4 hatchery-marked per day FN0939"), kind: "retain", start: [9, 1], end: [12, 31] },
       { species: ["Pink"], season: t("Jul 15 to Oct 15", "7月15日–10月15日"), regulation: t("4 per day", "每日 4 条"), kind: "retain", start: [7, 15], end: [10, 15] },
     ],
   },
@@ -221,7 +221,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("Entire listed water", "整条列出的水域"),
     rules: [
       { species: ["Chinook"], season: t("Sep 1 to Dec 31", "9月1日–12月31日"), regulation: t("2 per day", "每日 2 条"), kind: "retain", start: [9, 1], end: [12, 31] },
-      { species: ["Coho"], season: t("Sept 1 to Dec 31", "9月1日–12月31日"), regulation: t("4 hatchery marked only per day, only 2 of which may be greater than 40 cm", "每日 4 条有孵化场标记的鱼，其中超过 40 厘米者最多 2 条"), kind: "retain", start: [9, 1], end: [12, 31] },
+      { species: ["Coho"], season: t("Sept 1 to Dec 31", "9月1日–12月31日"), regulation: t("4 hatchery-marked per day FN0938", "4 hatchery-marked per day FN0938"), kind: "retain", start: [9, 1], end: [12, 31] },
       { species: ["Chum"], season: t("To be determined", "待定"), regulation: t("To be determined", "待定"), kind: "pending" },
     ],
   },
@@ -413,7 +413,7 @@ export const generatedSpots: FishingSpot[] = [
     water: t("Puntledge River", "Puntledge River"),
     area: t("downstream from the base of Stotan Falls (approximately 450 m downstream of the Duncan Bay Mainline logging road bridge)", "downstream from the base of Stotan Falls (approximately 450 m downstream of the Duncan Bay Mainline logging road bridge)"),
     rules: [
-      { species: ["Coho"], season: t("Sep 1 to Dec 31", "9月1日–12月31日"), regulation: t("4 hatchery marked only per day, only 2 of which may be greater than 40 cm", "每日 4 条有孵化场标记的鱼，其中超过 40 厘米者最多 2 条"), kind: "retain", start: [9, 1], end: [12, 31] },
+      { species: ["Coho"], season: t("Sept 1 to Dec 31", "9月1日–12月31日"), regulation: t("4 hatchery-marked per day FN0938", "4 hatchery-marked per day FN0938"), kind: "retain", start: [9, 1], end: [12, 31] },
       { species: ["Chinook"], season: t("Sep 1 to Dec 31", "9月1日–12月31日"), regulation: t("2 per day", "每日 2 条"), kind: "retain", start: [9, 1], end: [12, 31] },
       { species: ["Chum"], season: t("To be determined", "待定"), regulation: t("To be determined", "待定"), kind: "pending" },
     ],
@@ -443,7 +443,7 @@ export const generatedSpots: FishingSpot[] = [
     area: t("those waters upstream of the Big Qualicum Hatchery upper weir (located approximately 125 m downstream of the E&N railway bridge).", "those waters upstream of the Big Qualicum Hatchery upper weir (located approximately 125 m downstream of the E&N railway bridge)."),
     rules: [
       { species: ["Chinook"], season: t("Aug 30 to Dec 31", "8月30日–12月31日"), regulation: t("2 per day", "每日 2 条"), kind: "retain", start: [8, 30], end: [12, 31] },
-      { species: ["Coho"], season: t("Sept 15 to Dec 31", "9月15日–12月31日"), regulation: t("4 per day, hatchery marked only", "每日 4 条，且须有孵化场标记"), kind: "retain", start: [9, 15], end: [12, 31] },
+      { species: ["Coho"], season: t("Sept 1 to Dec 31", "9月1日–12月31日"), regulation: t("4 hatchery-marked per day FN0937", "4 hatchery-marked per day FN0937"), kind: "retain", start: [9, 1], end: [12, 31] },
       { species: ["Pink"], season: t("Aug 15 to Oct 15", "8月15日–10月15日"), regulation: t("4 per day", "每日 4 条"), kind: "retain", start: [8, 15], end: [10, 15] },
     ],
   },
@@ -489,7 +489,7 @@ export const generatedSpots: FishingSpot[] = [
     water: t("Quinsam River", "Quinsam River"),
     area: t("Entire listed water", "整条列出的水域"),
     rules: [
-      { species: ["Coho"], season: t("Oct 1 to Dec 31", "10月1日–12月31日"), regulation: t("4 hatchery marked only per day, only 2 of which may be greater than 40 cm", "每日 4 条有孵化场标记的鱼，其中超过 40 厘米者最多 2 条"), kind: "retain", start: [10, 1], end: [12, 31] },
+      { species: ["Coho"], season: t("Sept 1 to Dec 31", "9月1日–12月31日"), regulation: t("4 hatchery-marked per day FN0939", "4 hatchery-marked per day FN0939"), kind: "retain", start: [9, 1], end: [12, 31] },
       { species: ["Pink"], season: t("Jul 15 to Oct 15", "7月15日–10月15日"), regulation: t("4 per day", "每日 4 条"), kind: "retain", start: [7, 15], end: [10, 15] },
     ],
   },
