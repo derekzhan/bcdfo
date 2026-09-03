@@ -16,7 +16,7 @@ export const sourceModified: Record<string, string> = {
   "3": "2026-08-14",
   "4": "2025-04-01",
   "5": "2016-10-18",
-  "6": "2026-08-28",
+  "6": "2026-09-02",
   "7": "2026-04-01",
   "8": "2025-04-01",
 };
@@ -887,8 +887,8 @@ export const generatedSpots: FishingSpot[] = [
     rules: [
       { species: ["All"], season: t("Jan 1 to Dec 31", "1月1日–12月31日"), regulation: t("No natural bait allowed", "禁止使用天然饵料"), kind: "gear", start: [1, 1], end: [12, 31] },
       { species: ["Chinook"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("No fishing for chinook", "禁止垂钓帝王鲑"), kind: "closed", start: [4, 1], end: [3, 31], always: true },
-      { species: ["Coho"], season: t("Jul 15 to Aug 23", "7月15日–8月23日"), regulation: t("4 per day, only 2 over 50 cm.", "每日 4 条，其中超过 50 厘米者最多 2 条"), kind: "retain", start: [7, 15], end: [8, 23] },
-      { species: ["Coho"], season: t("Aug 24 to Mar 31", "8月24日–3月31日"), regulation: t("No fishing for coho FN0897", "禁止垂钓银鲑（FN0897）"), kind: "closed", start: [8, 24], end: [3, 31] },
+      { species: ["Coho"], season: t("Aug 24 to Sep 3", "8月24日–9月3日"), regulation: t("No fishing for coho FN0897", "禁止垂钓银鲑（FN0897）"), kind: "closed", start: [8, 24], end: [9, 3] },
+      { species: ["Coho"], season: t("Sep 4 to Oct 15", "9月4日–10月15日"), regulation: t("4 per day, only 2 over 50 cm FN0951", "每日 4 条，其中超过 50 厘米者最多 2 条（FN0951）"), kind: "retain", start: [9, 4], end: [10, 15] },
       { species: ["Pink"], season: t("Aug 24 to Mar 31", "8月24日–3月31日"), regulation: t("No fishing for pink FN0897", "禁止垂钓粉鲑（FN0897）"), kind: "closed", start: [8, 24], end: [3, 31] },
     ],
   },
