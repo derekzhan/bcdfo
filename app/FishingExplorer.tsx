@@ -12,6 +12,8 @@ import {
   LocateFixed,
   Map as MapIcon,
   MapPin,
+  Maximize2,
+  Minimize2,
   Navigation,
   Satellite,
   Search,
@@ -126,6 +128,8 @@ const ui = {
     basemapStreet: "Street",
     basemapSatellite: "Satellite",
     tileError: "Base map tiles failed to load—check your connection",
+    fullscreen: "Fill the window",
+    exitFullscreen: "Exit full window (Esc)",
   },
   zh: {
     eyebrow: "DFO 淡水三文鱼分区",
@@ -187,6 +191,8 @@ const ui = {
     basemapStreet: "街道图",
     basemapSatellite: "卫星影像",
     tileError: "底图瓦片加载失败，请检查网络",
+    fullscreen: "铺满窗口",
+    exitFullscreen: "退出铺满（Esc）",
   },
 } as const;
 
@@ -253,6 +259,7 @@ function FishingMap({
   const [locationError, setLocationError] = useState(false);
   const [tileError, setTileError] = useState(false);
   const [basemap, setBasemap] = useState<Basemap>("satellite");
+  const [fullscreen, setFullscreen] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -308,6 +315,31 @@ function FishingMap({
       if (!map.hasLayer(layer)) layer.addTo(map);
     });
   }, [basemap, mapEpoch]);
+
+  // Leaflet caches the container size, so a map that grows to fill the window
+  // keeps painting tiles for the old box until it is told to measure again.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    const frame = requestAnimationFrame(() => map.invalidateSize());
+    return () => cancelAnimationFrame(frame);
+  }, [fullscreen, mapEpoch]);
+
+  // The overlay covers the page, so the page must not scroll underneath it and
+  // Escape has to be a way out for anyone who cannot reach the button.
+  useEffect(() => {
+    if (!fullscreen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setFullscreen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [fullscreen]);
 
   useEffect(() => {
     const L = leafletRef.current;
@@ -468,7 +500,9 @@ function FishingMap({
   };
 
   return (
-    <div className={`map-wrap${basemap === "satellite" ? " is-satellite" : ""}`}>
+    <div
+      className={`map-wrap${basemap === "satellite" ? " is-satellite" : ""}${fullscreen ? " is-fullscreen" : ""}`}
+    >
       {/* Leaflet adds its own classes to this node, so its className has to stay
           a constant: re-rendering it would wipe leaflet-container and with it
           the tile sizing rules. Basemap styling hangs off .map-wrap instead. */}
@@ -503,6 +537,16 @@ function FishingMap({
           </div>
           <button type="button" className="map-location-button" onClick={locate} aria-label={ui[language].locate}>
             <LocateFixed size={17} />
+          </button>
+          <button
+            type="button"
+            className="map-location-button"
+            onClick={() => setFullscreen((on) => !on)}
+            aria-pressed={fullscreen}
+            aria-label={fullscreen ? ui[language].exitFullscreen : ui[language].fullscreen}
+            title={fullscreen ? ui[language].exitFullscreen : ui[language].fullscreen}
+          >
+            {fullscreen ? <Minimize2 size={17} /> : <Maximize2 size={17} />}
           </button>
         </div>
       </div>

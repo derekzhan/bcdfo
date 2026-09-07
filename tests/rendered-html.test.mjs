@@ -311,6 +311,35 @@ test("carries every generated region row into typed data", async () => {
   assert.doesNotMatch(generated, /禁止垂钓salmon/);
 });
 
+test("lets the map fill the window", async () => {
+  const [html, explorer, css] = await Promise.all([
+    (await render()).text(),
+    readFile(new URL("../app/FishingExplorer.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(html, /aria-label="铺满窗口"/);
+  assert.match(explorer, /exitFullscreen: "Exit full window \(Esc\)"/);
+
+  const rule = css.match(/\.map-wrap\.is-fullscreen \{([^}]*)\}/);
+  assert.ok(rule, "the fullscreen overlay rule is gone");
+  assert.match(rule[1], /position: fixed/);
+  // The phone breakpoints clamp .map-wrap with all three height properties, so
+  // clearing only `height` leaves the overlay stuck at 480px tall.
+  assert.match(rule[1], /min-height: 0/);
+  assert.match(rule[1], /max-height: none/);
+  // Must outrank the sticky topbar, or the overlay opens underneath it.
+  const topbarZ = Number(css.match(/\.topbar \{[^}]*z-index: (\d+)/)[1]);
+  const overlayZ = Number(rule[1].match(/z-index: (\d+)/)[1]);
+  assert.ok(overlayZ > topbarZ, `overlay z-index ${overlayZ} must beat topbar ${topbarZ}`);
+
+  // Leaflet caches its container size, so resizing without measuring again
+  // paints tiles for the old box and leaves grey gaps.
+  assert.match(explorer, /invalidateSize\(\)\);\n\s*return \(\) => cancelAnimationFrame/);
+  assert.match(explorer, /\}, \[fullscreen, mapEpoch\]\);/);
+  assert.match(explorer, /event\.key === "Escape"/);
+});
+
 test("dates each region from its own DFO page", async () => {
   const [html, generated, explorer, data] = await Promise.all([
     (await render()).text(),

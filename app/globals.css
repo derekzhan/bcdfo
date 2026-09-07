@@ -333,6 +333,22 @@ a {
   background: #e4ece7;
 }
 
+/* Sits above the sticky topbar (z-index 1000). dvh rather than vh so a phone
+   browser's collapsing address bar cannot push the controls off screen. */
+.map-wrap.is-fullscreen {
+  position: fixed;
+  z-index: 2000;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  /* The phone breakpoints cap the map with min/max-height, and clearing only
+     one of the three leaves the overlay clamped to that box. */
+  min-height: 0;
+  max-height: none;
+  border-radius: 0;
+}
+
 .map-canvas {
   width: 100%;
   height: 100%;
