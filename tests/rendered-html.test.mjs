@@ -226,6 +226,63 @@ test("draws the reaches DFO spells out beyond Region 2", async () => {
   }
 });
 
+test("draws the Region 1 reaches DFO spells out", async () => {
+  const { waterways } = await loadWaterways();
+
+  const drawn = Object.keys(waterways).filter((id) => id.startsWith("r1-"));
+  assert.equal(drawn.length, 42, `expected 42 drawn Region 1 reaches, found ${drawn.length}`);
+
+  // Region 1 is Vancouver Island. A mainland namesake resolving instead would
+  // still draw a plausible-looking river, so every point has to be on the island.
+  for (const id of drawn) {
+    for (const path of waterways[id].paths) {
+      for (const [lat, lon] of path) {
+        assert.ok(
+          lat > 48.2 && lat < 51.2 && lon > -128.9 && lon < -123.25,
+          `${id} runs off Vancouver Island at ${lat},${lon}`,
+        );
+      }
+    }
+  }
+
+  // OSM has exactly one Seymour River and it is in North Vancouver, which is
+  // Region 2. Drawing it here would put the island's row on the mainland.
+  for (const prefix of [
+    "r1-seymour",
+    "r1-comox-lake",
+    // Hatchery fences, counting weirs and a pool known only by name: DFO gives
+    // no feature these can be resolved against.
+    "r1-quatse-river-100m",
+    "r1-nitinat-river-between",
+    "r1-stamp-river-from-the-inlet",
+  ]) {
+    assert.ok(
+      !drawn.some((id) => id.startsWith(prefix)),
+      `${prefix} should stay text-only`,
+    );
+  }
+
+  // DFO measures this closure as 100 m either side of the confluence, so the
+  // drawn line has to be 200 m rather than clipped out to the nearest vertex.
+  const morrison = waterways["r1-puntledge-morrison"];
+  const metres = pathMetres(morrison.paths[0]);
+  assert.ok(metres > 180 && metres < 220, `the 200 m closure measures ${metres.toFixed(0)} m`);
+
+  // Two Cowichan rows meet at the Sandy Pool sign and two Campbell rows start at
+  // the Quinsam confluence; each shared boundary must be a single point.
+  for (const [first, firstRole, second, secondRole] of [
+    ["r1-cowichan-upper", "end", "r1-cowichan-lower", "start"],
+    ["r1-campbell-lower", "start", "r1-campbell-quinsam-maple", "start"],
+  ]) {
+    const a = waterways[first].endpoints.find((point) => point.role === firstRole);
+    const b = waterways[second].endpoints.find((point) => point.role === secondRole);
+    assert.ok(
+      onSamePoint(a.coordinates, b.coordinates),
+      `${first} and ${second} do not meet at their shared boundary`,
+    );
+  }
+});
+
 test("keeps every DFO row either mapped or explicitly text-only", async () => {
   const [data, generated, { waterways }] = await Promise.all([
     readFile(new URL("../app/fishing-data.ts", import.meta.url), "utf8"),

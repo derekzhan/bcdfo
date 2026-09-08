@@ -132,12 +132,12 @@ export const generatedRegions: RegionInfo[] = [
 
 export const generatedSpots: FishingSpot[] = [
   {
-    id: "r1-adam-and-eve-rivers",
+    id: "r1-adam-eve",
     region: "1",
     water: t("Adam and Eve Rivers", "Adam and Eve Rivers"),
     area: t("Entire listed water", "整条列出的水域"),
     rules: [
-      { species: ["Pink"], season: t("Aug 25 to Sep 30", "8月25日–9月30日"), regulation: t("4 pink per day FN0905", "4 pink per day FN0905"), kind: "retain", start: [8, 25], end: [9, 30] },
+      { species: ["Pink"], season: t("Aug 25 to Sep 30", "8月25日–9月30日"), regulation: t("4 pink per day FN0905", "每日 4 条粉鲑（FN0905）"), kind: "retain", start: [8, 25], end: [9, 30] },
     ],
   },
   {
@@ -150,17 +150,17 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-campbell-river-downstream-of-the-confluence-with",
+    id: "r1-campbell-lower",
     region: "1",
     water: t("Campbell River", "Campbell River"),
     area: t("downstream of the confluence with the Quinsam River", "downstream of the confluence with the Quinsam River"),
     rules: [
-      { species: ["Coho"], season: t("Sept 1 to Dec 31", "9月1日–12月31日"), regulation: t("4 hatchery-marked per day FN0939", "4 hatchery-marked per day FN0939"), kind: "retain", start: [9, 1], end: [12, 31] },
+      { species: ["Coho"], season: t("Sept 1 to Dec 31", "9月1日–12月31日"), regulation: t("4 hatchery-marked per day FN0939", "每日 4 条有孵化场标记的鱼（FN0939）"), kind: "retain", start: [9, 1], end: [12, 31] },
       { species: ["Pink"], season: t("Jul 15 to Oct 15", "7月15日–10月15日"), regulation: t("4 per day", "每日 4 条"), kind: "retain", start: [7, 15], end: [10, 15] },
     ],
   },
   {
-    id: "r1-campbell-river-downstream-of-the-confluence-with-2",
+    id: "r1-campbell-quinsam-maple",
     region: "1",
     water: t("Campbell River", "Campbell River"),
     area: t("downstream of the confluence with the Quinsam River to the fishing boundary sign at the end of Maple Street.", "downstream of the confluence with the Quinsam River to the fishing boundary sign at the end of Maple Street."),
@@ -169,7 +169,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-cayeghle-river-including-colonial-river",
+    id: "r1-cayeghle",
     region: "1",
     water: t("Cayeghle River", "Cayeghle River"),
     area: t("including Colonial River.", "including Colonial River."),
@@ -178,7 +178,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-chemainus-river",
+    id: "r1-chemainus",
     region: "1",
     water: t("Chemainus River", "Chemainus River"),
     area: t("Entire listed water", "整条列出的水域"),
@@ -187,7 +187,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-cluxewe-river",
+    id: "r1-cluxewe",
     region: "1",
     water: t("Cluxewe River", "Cluxewe River"),
     area: t("Entire listed water", "整条列出的水域"),
@@ -205,7 +205,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-conuma-river",
+    id: "r1-conuma",
     region: "1",
     water: t("Conuma River", "Conuma River"),
     area: t("Entire listed water", "整条列出的水域"),
@@ -215,18 +215,18 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-courtenay-river-the-waters-below-the-confluence-",
+    id: "r1-courtenay",
     region: "1",
     water: t("Courtenay River (the waters below the confluence of the Puntledge and Tsolum Rivers)", "Courtenay River (the waters below the confluence of the Puntledge and Tsolum Rivers)"),
     area: t("Entire listed water", "整条列出的水域"),
     rules: [
       { species: ["Chinook"], season: t("Sep 1 to Dec 31", "9月1日–12月31日"), regulation: t("2 per day", "每日 2 条"), kind: "retain", start: [9, 1], end: [12, 31] },
-      { species: ["Coho"], season: t("Sept 1 to Dec 31", "9月1日–12月31日"), regulation: t("4 hatchery-marked per day FN0938", "4 hatchery-marked per day FN0938"), kind: "retain", start: [9, 1], end: [12, 31] },
+      { species: ["Coho"], season: t("Sept 1 to Dec 31", "9月1日–12月31日"), regulation: t("4 hatchery-marked per day FN0938", "每日 4 条有孵化场标记的鱼（FN0938）"), kind: "retain", start: [9, 1], end: [12, 31] },
       { species: ["Chum"], season: t("To be determined", "待定"), regulation: t("To be determined", "待定"), kind: "pending" },
     ],
   },
   {
-    id: "r1-cowichan-river-from-66-mile-trestle-downstream-t",
+    id: "r1-cowichan-upper",
     region: "1",
     water: t("Cowichan River", "Cowichan River"),
     area: t("from 66 Mile Trestle downstream to the white triangle boundary sign located in Sandy Pool Regional Park", "from 66 Mile Trestle downstream to the white triangle boundary sign located in Sandy Pool Regional Park"),
@@ -237,7 +237,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-cowichan-river-from-the-white-triangle-boundary-",
+    id: "r1-cowichan-lower",
     region: "1",
     water: t("Cowichan River", "Cowichan River"),
     area: t("from the white triangle boundary sign located in Sandy Pool Regional Park, downstream to the tidal boundary.", "from the white triangle boundary sign located in Sandy Pool Regional Park, downstream to the tidal boundary."),
@@ -248,7 +248,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-goldstream-river",
+    id: "r1-goldstream",
     region: "1",
     water: t("Goldstream River", "Goldstream River"),
     area: t("Entire listed water", "整条列出的水域"),
@@ -257,7 +257,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-koksilah-river-including-tributaries",
+    id: "r1-koksilah",
     region: "1",
     water: t("Koksilah River", "Koksilah River"),
     area: t("including tributaries.", "including tributaries."),
@@ -266,7 +266,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-little-qualicum-river-all-open-portions-of-the-l",
+    id: "r1-little-qualicum-open",
     region: "1",
     water: t("Little Qualicum River", "Little Qualicum River"),
     area: t("all open portions of the Little Qualicum River", "all open portions of the Little Qualicum River"),
@@ -275,7 +275,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-little-qualicum-river-all-waters-unless-indicate",
+    id: "r1-little-qualicum-all",
     region: "1",
     water: t("Little Qualicum River", "Little Qualicum River"),
     area: t("all waters unless indicated below", "all waters unless indicated below"),
@@ -304,7 +304,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-nahwitti-river",
+    id: "r1-nahwitti",
     region: "1",
     water: t("Nahwitti River", "Nahwitti River"),
     area: t("Entire listed water", "整条列出的水域"),
@@ -313,7 +313,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-nanaimo-river-including-tributaries-except-in-th",
+    id: "r1-nanaimo-all",
     region: "1",
     water: t("Nanaimo River", "Nanaimo River"),
     area: t("including tributaries, except in the area described below.", "including tributaries, except in the area described below."),
@@ -331,7 +331,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-nanaimo-river-from-the-cedar-road-bridge-crossin",
+    id: "r1-nanaimo-cedar-hwy19",
     region: "1",
     water: t("Nanaimo River", "Nanaimo River"),
     area: t("from the Cedar Road Bridge crossing upstream to the Highway 19 Bridge crossing", "from the Cedar Road Bridge crossing upstream to the Highway 19 Bridge crossing"),
@@ -340,7 +340,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-nanaimo-river-from-the-upstream-side-of-the-ceda",
+    id: "r1-nanaimo-cedar-hwy1",
     region: "1",
     water: t("Nanaimo River", "Nanaimo River"),
     area: t("from the upstream side of the Cedar Road Bridge, upstream to the downstream side of the Highway 1 overpass.", "from the upstream side of the Cedar Road Bridge, upstream to the downstream side of the Highway 1 overpass."),
@@ -350,7 +350,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-nitinat-river-upstream-of-parker-creek",
+    id: "r1-nitinat-upper",
     region: "1",
     water: t("Nitinat River", "Nitinat River"),
     area: t("upstream of Parker Creek", "upstream of Parker Creek"),
@@ -359,7 +359,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-nitinat-river-downstream-of-parker-creek-except-",
+    id: "r1-nitinat-lower",
     region: "1",
     water: t("Nitinat River", "Nitinat River"),
     area: t("downstream of Parker Creek, except in the areas and times described below.", "downstream of Parker Creek, except in the areas and times described below."),
@@ -408,18 +408,18 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-puntledge-river-downstream-from-the-base-of-stot",
+    id: "r1-puntledge-lower",
     region: "1",
     water: t("Puntledge River", "Puntledge River"),
     area: t("downstream from the base of Stotan Falls (approximately 450 m downstream of the Duncan Bay Mainline logging road bridge)", "downstream from the base of Stotan Falls (approximately 450 m downstream of the Duncan Bay Mainline logging road bridge)"),
     rules: [
-      { species: ["Coho"], season: t("Sept 1 to Dec 31", "9月1日–12月31日"), regulation: t("4 hatchery-marked per day FN0938", "4 hatchery-marked per day FN0938"), kind: "retain", start: [9, 1], end: [12, 31] },
+      { species: ["Coho"], season: t("Sept 1 to Dec 31", "9月1日–12月31日"), regulation: t("4 hatchery-marked per day FN0938", "每日 4 条有孵化场标记的鱼（FN0938）"), kind: "retain", start: [9, 1], end: [12, 31] },
       { species: ["Chinook"], season: t("Sep 1 to Dec 31", "9月1日–12月31日"), regulation: t("2 per day", "每日 2 条"), kind: "retain", start: [9, 1], end: [12, 31] },
       { species: ["Chum"], season: t("To be determined", "待定"), regulation: t("To be determined", "待定"), kind: "pending" },
     ],
   },
   {
-    id: "r1-puntledge-river-morrison-creek-closure-between-f",
+    id: "r1-puntledge-morrison",
     region: "1",
     water: t("Puntledge River", "Puntledge River"),
     area: t("Morrison Creek closure: between fishing boundary signs located 100m upstream and downstream of the confluence with Morrison Creek.", "Morrison Creek closure: between fishing boundary signs located 100m upstream and downstream of the confluence with Morrison Creek."),
@@ -428,7 +428,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-qualicum-river-all-open-portions-of-the-qualicum",
+    id: "r1-qualicum-open",
     region: "1",
     water: t("Qualicum River", "Qualicum River"),
     area: t("All open portions of the Qualicum River", "All open portions of the Qualicum River"),
@@ -437,13 +437,13 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-qualicum-river-those-waters-upstream-of-the-big-",
+    id: "r1-qualicum-upper",
     region: "1",
     water: t("Qualicum River", "Qualicum River"),
     area: t("those waters upstream of the Big Qualicum Hatchery upper weir (located approximately 125 m downstream of the E&N railway bridge).", "those waters upstream of the Big Qualicum Hatchery upper weir (located approximately 125 m downstream of the E&N railway bridge)."),
     rules: [
       { species: ["Chinook"], season: t("Aug 30 to Dec 31", "8月30日–12月31日"), regulation: t("2 per day", "每日 2 条"), kind: "retain", start: [8, 30], end: [12, 31] },
-      { species: ["Coho"], season: t("Sept 1 to Dec 31", "9月1日–12月31日"), regulation: t("4 hatchery-marked per day FN0937", "4 hatchery-marked per day FN0937"), kind: "retain", start: [9, 1], end: [12, 31] },
+      { species: ["Coho"], season: t("Sept 1 to Dec 31", "9月1日–12月31日"), regulation: t("4 hatchery-marked per day FN0937", "每日 4 条有孵化场标记的鱼（FN0937）"), kind: "retain", start: [9, 1], end: [12, 31] },
       { species: ["Pink"], season: t("Aug 15 to Oct 15", "8月15日–10月15日"), regulation: t("4 per day", "每日 4 条"), kind: "retain", start: [8, 15], end: [10, 15] },
     ],
   },
@@ -466,7 +466,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-quatse-river",
+    id: "r1-quatse",
     region: "1",
     water: t("Quatse River", "Quatse River"),
     area: t("Entire listed water", "整条列出的水域"),
@@ -484,17 +484,17 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-quinsam-river",
+    id: "r1-quinsam",
     region: "1",
     water: t("Quinsam River", "Quinsam River"),
     area: t("Entire listed water", "整条列出的水域"),
     rules: [
-      { species: ["Coho"], season: t("Sept 1 to Dec 31", "9月1日–12月31日"), regulation: t("4 hatchery-marked per day FN0939", "4 hatchery-marked per day FN0939"), kind: "retain", start: [9, 1], end: [12, 31] },
+      { species: ["Coho"], season: t("Sept 1 to Dec 31", "9月1日–12月31日"), regulation: t("4 hatchery-marked per day FN0939", "每日 4 条有孵化场标记的鱼（FN0939）"), kind: "retain", start: [9, 1], end: [12, 31] },
       { species: ["Pink"], season: t("Jul 15 to Oct 15", "7月15日–10月15日"), regulation: t("4 per day", "每日 4 条"), kind: "retain", start: [7, 15], end: [10, 15] },
     ],
   },
   {
-    id: "r1-reay-creek",
+    id: "r1-reay",
     region: "1",
     water: t("Reay Creek", "Reay Creek"),
     area: t("Entire listed water", "整条列出的水域"),
@@ -503,7 +503,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-san-juan-river-waters-of-the-san-juan-river-and-",
+    id: "r1-san-juan-lower",
     region: "1",
     water: t("San Juan River", "San Juan River"),
     area: t("waters of the San Juan River and its tributaries downstream of the Fleet River that are open to fishing for salmon", "waters of the San Juan River and its tributaries downstream of the Fleet River that are open to fishing for salmon"),
@@ -530,7 +530,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-shawnigan-creek",
+    id: "r1-shawnigan",
     region: "1",
     water: t("Shawnigan Creek", "Shawnigan Creek"),
     area: t("Entire listed water", "整条列出的水域"),
@@ -539,7 +539,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-somass-river",
+    id: "r1-somass",
     region: "1",
     water: t("Somass River", "Somass River"),
     area: t("Entire listed water", "整条列出的水域"),
@@ -548,7 +548,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-somass-river-except-in-those-areas-and-times-lis",
+    id: "r1-somass-open",
     region: "1",
     water: t("Somass River", "Somass River"),
     area: t("Except in those areas and times listed below", "Except in those areas and times listed below"),
@@ -558,7 +558,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-somass-river-from-the-tidal-boundary-signs-at-th",
+    id: "r1-somass-papermill",
     region: "1",
     water: t("Somass River", "Somass River"),
     area: t("from the tidal boundary signs at the top of the rapids at Paper Mill Dam upstream approximately 0.5km to the northeast corner of Collins Farm. Square boundary signs may be present to delineate the upstream boundary.", "from the tidal boundary signs at the top of the rapids at Paper Mill Dam upstream approximately 0.5km to the northeast corner of Collins Farm. Square boundary signs may be present to delineate the upstream boundary."),
@@ -567,7 +567,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-somass-river-from-the-northern-boundary-of-somas",
+    id: "r1-somass-park",
     region: "1",
     water: t("Somass River", "Somass River"),
     area: t("from the northern boundary of Somass Park (off Service Road) downstream to the southern boundary of Somass Park. Square boundary signs may be present to delineate these boundaries.", "from the northern boundary of Somass Park (off Service Road) downstream to the southern boundary of Somass Park. Square boundary signs may be present to delineate these boundaries."),
@@ -576,7 +576,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-sproat-river",
+    id: "r1-sproat",
     region: "1",
     water: t("Sproat River", "Sproat River"),
     area: t("Entire listed water", "整条列出的水域"),
@@ -586,7 +586,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-sproat-river-from-sproat-lake-to-approximately-3",
+    id: "r1-sproat-hwy4",
     region: "1",
     water: t("Sproat River", "Sproat River"),
     area: t("from Sproat Lake to approximately 300m below the Highway 4 bridge, at the downstream end of the pool that is below the rapids at the Sproat River Fishway. Square boundary signs may be present to delineate the downstream boundary.", "from Sproat Lake to approximately 300m below the Highway 4 bridge, at the downstream end of the pool that is below the rapids at the Sproat River Fishway. Square boundary signs may be present to delineate the downstream boundary."),
@@ -595,7 +595,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-stamp-river-except-in-those-areas-and-times-list",
+    id: "r1-stamp-open",
     region: "1",
     water: t("Stamp River", "Stamp River"),
     area: t("Except in those areas and times listed below", "Except in those areas and times listed below"),
@@ -605,7 +605,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-stamp-river-from-the-confluence-of-the-ash-river",
+    id: "r1-stamp-upper",
     region: "1",
     water: t("Stamp River", "Stamp River"),
     area: t("From the confluence of the Ash River upstream to the Great Central Lake Dam, including tributaries", "From the confluence of the Ash River upstream to the Great Central Lake Dam, including tributaries"),
@@ -614,7 +614,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-stamp-river-from-approximately-200-m-upstream-of",
+    id: "r1-stamp-falls",
     region: "1",
     water: t("Stamp River", "Stamp River"),
     area: t("From approximately 200 m upstream of the Stamp Falls fishway (50 downstream of site 17 in Stamp River Provincial Park) to 500 m downstream of the Stamp Falls fishway (225m downstream of the confluence of Deer Creek). Square boundary signs may be present to delineate these boundaries.", "From approximately 200 m upstream of the Stamp Falls fishway (50 downstream of site 17 in Stamp River Provincial Park) to 500 m downstream of the Stamp Falls fishway (225m downstream of the confluence of Deer Creek). Square boundary signs may be present to delineate these boundaries."),
@@ -632,7 +632,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-stamp-river-from-the-powerline-crossing-downstre",
+    id: "r1-stamp-powerline",
     region: "1",
     water: t("Stamp River", "Stamp River"),
     area: t("From the powerline crossing downstream approximately 500m to the inlet of Roberston Creek Hatchery Lagoon. Square boundary signs may be present to delineate the downstream boundary.", "From the powerline crossing downstream approximately 500m to the inlet of Roberston Creek Hatchery Lagoon. Square boundary signs may be present to delineate the downstream boundary."),
@@ -641,7 +641,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-stamp-river-stamp-river-downstream-of-girl-guide",
+    id: "r1-stamp-lower",
     region: "1",
     water: t("Stamp River", "Stamp River"),
     area: t("Stamp River downstream of “Girl Guide Falls” (approximately 275 m upstream of the mouth of Beaver Creek). Triangle sport fishing boundary signs may be present to delineate the upstream boundary.", "Stamp River downstream of “Girl Guide Falls” (approximately 275 m upstream of the mouth of Beaver Creek). Triangle sport fishing boundary signs may be present to delineate the upstream boundary."),
@@ -650,7 +650,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-washlawlis-river",
+    id: "r1-washlawlis",
     region: "1",
     water: t("Washlawlis River", "Washlawlis River"),
     area: t("Entire listed water", "整条列出的水域"),
@@ -659,7 +659,7 @@ export const generatedSpots: FishingSpot[] = [
     ],
   },
   {
-    id: "r1-waukwaas-river",
+    id: "r1-waukwaas",
     region: "1",
     water: t("Waukwaas River", "Waukwaas River"),
     area: t("Entire listed water", "整条列出的水域"),

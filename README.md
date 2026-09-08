@@ -10,7 +10,7 @@ Oceans Canada（DFO）BC 省 8 个淡水区的表格规定整理成更容易搜�
 
 | 区域 | 水域条目 | 官方表格 |
 | --- | --- | --- |
-| Region 1 温哥华岛 | 56 | [region1](https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region1-eng.html) |
+| Region 1 温哥华岛 | 57 | [region1](https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region1-eng.html) |
 | Region 2 低陆平原 | 26 | [region2](https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region2-eng.html) |
 | Region 3 汤普森-尼科拉 | 7 | [region3](https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region3-eng.html) |
 | Region 4 库特尼 | 1 | [region4](https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region4-eng.html) |
@@ -60,8 +60,17 @@ Oceans Canada（DFO）BC 省 8 个淡水区的表格规定整理成更容易搜�
   在几何上切口等于把我们的猜测当成规定。**出发前务必读完卡片上的边界原文。**
 - 所有标记坐标都来自生成的红线顶点，因此地图标记不可能与所绘河段脱节。
 - OpenStreetMap 几何只用于地图可视化，DFO 文字、现场标志及最新公告始终优先。
-- 已完成逐条河段绘制与人工核对的是 Region 2 全部 22 条，加上 Region 3 的 5 条、
-  Region 7 的 1 条、Region 8 的 3 条。其余区域列出完整规定，但水域尚未定位，
+- 同名水域必须按区消歧。Region 1（温哥华岛）列出的 Seymour River 在
+  OpenStreetMap 上只有北温那一条，属于 Region 2；拿它充数会画出一条看起来
+  很合理但完全在大陆的河，所以该行只保留文字。回归测试会检查 Region 1 的
+  每个红线顶点都落在温哥华岛范围内。
+- OpenStreetMap 把 Washlawlis、Waukwaas、Cayeghle、Colonial 这四条北岛水域记作
+  Creek 而 DFO 写作 River。坐标一致，因此按 OSM 的写法取几何。
+- 一条水域被 OSM 拆成多段时，「河口」会落在拼接后返回的第一段末端，可能是内陆
+  的断点。Koksilah、Nanaimo、Big Qualicum、Nahwitti、Cayeghle 的标记因此改用
+  实测的入海端坐标，其余仍按河口解析。
+- 已完成逐条河段绘制与人工核对的是 Region 1 的 42 条、Region 2 全部 22 条，
+  加上 Region 3 的 5 条、Region 7 的 1 条、Region 8 的 3 条。其余区域列出完整规定，但水域尚未定位，
   界面会明确标注「尚未定位 · 仅显示 DFO 表格中的规定」，不会用名称猜测位置。
   切换到这些区域时，地图按该区大致范围取景，避免让读者以为水域在上一个区附近。
 - 底图（OpenStreetMap 街道图或 Esri World Imagery 卫星影像）只影响背景显示，
@@ -223,6 +232,11 @@ npm run start
 - 每条红线几何都能对应到一行 DFO 规定（防止 DFO 改措辞后红线静默失联）；
 - Region 3／7／8 已绘制的河段都在，两条 Thompson 规定在 Goldpan 处端点重合、
   既不留缝也不重叠，按米给出的 100 米河段实测在 90–110 米之间；
+- Region 1 的 42 条河段都在，每个顶点都落在温哥华岛范围内（防止同名的大陆
+  水域被画进来），Puntledge 上 Morrison Creek 两侧各 100 米的禁钓段实测在
+  180–220 米之间，Cowichan 的两行在 Sandy Pool 标志处、Campbell 的两行在
+  Quinsam 汇流处端点重合；Seymour River、Comox Lake 与几处只凭孵化场围栏或
+  水潭名定位的条目保持只用文字；
 - 湖泊和「All Region 4 waters」等无法画成河段的条目不会被赋予几何；
 - 未写具体范围的条目不会声明规定端点，标记为参考点；
 - 写明范围的条目每段红线都带有起止端点标签；
@@ -248,6 +262,8 @@ scripts/
   overpass.mjs               带缓存和限速处理的 Overpass 客户端
   inspect-channel.mjs        列出某条水域的 OSM way 及其连接情况
   inspect-crossings.mjs      列出某条水域与道路、电力线等的交叉点
+  inspect-order.mjs          按拼接后的河道里程排出各候选边界，判断谁在上游
+  inspect-mouths.mjs         列出河道自由端及各自到海岸线的距离，用于定位河口
   find-places.mjs            用 Nominatim 校验地名坐标
   preview-map.py             把生成的红线叠加到 OSM 瓦片上预览
 tests/
