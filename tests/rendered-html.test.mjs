@@ -368,6 +368,19 @@ test("carries every generated region row into typed data", async () => {
   assert.doesNotMatch(generated, /禁止垂钓salmon/);
 });
 
+test("lists open water before closures", async () => {
+  const explorer = await readFile(new URL("../app/FishingExplorer.tsx", import.meta.url), "utf8");
+  const ranks = Object.fromEntries(
+    [...explorer.matchAll(/^\s{2}(retain|release|gear|pending|closed|inactive): (\d+),$/gm)].map(
+      (match) => [match[1], Number(match[2])],
+    ),
+  );
+  assert.ok(ranks.retain < ranks.closed, "closures are listed before water that is open");
+  assert.ok(ranks.release < ranks.closed, "catch-and-release is listed with closures");
+  assert.ok(ranks.gear < ranks.closed, "gear-only water is listed with closures");
+  assert.ok(ranks.closed < ranks.inactive, "out-of-season rows should stay last");
+});
+
 test("lets the map fill the window", async () => {
   const [html, explorer, css] = await Promise.all([
     (await render()).text(),

@@ -219,12 +219,14 @@ const speciesName: Record<Language, Record<Species, string>> = {
   },
 };
 
+// Open water first: the directory is for finding a place to fish, not for
+// scanning closures. Closed and out-of-season rows stay in the list, just lower.
 const statusRank: Record<ReturnType<typeof currentKind>, number> = {
-  closed: 0,
-  retain: 1,
-  release: 2,
-  gear: 3,
-  pending: 4,
+  retain: 0,
+  release: 1,
+  gear: 2,
+  pending: 3,
+  closed: 4,
   inactive: 5,
 };
 
