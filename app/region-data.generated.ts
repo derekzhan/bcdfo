@@ -11,7 +11,7 @@ const t = (en: string, zh: string): LocalizedText => ({ en, zh });
 
 // The date DFO last edited each region's page, region 2 included.
 export const sourceModified: Record<string, string> = {
-  "1": "2026-08-31",
+  "1": "2026-09-09",
   "2": "2026-09-04",
   "3": "2026-08-14",
   "4": "2025-04-01",
@@ -318,7 +318,7 @@ export const generatedSpots: FishingSpot[] = [
     water: t("Nanaimo River", "Nanaimo River"),
     area: t("including tributaries, except in the area described below.", "including tributaries, except in the area described below."),
     rules: [
-      { species: ["Coho"], season: t("Oct 15 to Mar 31", "10月15日–3月31日"), regulation: t("1 per day, maximum size 35 cm", "每日 1 条，最大不得超过 35 厘米"), kind: "retain", start: [10, 15], end: [3, 31] },
+      { species: ["Coho"], season: t("Oct 15 until further notice", "10月15日起，另行通知"), regulation: t("Non-retention FN0952", "不得保留，钓获即放（FN0952）"), kind: "release", always: true },
     ],
   },
   {
@@ -343,9 +343,9 @@ export const generatedSpots: FishingSpot[] = [
     id: "r1-nanaimo-cedar-hwy1",
     region: "1",
     water: t("Nanaimo River", "Nanaimo River"),
-    area: t("from the upstream side of the Cedar Road Bridge, upstream to the downstream side of the Highway 1 overpass.", "from the upstream side of the Cedar Road Bridge, upstream to the downstream side of the Highway 1 overpass."),
+    area: t("from the upstream side of the Cedar Road Bridge, upstream to the downstream side of the Highway 1 overpass", "from the upstream side of the Cedar Road Bridge, upstream to the downstream side of the Highway 1 overpass"),
     rules: [
-      { species: ["Coho"], season: t("Nov 1 to Dec 31", "11月1日–12月31日"), regulation: t("2 per day, hatchery marked only", "每日 2 条，且须有孵化场标记"), kind: "retain", start: [11, 1], end: [12, 31] },
+      { species: ["Coho"], season: t("Oct 16 to Dec 31", "10月16日–12月31日"), regulation: t("4 per day, hatchery marked only FN0952", "每日 4 条，且须有孵化场标记（FN0952）"), kind: "retain", start: [10, 16], end: [12, 31] },
       { species: ["Chum"], season: t("Nov 1 to Dec 31", "11月1日–12月31日"), regulation: t("2 per day", "每日 2 条"), kind: "retain", start: [11, 1], end: [12, 31] },
     ],
   },
