@@ -12,7 +12,7 @@ const t = (en: string, zh: string): LocalizedText => ({ en, zh });
 // The date DFO last edited each region's page, region 2 included.
 export const sourceModified: Record<string, string> = {
   "1": "2026-09-09",
-  "2": "2026-09-04",
+  "2": "2026-09-16",
   "3": "2026-08-14",
   "4": "2025-04-01",
   "5": "2016-10-18",
@@ -24,7 +24,7 @@ export const sourceModified: Record<string, string> = {
 // Region 2's rules are transcribed by hand, so CI watches this hash of its
 // published table to catch an edit that no generator would pick up.
 export const handWrittenFingerprints: Record<string, string> = {
-  "2": "e7c0b254a430f331",
+  "2": "6a13d1d71b12f51d",
 };
 
 export const generatedRegions: RegionInfo[] = [
