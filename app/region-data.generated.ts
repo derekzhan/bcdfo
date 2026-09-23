@@ -11,7 +11,7 @@ const t = (en: string, zh: string): LocalizedText => ({ en, zh });
 
 // The date DFO last edited each region's page, region 2 included.
 export const sourceModified: Record<string, string> = {
-  "1": "2026-09-17",
+  "1": "2026-09-22",
   "2": "2026-09-16",
   "3": "2026-08-14",
   "4": "2025-04-01",
@@ -32,7 +32,7 @@ export const generatedRegions: RegionInfo[] = [
     id: "1",
     name: t("Vancouver Island", "温哥华岛"),
     sourceUrl: "https://www.pac.dfo-mpo.gc.ca/fm-gp/rec/fresh-douce/region1-eng.html",
-    waters: 57,
+    waters: 59,
     notes: [
       t("No fishing is allowed within 100 meters of any government facility operated for counting, passing or rearing fish unless otherwise stated.", "No fishing is allowed within 100 meters of any government facility operated for counting, passing or rearing fish unless otherwise stated."),
       t("You must be aware of these measurements: All retained chinook and sockeye must measure 30 cm or more from tip of nose to tail fork", "You must be aware of these measurements: All retained chinook and sockeye must measure 30 cm or more from tip of nose to tail fork"),
@@ -337,6 +337,24 @@ export const generatedSpots: FishingSpot[] = [
     area: t("from the Cedar Road Bridge crossing upstream to the Highway 19 Bridge crossing", "from the Cedar Road Bridge crossing upstream to the Highway 19 Bridge crossing"),
     rules: [
       { species: ["All"], season: t("Sep 1 to Oct 15", "9月1日–10月15日"), regulation: t("No fishing", "禁止垂钓"), kind: "closed", start: [9, 1], end: [10, 15] },
+    ],
+  },
+  {
+    id: "r1-nanaimo-river-in-subarea-17-14-tidal-portions-of",
+    region: "1",
+    water: t("Nanaimo River", "Nanaimo River"),
+    area: t("in Subarea 17-14 (tidal portions of the Nanaimo River) from Cedar Bridge downstream", "in Subarea 17-14 (tidal portions of the Nanaimo River) from Cedar Bridge downstream"),
+    rules: [
+      { species: ["All"], season: t("Jul 15 to Oct 25", "7月15日–10月25日"), regulation: t("No fishing", "禁止垂钓"), kind: "closed", start: [7, 15], end: [10, 25] },
+    ],
+  },
+  {
+    id: "r1-nanaimo-river-in-subarea-17-14-tidal-portions-of-2",
+    region: "1",
+    water: t("Nanaimo River", "Nanaimo River"),
+    area: t("in Subarea 17-14 (tidal portions of the Nanaimo River), that portion of the Nanaimo River from the Cedar Bridge to the white square boundary signs approximately 400 m downstream of the Cedar Bridge", "in Subarea 17-14 (tidal portions of the Nanaimo River), that portion of the Nanaimo River from the Cedar Bridge to the white square boundary signs approximately 400 m downstream of the Cedar Bridge"),
+    rules: [
+      { species: ["All"], season: t("Oct 25 to Nov 30", "10月25日–11月30日"), regulation: t("No fishing", "禁止垂钓"), kind: "closed", start: [10, 25], end: [11, 30] },
     ],
   },
   {
