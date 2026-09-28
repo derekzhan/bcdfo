@@ -43,7 +43,7 @@ DFO 规定告诉他：可以带走（附每日上限）、必须放生，或此�
 | 粉鲑 Pink | 尾鳍有大椭圆斑；鳞片极细；繁殖期雄鱼驼背 |
 | 狗鲑 Chum | 尾鳍无斑、有银色条纹；繁殖期体侧紫绿竖纹、雄鱼大犬齿 |
 
-## 判定逻辑（`app/catch-check.ts`，纯函数，不依赖界面）
+## 判定逻辑（`app/catch-check.ts`，纯函数，不依赖界面；界面在 `app/CatchChecker.tsx`）
 
 ### 规定解析
 
@@ -53,33 +53,47 @@ DFO 规定告诉他：可以带走（附每日上限）、必须放生，或此�
 type Limit = {
   daily: number;               // 每日条数
   markedOnly: boolean;         // 只限有孵化场标记
-  unmarkedAllowed?: number;    // 「1 of which can be unmarked」
+  unmarkedMax?: number;        // 「1 of which can be unmarked」
   over?: { cm: number; max: number };  // 超过 cm 的最多 max 条（none over → max 0）
-  maxSize?: number;            // 「maximum size 35 cm」「80 cm or less」
+  maxCm?: number;              // 「maximum size 35 cm」「80 cm or less」
 };
 ```
 
 去掉 `FN####` 编号和句末标点后匹配；也识别附带的饵具说明（`bait ban`、
 `Fly-fishing only`）作为提醒。解析不了返回 `null`。
 
-最小体长从各区通用说明读取：帝王鲑、红鲑 30 cm，银鲑 25 cm（没有说明的区域用
-同样的全省数值）。
+最小体长由 `minimumLengths` 从各区通用说明里解析（「retained X, Y and Z must
+measure N cm or more」）。只用该区写明的数值，不借用别区的：目前第 4、5 区没有
+写，第 7 区只写了红鲑，第 8 区只写了帝王鲑。
+
+### 选出起决定作用的规定
+
+同一天可能有多条规定同时有效，数据里现有三种情况：
+
+- Fulton River：红鲑全年禁钓，8 月 1–14 日每日 2 条；
+- Tatshenshini：银鲑全年每日 2 条，7 月 24 日–8 月 14 日禁钓所有鲑鱼；
+- Cowichan 上段：9 月–次年 7 月所有鲑鱼钓获即放，11–12 月银鲑每日 1 条。
+
+规则都是「窄窗口是宽窗口的例外」。所以在当天有效、覆盖该鱼种的非渔具规定中，
+日期跨度最短的优先；跨度相同时，点名鱼种的优先于 `All`；仍有多条且写法不同 →
+**请按原文判断**。
 
 ### 判定顺序
 
 输入：河段、日期（温哥华时间，复用 `isRuleActive`）、鱼种、脂鳍、体长。
 
-1. 当天有 `species: All` 且 `kind: closed` 的规定 → **此处今天禁钓**。
-2. 该鱼种（或 All）当天有 `kind: release` → **必须放生**。
-3. 该鱼种当天有 `kind: pending` → **必须放生**（规定待公布）。
-4. 当天没有允许保留该鱼种的 `kind: retain` 规定 → **必须放生**（今天不允许保留）。
-5. 有 `retain` 规定但 `parseLimit` 返回 `null` → **请按原文判断**。
-6. 只限有标记（且无 `unmarkedAllowed`）而脂鳍为「没剪」或「看不清」→ **必须放生**。
-   有 `unmarkedAllowed` 时，「没剪」可以带走，但要注明无标记最多几条。
-7. 体长低于最小体长、超过 `maxSize`，或 `over.max === 0` 且超过 `over.cm`
+1. 没有任何当天有效的规定 → **必须放生**；如果该鱼种有 `pending` 规定，说明是
+   规定待公布，否则说明今天不允许保留。
+2. 起决定作用的规定是 `closed` → **此处今天禁钓**（点名鱼种时写「禁钓该鱼种」）。
+3. 是 `release` 或 `pending` → **必须放生**。
+4. 是 `retain` 但 `parseLimit` 返回 `null` → **请按原文判断**；每日 0 条 →
+   **必须放生**。
+5. 只限有标记（且无 `unmarkedMax`）而脂鳍为「没剪」或「看不清」→ **必须放生**。
+   有 `unmarkedMax` 时，「没剪」可以带走，但要注明无标记最多几条。
+6. 体长低于最小体长、超过 `maxCm`，或 `over.max === 0` 且超过 `over.cm`
    → **必须放生**。
-8. 其余 → **可以带走**，附上限说明，例如「每日最多 4 条，其中超过 50 cm 的最多
-   2 条」，并提示所有鲑鱼合计每日不超过 4 条、请自行核对今天已带走的数量。
+7. 其余 → **可以带走**，附上限说明，例如「每日最多 4 条，其中超过 50 cm 的最多
+   2 条」，并提示自行核对今天已带走的数量和本区所有鲑鱼合计的每日上限。
 
 需要体长但尚未填写时，结论显示「请填写体长」而不是猜测。
 
@@ -95,7 +109,10 @@ type Limit = {
 ## 测试
 
 - `tests/catch-check.test.mjs`：`parseLimit` 覆盖现有全部可保留写法；判定顺序的
-  每一步各有用例；另有一条全量检查——数据中每条 `retain` 规则要么能解析，要么在
-  「只显示原文」名单里，DFO 出现新写法时测试先失败。
+  每一步各有用例；三处规定重叠各有用例。全量检查把数据中解析不了的 `retain`
+  写法列进测试日志，但不让测试失败：每日数据刷新要求测试全过才提交，而解析不了
+  的写法在界面上已经退回原文，不值得为此让规定停止更新。
+- 测试通过 `node --experimental-strip-types` 加 `tests/ts-resolve.mjs` 直接加载
+  `app/` 下的 TypeScript 模块，测的是真实数据和真实的 `isRuleActive`。
 - `tests/rendered-html.test.mjs`：两处入口都渲染出来。
 - Playwright 手机尺寸走一遍完整流程并截图。

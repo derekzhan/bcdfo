@@ -14,6 +14,29 @@ export type Species =
   | "Eulachon"
   | "All";
 
+export const speciesName: Record<Language, Record<Species, string>> = {
+  en: {
+    Chinook: "Chinook",
+    Coho: "Coho",
+    Sockeye: "Sockeye",
+    Pink: "Pink",
+    Chum: "Chum",
+    Steelhead: "Steelhead",
+    Eulachon: "Eulachon",
+    All: "All salmon",
+  },
+  zh: {
+    Chinook: "帝王鲑",
+    Coho: "银鲑",
+    Sockeye: "红鲑",
+    Pink: "粉鲑",
+    Chum: "狗鲑",
+    Steelhead: "虹鳟",
+    Eulachon: "油胡瓜鱼",
+    All: "所有三文鱼",
+  },
+};
+
 export type FishingRule = {
   species: Species[];
   season: LocalizedText;

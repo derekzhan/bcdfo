@@ -410,6 +410,29 @@ test("lets the map fill the window", async () => {
   assert.match(explorer, /event\.key === "Escape"/);
 });
 
+test("opens the catch checker from the topbar and from the open reach", async () => {
+  const [html, checker, css] = await Promise.all([
+    (await render()).text(),
+    readFile(new URL("../app/CatchChecker.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(html, /data-catch-open="topbar"/);
+  assert.match(html, /钓到鱼了/);
+  // Alouette opens expanded, so its card carries the second entry point.
+  assert.match(html, /data-catch-open="card"/);
+
+  // The photo is only for comparing by eye; nothing may send it anywhere.
+  assert.match(checker, /URL\.createObjectURL/);
+  assert.doesNotMatch(checker, /\bfetch\(|FormData|XMLHttpRequest|sendBeacon/);
+
+  const overlayZ = (selector) => Number(css.match(new RegExp(`${selector} \\{[^}]*z-index: (\\d+)`))[1]);
+  assert.ok(
+    overlayZ("\\.catch-backdrop") > overlayZ("\\.map-wrap\\.is-fullscreen"),
+    "the checker has to open over a filled-window map",
+  );
+});
+
 test("dates each region from its own DFO page", async () => {
   const [html, generated, explorer, data] = await Promise.all([
     (await render()).text(),

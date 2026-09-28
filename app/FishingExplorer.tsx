@@ -2,6 +2,7 @@
 
 import {
   CalendarDays,
+  Camera,
   Check,
   ChevronDown,
   ExternalLink,
@@ -22,7 +23,8 @@ import {
   Waves,
   X,
 } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import CatchChecker from "./CatchChecker";
 import {
   currentKind,
   defaultRegionId,
@@ -33,6 +35,7 @@ import {
   regionExtents,
   regions,
   sourceModifiedFor,
+  speciesName,
   type FishingSpot,
   type Language,
   type Species,
@@ -130,6 +133,8 @@ const ui = {
     tileError: "Base map tiles failed to load—check your connection",
     fullscreen: "Fill the window",
     exitFullscreen: "Exit full window (Esc)",
+    catchCheck: "My catch",
+    catchCheckHere: "Caught one here?",
   },
   zh: {
     eyebrow: "DFO 淡水三文鱼分区",
@@ -193,31 +198,10 @@ const ui = {
     tileError: "底图瓦片加载失败，请检查网络",
     fullscreen: "铺满窗口",
     exitFullscreen: "退出铺满（Esc）",
+    catchCheck: "钓到鱼了",
+    catchCheckHere: "在这里钓到鱼了",
   },
 } as const;
-
-const speciesName: Record<Language, Record<Species, string>> = {
-  en: {
-    Chinook: "Chinook",
-    Coho: "Coho",
-    Sockeye: "Sockeye",
-    Pink: "Pink",
-    Chum: "Chum",
-    Steelhead: "Steelhead",
-    Eulachon: "Eulachon",
-    All: "All salmon",
-  },
-  zh: {
-    Chinook: "帝王鲑",
-    Coho: "银鲑",
-    Sockeye: "红鲑",
-    Pink: "粉鲑",
-    Chum: "狗鲑",
-    Steelhead: "虹鳟",
-    Eulachon: "油胡瓜鱼",
-    All: "所有三文鱼",
-  },
-};
 
 // Open water first: the directory is for finding a place to fish, not for
 // scanning closures. Closed and out-of-season rows stay in the list, just lower.
@@ -626,6 +610,9 @@ export default function FishingExplorer() {
   const [query, setQuery] = useState("");
   const [regionId, setRegionId] = useState(defaultRegionId);
   const [selectedId, setSelectedId] = useState<string | null>("alouette-upper");
+  // Holds the reach the checker opened on; null means closed.
+  const [checking, setChecking] = useState<{ spot: FishingSpot | null } | null>(null);
+  const closeChecker = useCallback(() => setChecking(null), []);
 
   useEffect(() => {
     const saved = window.localStorage.getItem("salmon-guide-language");
@@ -711,6 +698,10 @@ export default function FishingExplorer() {
           </div>
         </div>
         <div className="topbar-spacer" />
+        <button className="catch-button" type="button" onClick={() => setChecking({ spot: selected })} data-catch-open="topbar">
+          <Camera size={16} />
+          <span>{ui[language].catchCheck}</span>
+        </button>
         <a className="source-link" href={region.sourceUrl} target="_blank" rel="noreferrer">
           <span><Check size={15} />{ui[language].source}</span>
           <ExternalLink size={14} />
@@ -921,6 +912,9 @@ export default function FishingExplorer() {
                           </div>
                         ))}
                       <RuleList spot={spot} language={language} />
+                      <button className="catch-here-button" type="button" onClick={() => setChecking({ spot })} data-catch-open="card">
+                        <Camera size={16} />{ui[language].catchCheckHere}
+                      </button>
                       <div className="detail-actions">
                         {boundaryPoint && (
                           <a
@@ -961,6 +955,15 @@ export default function FishingExplorer() {
         <span>Built from the Fisheries and Oceans Canada recreational salmon tables.</span>
         <a href={region.sourceUrl} target="_blank" rel="noreferrer">DFO Pacific Region <ExternalLink size={13} /></a>
       </footer>
+
+      {checking && (
+        <CatchChecker
+          language={language}
+          initialSpot={checking.spot}
+          initialRegionId={regionId}
+          onClose={closeChecker}
+        />
+      )}
     </main>
   );
 }

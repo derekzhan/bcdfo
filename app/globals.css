@@ -2045,3 +2045,589 @@ input:focus-visible {
 .rule-pending {
   border-left-color: #6b7280;
 }
+
+/* Catch checker. Above the sticky topbar (1000) and a filled-window map (2000). */
+.catch-button,
+.catch-here-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 0;
+  color: #fff;
+  background: var(--green);
+  cursor: pointer;
+  font-weight: 750;
+  box-shadow: 0 6px 15px rgba(13, 92, 73, 0.18);
+}
+
+.catch-button {
+  flex: none;
+  height: 40px;
+  margin-right: 8px;
+  padding: 0 13px;
+  border-radius: 12px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.catch-here-button {
+  width: 100%;
+  min-height: 40px;
+  margin-top: 12px;
+  border-radius: 11px;
+  font-size: 12px;
+}
+
+.catch-button:hover,
+.catch-here-button:hover {
+  background: var(--green-2);
+}
+
+.catch-backdrop {
+  position: fixed;
+  z-index: 3000;
+  inset: 0;
+  display: flex;
+  justify-content: flex-end;
+  background: rgba(10, 30, 25, 0.42);
+}
+
+.catch-sheet {
+  width: min(480px, 100%);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  box-shadow: -18px 0 46px rgba(10, 30, 25, 0.22);
+  animation: catch-in-side 180ms ease-out;
+}
+
+@keyframes catch-in-side {
+  from { transform: translateX(24px); opacity: 0; }
+}
+
+@keyframes catch-in-up {
+  from { transform: translateY(32px); opacity: 0; }
+}
+
+.catch-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.catch-head span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.catch-head h2 {
+  margin: 4px 0 0;
+  font-size: 21px;
+  letter-spacing: -0.02em;
+}
+
+.catch-head button {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 10px;
+  background: #eef3f0;
+  cursor: pointer;
+}
+
+.catch-body {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 14px 14px calc(24px + env(safe-area-inset-bottom));
+}
+
+.catch-step {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.catch-step h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 14px;
+}
+
+.catch-step h3 b {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--green);
+  font-size: 11px;
+}
+
+.catch-field {
+  display: grid;
+  gap: 4px;
+}
+
+.catch-field span {
+  color: #6b7e77;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.catch-field select,
+.catch-length input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  color: var(--ink);
+  background: #f9fbfa;
+  font: inherit;
+  font-size: 15px;
+}
+
+.catch-area {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0;
+  padding: 9px 11px;
+  border-radius: 10px;
+  color: var(--ink-soft);
+  background: #edf4f0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.catch-area svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.catch-note {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.catch-photo-button {
+  position: relative;
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px dashed #9fbcb1;
+  border-radius: 12px;
+  color: var(--green);
+  background: #f3f8f5;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.catch-photo-button input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.catch-photo {
+  width: 100%;
+  max-height: 260px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #1c2a25;
+}
+
+.species-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.species-card {
+  min-height: 104px;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 2px;
+  padding: 8px 6px;
+  border: 1.5px solid var(--line);
+  border-radius: 13px;
+  background: #fbfcfb;
+  cursor: pointer;
+  text-align: center;
+}
+
+.species-card strong {
+  font-size: 13px;
+}
+
+.species-card small {
+  color: var(--ink-soft);
+  font-size: 10px;
+}
+
+.species-card em {
+  color: #8a6d3b;
+  font-size: 9px;
+  font-style: normal;
+  line-height: 1.3;
+}
+
+.species-card.is-unlisted {
+  opacity: 0.72;
+}
+
+.species-card.is-active {
+  border-color: var(--green);
+  background: #e7f3ee;
+  box-shadow: 0 0 0 3px rgba(13, 92, 73, 0.12);
+  opacity: 1;
+}
+
+.species-other {
+  align-content: center;
+  color: var(--ink-soft);
+}
+
+.species-other strong {
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.salmon-figure {
+  width: 100%;
+  max-width: 120px;
+  height: auto;
+}
+
+.species-guide {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 13px;
+  background: #f1f6f3;
+}
+
+.species-guide-art {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  align-items: center;
+  gap: 10px;
+}
+
+.species-guide-art .salmon-figure {
+  max-width: none;
+}
+
+.species-guide-art img {
+  width: 100%;
+  max-height: 150px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #1c2a25;
+}
+
+.species-guide ul {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.species-guide.is-other p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.species-guide.is-other a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.adipose-figure {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  justify-self: center;
+}
+
+.choice-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.choice-row button {
+  min-height: 44px;
+  padding: 4px 6px;
+  border: 1.5px solid var(--line);
+  border-radius: 11px;
+  background: #fbfcfb;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.choice-row button.is-active {
+  border-color: var(--green);
+  color: var(--green);
+  background: #e7f3ee;
+}
+
+.catch-length {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--green);
+}
+
+.catch-length input {
+  max-width: 140px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.catch-length span {
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+
+.catch-verdict {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.catch-verdict > span {
+  color: #6b7e77;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.catch-verdict > strong {
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+
+.catch-verdict p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.catch-verdict.tone-retain {
+  border-color: var(--retain);
+  background: #e8f6ef;
+}
+
+.catch-verdict.tone-retain > strong {
+  color: var(--retain);
+}
+
+.catch-verdict.tone-release {
+  border-color: var(--release);
+  background: #fff4e2;
+}
+
+.catch-verdict.tone-release > strong {
+  color: #9a5a0a;
+}
+
+.catch-verdict.tone-closed {
+  border-color: var(--closed);
+  background: #fdecea;
+}
+
+.catch-verdict.tone-closed > strong {
+  color: #9b312c;
+}
+
+.catch-verdict.tone-pending > strong {
+  color: var(--ink-soft);
+}
+
+.catch-verdict p.catch-tally {
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+.catch-basis {
+  display: grid;
+  gap: 5px;
+}
+
+.catch-basis > span {
+  color: #6b7e77;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.catch-basis ul {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.catch-basis li {
+  display: grid;
+  gap: 2px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.catch-basis li span {
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+
+.catch-official {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.catch-disclaimer {
+  display: flex;
+  gap: 7px;
+  margin: 0;
+  padding: 0 4px;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.catch-disclaimer svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+@media (max-width: 760px) {
+  .catch-backdrop {
+    align-items: flex-end;
+  }
+
+  .catch-sheet {
+    width: 100%;
+    height: auto;
+    max-height: 92vh;
+    max-height: 92dvh;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -18px 46px rgba(10, 30, 25, 0.22);
+    animation-name: catch-in-up;
+  }
+
+  .catch-head {
+    border-radius: 20px 20px 0 0;
+  }
+}
+
+@media (max-width: 460px) {
+  .catch-button {
+    margin-right: 6px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+
+  /* The label alone fits beside the brand at 360px; the icon does not. */
+  .catch-button svg {
+    display: none;
+  }
+
+  .brand-copy strong {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 400px) {
+  .language-button {
+    min-width: 0;
+    padding: 0 10px;
+  }
+
+  .language-button svg {
+    display: none;
+  }
+
+  .source-link {
+    flex: none;
+  }
+
+  .brand-lockup {
+    gap: 8px;
+  }
+
+  .brand-mark {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+/* Every card and the footer link to the same DFO table, so the topbar copy is
+   the one to drop when the catch button needs the room. */
+@media (max-width: 380px) {
+  .topbar .source-link {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catch-sheet {
+    animation: none;
+  }
+}
