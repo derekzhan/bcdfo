@@ -26,6 +26,8 @@ Oceans Canada（DFO）BC 省 8 个淡水区的表格规定整理成更容易搜�
 - 顶部下拉列表切换 DFO 区域，列表、筛选器、地图和全区规定同步切换
 - 按水域、边界、鱼种（帝王鲑／银鲑／红鲑／粉鲑／狗鲑，仅显示该区实际出现的
   鱼种）、在表列日期内及禁钓区域筛选
+- 水域目录的状态逐个鱼种判定后取最宽松的结果：只禁钓帝王鲑、银鲑仍可保留的
+  水域显示为「允许按限额保留」，不会被当成禁钓排到最后
 - 水域目录优先列出当前可以钓的位置（可保留、钓获即放、渔具限制），禁钓和
   不在表列日期内的条目排在后面
 - 在地图上显示 DFO 表格中的水域位置和明确规定河段
@@ -91,7 +93,9 @@ Oceans Canada（DFO）BC 省 8 个淡水区的表格规定整理成更容易搜�
 
 - Region 2 的规定与双语文字**手工维护**在
   [`app/fishing-data.ts`](app/fishing-data.ts)，因为它的中文翻译和红线锚点都是
-  逐行对照官网表格、并用卫星影像核对过的。
+  逐行对照官网表格、并用卫星影像核对过的。DFO 改动第 2 区表格时，每日刷新
+  会开 issue 提醒；运行 `npm run region2:diff -- --refresh` 会列出鱼种、日期
+  或限额与官网不一致的行，照着改完再跑一次，显示「Every row matches.」即可。
 - 其余 7 个区由 [`scripts/build-region-data.mjs`](scripts/build-region-data.mjs)
   从 DFO 页面抓取生成到 [`app/region-data.generated.ts`](app/region-data.generated.ts)，
   请勿手工编辑。解析器按 `rowspan` / `colspan` 还原表格网格，因此续行不会把
@@ -220,6 +224,9 @@ npm test
 # 运行 ESLint
 npm run lint
 
+# 对照 DFO 官网检查手写的第 2 区规定
+npm run region2:diff -- --refresh
+
 # 启动已生成的生产构建
 npm run start
 ```
@@ -274,6 +281,7 @@ app/
 scripts/
   dfo-regions.mjs            DFO 页面抓取与 rowspan/colspan 表格解析
   build-region-data.mjs      由 DFO 表格生成 region-data.generated.ts
+  diff-region2.mjs           列出手写的第 2 区规定与 DFO 官网不一致的行
   waterway-specs.mjs         每行 DFO 条目对应的水域与边界定义
   build-waterway-paths.mjs   由 Overpass 生成 waterway-paths.ts
   overpass.mjs               带缓存和限速处理的 Overpass 客户端

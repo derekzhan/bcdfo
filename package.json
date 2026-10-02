@@ -15,7 +15,8 @@
     "waterways:report": "node scripts/build-waterway-paths.mjs --report",
     "regions": "node scripts/build-region-data.mjs",
     "regions:report": "node scripts/build-region-data.mjs --report",
-    "regions:refresh": "node scripts/build-region-data.mjs --refresh"
+    "regions:refresh": "node scripts/build-region-data.mjs --refresh",
+    "region2:diff": "node --experimental-strip-types --disable-warning=ExperimentalWarning --import ./tests/ts-resolve.mjs scripts/diff-region2.mjs"
   },
   "dependencies": {
     "leaflet": "^1.9.4",

@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import { checkCatch, minimumLengths, parseLimit } from "../app/catch-check.ts";
-import { fishingSpots } from "../app/fishing-data.ts";
+import { currentKind, fishingSpots } from "../app/fishing-data.ts";
 
 // Noon in BC, so the Pacific calendar day is the one written in the test.
 const on = (monthDay) => new Date(`2026-${monthDay}T19:00:00Z`);
@@ -201,4 +201,39 @@ test("passes gear restrictions along without changing the verdict", () => {
   const result = checkCatch(baitBan, { species: "Coho" }, on("11-01"));
   assert.equal(result.verdict.kind, "retain");
   assert.deepEqual(result.gear.map((item) => item.regulation.en), ["Bait ban"]);
+});
+
+test("marks a row open in the directory when any species may be kept", () => {
+  // Chinook closed beside a coho limit: the directory used to call this closed.
+  assert.equal(currentKind(spot("r6-tatshenshini-river-downstream-of-the-bc-yukon-bo"), on("10-01")), "retain");
+  assert.equal(currentKind(spot("r6-tatshenshini-river-downstream-of-the-bc-yukon-bo"), on("08-01")), "closed");
+  assert.equal(currentKind(spot("r6-fulton-river"), on("08-05")), "retain");
+  assert.equal(currentKind(spot("r6-fulton-river"), on("09-01")), "closed");
+  assert.equal(currentKind(spot("r1-cowichan-upper"), on("10-01")), "release");
+  assert.equal(currentKind(spot("r1-cowichan-upper"), on("11-15")), "retain");
+  assert.equal(currentKind(spot("fraser-mission"), on("10-01")), "closed");
+});
+
+test("agrees with the catch checker on every row and species", () => {
+  for (const monthDay of ["01-15", "04-15", "07-01", "08-05", "09-10", "10-01", "11-20", "12-15"]) {
+    for (const item of fishingSpots) {
+      const keepable = ["Chinook", "Coho", "Sockeye", "Pink", "Chum"].some(
+        (species) => checkCatch(item, { species, fin: "clipped", lengthCm: 45 }, on(monthDay)).verdict.kind === "retain",
+      );
+      if (keepable) assert.equal(currentKind(item, on(monthDay)), "retain", `${item.id} on ${monthDay}`);
+    }
+  }
+});
+
+test("carries the Region 2 chinook changes DFO published in September 2026", () => {
+  const coquitlam = spot("coquitlam");
+  assert.equal(checkCatch(coquitlam, { species: "Chinook", fin: "intact", lengthCm: 70 }, on("09-10")).verdict.reason, "unmarked");
+  const october = checkCatch(coquitlam, { species: "Chinook", fin: "intact", lengthCm: 70 }, on("10-01")).verdict;
+  assert.equal(october.kind, "retain");
+  assert.equal(october.limit.daily, 1);
+  assert.equal(checkCatch(coquitlam, { species: "Chinook", lengthCm: 70 }, on("09-02")).verdict.reason, "none");
+
+  const capilano = spot("capilano");
+  assert.deepEqual(checkCatch(capilano, { species: "Chinook", lengthCm: 70 }, on("08-20")).verdict.limit.over, { cm: 62, max: 2 });
+  assert.equal(checkCatch(capilano, { species: "Chinook", lengthCm: 70 }, on("10-01")).verdict.limit.over, undefined);
 });

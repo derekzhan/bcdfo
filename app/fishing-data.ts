@@ -164,7 +164,8 @@ export const region2Spots: FishingSpot[] = [
       rule("Coho", "Apr 1–Jun 30", "4月1日–6月30日", "2 hatchery-marked per day", "每日 2 条有孵化场标记的鱼", "retain", [4, 1], [6, 30]),
       rule("Coho", "Jul 1–Mar 31", "7月1日–次年3月31日", "4 hatchery-marked per day", "每日 4 条有孵化场标记的鱼", "retain", [7, 1], [3, 31]),
       rule("Coho", "Aug 1–Oct 31", "8月1日–10月31日", "Bait ban", "禁止使用鱼饵", "gear", [8, 1], [10, 31]),
-      rule("Chinook", "Aug 1–Nov 30", "8月1日–11月30日", "4 per day, only 2 over 62 cm", "每日 4 条，其中超过 62 厘米的最多 2 条", "retain", [8, 1], [11, 30]),
+      rule("Chinook", "Aug 1–Sep 4", "8月1日–9月4日", "4 per day, only 2 over 62 cm", "每日 4 条，其中超过 62 厘米的最多 2 条", "retain", [8, 1], [9, 4]),
+      rule("Chinook", "Sep 5–Nov 30", "9月5日–11月30日", "4 per day FN0960", "每日 4 条（FN0960）", "retain", [9, 5], [11, 30]),
       rule("Chinook", "Aug 1–Oct 31", "8月1日–10月31日", "Bait ban", "禁止使用鱼饵", "gear", [8, 1], [10, 31]),
     ],
   },
@@ -233,7 +234,8 @@ export const region2Spots: FishingSpot[] = [
     area: t("Entire listed water", "该水域"),
     coordinates: [49.284, -122.789],
     rules: [
-      rule("Chinook", "Sep 1–Dec 31", "9月1日–12月31日", "Non-retention", "不得保留，钓获即放", "release", [9, 1], [12, 31]),
+      rule("Chinook", "Sep 5–Sep 18", "9月5日–9月18日", "1 hatchery-marked per day FN0961", "每日 1 条有孵化场标记的鱼（FN0961）", "retain", [9, 5], [9, 18]),
+      rule("Chinook", "Sep 19–Dec 31", "9月19日–12月31日", "1 per day FN1008", "每日 1 条（FN1008）", "retain", [9, 19], [12, 31]),
       rule("Coho", "Sep 1–Dec 31", "9月1日–12月31日", "1 hatchery-marked per day", "每日 1 条有孵化场标记的鱼", "retain", [9, 1], [12, 31]),
     ],
   },
@@ -593,11 +595,39 @@ export function isRuleActive(rule: FishingRule, date = new Date()) {
   return start <= end ? value >= start && value <= end : value >= start || value <= end;
 }
 
+const daysBefore = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+const dayOfYear = ([month, day]: [number, number]) => daysBefore[month - 1] + day;
+
+function spanDays(rule: FishingRule) {
+  if (rule.always || !rule.start || !rule.end) return 366;
+  const start = dayOfYear(rule.start);
+  const end = dayOfYear(rule.end);
+  return end >= start ? end - start + 1 : 365 - start + end + 1;
+}
+
+// DFO writes exceptions as narrower windows on top of a year-round rule—sockeye
+// closed all year but open Aug 1–14—and species rows on top of "all salmon"
+// rows, so among the active rules the narrowest window wins, then the rule that
+// names the species. More than one result means the rows tie.
+export function decidingRules(active: FishingRule[], species: Species): FishingRule[] {
+  const covering = active.filter(
+    (rule) => rule.kind !== "gear" && (rule.species.includes(species) || rule.species.includes("All")),
+  );
+  if (!covering.length) return covering;
+  const rank = (rule: FishingRule) => spanDays(rule) * 2 + (rule.species.includes(species) ? 0 : 1);
+  const best = Math.min(...covering.map(rank));
+  return covering.filter((rule) => rank(rule) === best);
+}
+
+const permissiveFirst = ["retain", "release", "pending", "closed"] as const;
+
 export function currentKind(spot: FishingSpot, date = new Date()): RuleKind | "inactive" {
   const active = spot.rules.filter((item) => isRuleActive(item, date));
   if (!active.length) return "inactive";
-  if (active.some((item) => item.kind === "closed")) return "closed";
-  if (active.some((item) => item.kind === "retain")) return "retain";
-  if (active.some((item) => item.kind === "release")) return "release";
-  return "gear";
+  // A row can close one species beside another's limit ("No fishing for
+  // chinook" next to 2 coho per day), so each species is decided on its own and
+  // the row reports the most permissive outcome.
+  const species = new Set(active.flatMap((item) => item.species));
+  const kinds = new Set([...species].flatMap((name) => decidingRules(active, name).map((item) => item.kind)));
+  return permissiveFirst.find((kind) => kinds.has(kind)) ?? "gear";
 }

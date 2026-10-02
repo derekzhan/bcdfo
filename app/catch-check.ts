@@ -1,4 +1,4 @@
-import { isRuleActive, regionById, type FishingRule, type FishingSpot } from "./fishing-data";
+import { decidingRules, isRuleActive, regionById, type FishingRule, type FishingSpot } from "./fishing-data";
 
 export const salmonSpecies = ["Chinook", "Coho", "Sockeye", "Pink", "Chum"] as const;
 export type Salmon = (typeof salmonSpecies)[number];
@@ -92,40 +92,20 @@ export function minimumLengths(notes: string[]): Partial<Record<Salmon, number>>
   return lengths;
 }
 
-const daysBefore = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
-const dayOfYear = ([month, day]: [number, number]) => daysBefore[month - 1] + day;
-
-function spanDays(rule: FishingRule) {
-  if (rule.always || !rule.start || !rule.end) return 366;
-  const start = dayOfYear(rule.start);
-  const end = dayOfYear(rule.end);
-  return end >= start ? end - start + 1 : 365 - start + end + 1;
-}
-
 const coversSpecies = (rule: FishingRule, species: Salmon) =>
   rule.species.includes(species) || rule.species.includes("All");
-
-// DFO writes exceptions as narrower windows on top of a year-round rule—sockeye
-// closed all year but open Aug 1–14—and species rows on top of "all salmon"
-// rows, so the narrowest window wins, then the rule that names the species.
-function decidingRules(active: FishingRule[], species: Salmon) {
-  const rank = (rule: FishingRule) => spanDays(rule) * 2 + (rule.species.includes(species) ? 0 : 1);
-  const best = Math.min(...active.map(rank));
-  return active.filter((rule) => rank(rule) === best);
-}
 
 export function checkCatch(spot: FishingSpot, input: CatchInput, date = new Date()): CatchCheck {
   const active = spot.rules.filter((rule) => isRuleActive(rule, date) && coversSpecies(rule, input.species));
   const gear = active.filter((rule) => rule.kind === "gear");
   const result = (verdict: Verdict, asks = { fin: false, length: false }): CatchCheck => ({ verdict, asks, gear });
 
-  const candidates = active.filter((rule) => rule.kind !== "gear");
-  if (!candidates.length) {
+  const deciding = decidingRules(active, input.species);
+  if (!deciding.length) {
     const pending = spot.rules.some((rule) => rule.kind === "pending" && coversSpecies(rule, input.species));
     return result({ kind: "release", reason: pending ? "pending" : "none" });
   }
 
-  const deciding = decidingRules(candidates, input.species);
   if (new Set(deciding.map((rule) => `${rule.kind}\n${rule.regulation.en}`)).size > 1) {
     return result({ kind: "manual", rules: deciding });
   }
