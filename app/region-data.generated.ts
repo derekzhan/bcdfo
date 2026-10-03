@@ -11,7 +11,7 @@ const t = (en: string, zh: string): LocalizedText => ({ en, zh });
 
 // The date DFO last edited each region's page, region 2 included.
 export const sourceModified: Record<string, string> = {
-  "1": "2026-09-22",
+  "1": "2026-10-02",
   "2": "2026-09-16",
   "3": "2026-08-14",
   "4": "2025-04-01",
@@ -621,7 +621,8 @@ export const generatedSpots: FishingSpot[] = [
     rules: [
       { species: ["Chinook"], season: t("Aug 25 to Dec 31", "8月25日–12月31日"), regulation: t("2 per day, 1 of which may be more than 77 cm. in length", "每日 2 条，其中超过 77 厘米者最多 1 条"), kind: "retain", start: [8, 25], end: [12, 31] },
       { species: ["Coho"], season: t("Aug 25 to Sep 18", "8月25日–9月18日"), regulation: t("2 per day, hatchery marked only FN0504", "每日 2 条，且须有孵化场标记（FN0504）"), kind: "retain", start: [8, 25], end: [9, 18] },
-      { species: ["Coho"], season: t("Sep 19 to Dec 31", "9月19日–12月31日"), regulation: t("2 per day, 1 of which can be unmarked FN1013", "2 per day, 1 of which can be unmarked FN1013"), kind: "retain", start: [9, 19], end: [12, 31] },
+      { species: ["Coho"], season: t("Sep 19 to Oct 2", "9月19日–10月2日"), regulation: t("2 per day, 1 of which can be unmarked FN1013", "2 per day, 1 of which can be unmarked FN1013"), kind: "retain", start: [9, 19], end: [10, 2] },
+      { species: ["Coho"], season: t("Oct 3 to Dec 31", "10月3日–12月31日"), regulation: t("2 per day, 2 of which can be unmarked FN1069", "2 per day, 2 of which can be unmarked FN1069"), kind: "retain", start: [10, 3], end: [12, 31] },
     ],
   },
   {
