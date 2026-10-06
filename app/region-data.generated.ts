@@ -11,7 +11,7 @@ const t = (en: string, zh: string): LocalizedText => ({ en, zh });
 
 // The date DFO last edited each region's page, region 2 included.
 export const sourceModified: Record<string, string> = {
-  "1": "2026-10-02",
+  "1": "2026-10-05",
   "2": "2026-09-16",
   "3": "2026-08-14",
   "4": "2025-04-01",
@@ -536,6 +536,8 @@ export const generatedSpots: FishingSpot[] = [
     area: t("including tributaries.", "including tributaries."),
     rules: [
       { species: ["Coho"], season: t("Apr 1 to Mar 31", "4月1日–3月31日"), regulation: t("1 per day, maximum size 35 cm", "每日 1 条，最大不得超过 35 厘米"), kind: "retain", start: [4, 1], end: [3, 31], always: true },
+      { species: ["All"], season: t("July 1 to Sept 30", "7月1日–9月30日"), regulation: t("No fishing", "禁止垂钓"), kind: "closed", start: [7, 1], end: [9, 30] },
+      { species: ["All"], season: t("Dec 1 to May 31", "12月1日–5月31日"), regulation: t("No fishing", "禁止垂钓"), kind: "closed", start: [12, 1], end: [5, 31] },
     ],
   },
   {
