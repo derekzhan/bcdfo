@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CatchChecker from "./CatchChecker";
+import NoticeDetails from "./NoticeDetails";
 import {
   currentKind,
   defaultRegionId,
@@ -597,6 +598,7 @@ function RuleList({ spot, language }: { spot: FishingSpot; language: Language })
               <span className="rule-label">{ui[language].regulation}</span>
               <strong>{item.regulation[language]}</strong>
             </div>
+            <NoticeDetails rule={item} language={language} />
           </div>
         );
       })}

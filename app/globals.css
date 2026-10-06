@@ -1022,7 +1022,7 @@ footer a {
     grid-template-columns: 0.8fr 1fr;
   }
 
-  .rule-row > div:last-child {
+  .rule-row > div:nth-child(3) {
     grid-column: 1 / -1;
   }
 
@@ -2630,4 +2630,77 @@ input:focus-visible {
   .catch-sheet {
     animation: none;
   }
+}
+
+.notice-list {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 5px;
+}
+
+.notice {
+  border-top: 1px dashed #d6e2dd;
+  padding-top: 6px;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.notice summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  color: var(--green);
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+
+.notice summary::-webkit-details-marker {
+  display: none;
+}
+
+.notice summary::before {
+  content: "▸";
+}
+
+.notice[open] summary::before {
+  content: "▾";
+}
+
+.catch-basis li .notice summary span {
+  color: inherit;
+}
+
+.notice .notice-earlier,
+.catch-basis li .notice .notice-earlier {
+  padding: 1px 6px;
+  border-radius: 999px;
+  color: #8a4b00;
+  background: #fff1d6;
+  font-size: 10px;
+}
+
+.notice p {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+}
+
+.notice p.notice-subject {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.notice p.notice-warning {
+  padding: 6px 8px;
+  border-radius: 8px;
+  color: #6b3a00;
+  background: #fff6e5;
+}
+
+.notice a {
+  display: inline-block;
+  margin-top: 6px;
+  color: var(--green);
+  font-weight: 700;
 }

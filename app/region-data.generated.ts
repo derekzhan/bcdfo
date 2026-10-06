@@ -5,7 +5,7 @@
 // Water names and boundary descriptions stay in DFO's English wording; only
 // species, dates and limits are translated.
 
-import type { FishingSpot, LocalizedText, RegionInfo } from "./fishing-data";
+import type { FisheryNotice, FishingSpot, LocalizedText, RegionInfo } from "./fishing-data";
 
 const t = (en: string, zh: string): LocalizedText => ({ en, zh });
 
@@ -26,6 +26,279 @@ export const sourceModified: Record<string, string> = {
 export const handWrittenFingerprints: Record<string, string> = {
   "2": "6a13d1d71b12f51d",
 };
+
+// The fishery notices the tables cite by number, every region included.
+// Only the order itself is kept; DFO's closing boilerplate is dropped.
+const noticeList: FisheryNotice[] = [
+  {
+    id: "FN0435",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=352752&ID=all",
+    subject: "FN0435-RECREATIONAL - Salmon - Sockeye - Portion of the Somass River at Somass Park - Region 1 - Opening - May 1 to July 23, 2026",
+    sent: "2026-04-27",
+    order: [
+      "Effective daily from 05:00 hours to 22:00 hours May 1 to July 23, 2026, the daily limit of Sockeye Salmon is one (1) per day in that portion of the Somass River from the northern boundary of Somass Park (off Service Road), downstream to the southern boundary of Somass Park. Square boundary signs may be present to delineate these boundaries.",
+      "On April 24, 2026, DFO staff met with the Area 23 Harvest Committee to discuss fishery planning for Area 23 Somass Sockeye. The attendees at this meeting were representatives from the Tseshaht, Hupacasath and Maa-nulth First Nations, the commercial gill net and seine fisheries, and the Alberni Valley Sport Fishing Advisory Committee. Based on science advice, a Somass Sockeye pre-season management forecast of \"high\" (range: 700,000 to 1,000,000) was adopted. At this forecast fisheries are expected for all sectors this season.",
+      "The Somass Sockeye in-season stock assessment program will be in place in 2026. This program collects escapement, test fishing, catch and environmental information on a weekly basis. This information is collected and reviewed weekly for the duration of the season. This may lead to in-season management changes if conditions warrant.",
+      "Variation Order Numbers 2026-RCT-012, 2026-RCT-013, 2026-RFQ-167 in effect.",
+    ],
+  },
+  {
+    id: "FN0504",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=355075&ID=all",
+    subject: "FN0504-RECREATIONAL - Salmon - Coho - Region 1 - Stamp and Somass Rivers - Coho Management Measures - Effective August 25, 2026",
+    sent: "2026-05-22",
+    order: [
+      "For 2026, the West Coast of Vancouver Island (WCVI) wild Coho returns are expected to be \"low\", which will reduce wild retention opportunities in the Stamp and Somass Rivers as follows:",
+      "Effective August 25 to December 31, 2026, the daily limit for Coho is two (2) per day, hatchery marked only.",
+      "These measures do not include finfish closed areas, or other regulations that may be in effect in these waters during this time. Please check the DFO website referenced at the bottom of this notice for more information.",
+      "Please note that management measures could change pending in-season assessments of abundance. Any in-season changes will be announced by Fishery Notice and reflected in the B.C. Sport Fishing Guide.",
+      "Variation Order: 2026-RFQ-238",
+      "Fishers are reminded the minimum size for Coho is 30 cm.",
+    ],
+  },
+  {
+    id: "FN0679",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=359905&ID=all",
+    subject: "FN0679-RECREATIONAL Salmon - Sockeye - Region 6 - Portions of the Skeena River watershed - Open - Effective July 10, 2026",
+    sent: "2026-07-08",
+    order: [
+      "The following waters of the Skeena River watershed will open for two (2) Sockeye per day as follows:",
+      "Effective August 1, 2026 at 00:01 hours to 23:59 hours September 15, 2026.",
+      "The waters of the Babine Lake, not including tributaries and excluding those waters within a 400 m radius of the following tributary streams: Morrison Creek, Six Mile Creek, Pierre Creek, Pendleton Creek, Hazelwood Creek, Twain Creek, Tachek Creek, Five Mile Creek, Four Mile Creek, Sockeye Creek, Big Loon Creek, Tsezakwa Creek. Also closed east of a line from Gullwing Creek to the south shore of Babine Lake.",
+      "Note: Barbed hooks are authorized in Babine Lake.",
+      "Effective August 1, 2026 at 00:01 hours to 23:59 hours August 14, 2026",
+      "Fulton River.",
+      "Effective August 1, 2026 at 00:01 hours to 23:59 hours August 14, 2026",
+      "Pinkut Creek, downstream of fishing boundary signs located approx. 25m downstream of fish counting fence.",
+      "Effective July 10, 2026 at 00:01 hours to 23:59 hours September 15, 2026",
+      "Skeena River mainstem waters only, upstream of CNR bridge at Terrace, B.C. to a point above the confluence with the Babine River (Excluding Skeena River mainstem waters near the Kitwanga River mouth, from Mill Creek upstream to the Highway 37 bridge. Also excluding all waters within the 4 fishing boundary signs located at the confluence of the Kispiox River with the Skeena River).",
+      "Effective July 10, 2026 at 00:01 hours to 23:59 hours September 15, 2026",
+      "Skeena River mainstem waters only, downstream of CNR Railway bridge at Terrace, B.C. (Excluding the Skeena River mainstem waters near the Kitsumkalum River mouth, from the confluence with the Zymagotitz (also known as the Zymachord River) upstream to the Classified Waters boundary at the top of Hells Gate until 23:59 hours Aug 31, 2026.",
+      "Variation Order #: 2026-RCT-302 and 2026-RFQ-303.",
+    ],
+  },
+  {
+    id: "FN0787",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=361827&ID=all",
+    subject: "FN0787-RECREATIONAL Salmon - Sockeye - Region 6 - Portions of the Skeena River watershed - Daily limit increase - Effective July 29, 2026",
+    sent: "2026-07-28",
+    order: [
+      "The recreational daily limit for Sockeye will increase to four (4) per day in the following waters of the Skeena River watershed as follows:",
+      "Effective July 29, 2026 at 00:01 hours to 23:59 hours September 15, 2026",
+      "Skeena River mainstem waters only, upstream of CNR bridge at Terrace, B.C. to a point above the confluence with the Babine River (Excluding Skeena River mainstem waters near the Kitwanga River mouth, from Mill Creek upstream to the Highway 37 bridge and all waters within the 4 fishing boundary signs located at the confluence of the Kispiox River with the Skeena River)",
+      "Effective July 29, 2026 at 00:01 hours to 23:59 hours September 15, 2026",
+      "Skeena River mainstem waters only, downstream of CNR Railway bridge at Terrace, B.C. (Excluding the Skeena River mainstem waters near the Kitsumkalum River mouth, from the confluence with the Zymagotitz (also known as the Zymachord River) upstream to the Classified Waters boundary at the top of Hells Gate until 23:59 hours Aug 31, 2026)",
+      "Variation Order #: 2026-RFQ-323",
+    ],
+  },
+  {
+    id: "FN0793",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=361883&ID=all",
+    subject: "FN0793-RECREATIONAL Salmon - Sockeye - Region 6 - Babine River - Open - Effective August 1, 2026",
+    sent: "2026-07-29",
+    order: [
+      "Effective August 1, 2026 at 00:01 hours to 23:59 hours August 31, 2026 the Babine River will open to recreational Sockeye fishing with a daily limit of 2 Sockeye per day.",
+      "Variation Order #: 2026-RCT-325 and 2026-RFQ-326 in effect.",
+    ],
+  },
+  {
+    id: "FN0851",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=329370&ID=all",
+    subject: "FN0851-RECREATIONAL - Salmon - Region 7 - Nechako River in Prince George - Sockeye and Pink Salmon Opportunity - Effective August 22, 2025",
+    sent: "2025-08-20",
+    order: [
+      "Effective one hour before sunrise on August 22, 2025 until one hour after sunset on September 21, 2025, you may retain two (2) Sockeye salmon per day and four (4) Pink salmon per day in that portion of the Nechako River from the downstream edge of the Foothills Boulevard Bridge to the boundary signs at the confluence with the Fraser River.",
+      "Fishing is permitted during daylight hours only. Day light hours only refers to one hour before sunrise to one hour after sunset. Reference to sunrise and sunset means the times for those events as calculated by the National Research Council of Canada and published daily at https://weather.gc.ca/city/pages/bc-79_metric_e.html.",
+      "Anglers fishing for salmon in the are required to take every measure possible to ensure that their fishing activities avoid impacts on Chinook and Coho salmon. Any Chinook or Coho encountered must be released with the least possible harm. The recreational community is requested to fish selectively when fishing for other salmon species. The first principle of selective harvest is to avoid catching non-targeted stocks. This means that anglers are requested to use angling methods that do not catch Chinook or Coho.",
+      "Fishing is permissible during daylight hours only. Incidentally caught Chinook, Coho, and Steelhead may not be retained.",
+      "You may not use bait when fishing in the Nechako River.",
+      "Variation Orders: 2025-RCT-340, 2025-RFQ-341, and 2025-GMB-345 in effect",
+    ],
+  },
+  {
+    id: "FN0868",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=363587&ID=all",
+    subject: "FN0868-RECREATIONAL Salmon - Sockeye - Region 6 - Portions of the Skeena River watershed - Daily Limit Decrease - Effective Aug 17, 2026",
+    sent: "2026-08-17",
+    order: [
+      "The recreational daily limit for Sockeye will decrease to two (2) per day in the following waters of the Skeena River watershed as follows:",
+      "Effective Aug 17, 2026 at 00:01 hours to 23:59 hours September 15, 2026",
+      "Skeena River mainstem waters only, upstream of CNR bridge at Terrace, B.C. to a point above the confluence with the Babine River (Excluding Skeena River mainstem waters near the Kitwanga River mouth, from Mill Creek upstream to the Highway 37 bridge and all waters within the 4 fishing boundary signs located at the confluence of the Kispiox River with the Skeena River).",
+      "Effective Aug 17, 2026 at 00:01 hours to 23:59 hours September 15, 2026",
+      "Skeena River mainstem waters only, downstream of CNR Railway bridge at Terrace, B.C. (Excluding the Skeena River mainstem waters near the Kitsumkalum River mouth, from the confluence with the Zymagotitz (also known as the Zymachord River) upstream to the Classified Waters boundary at the top of Hells Gate until 23:59 hours Aug 31, 2026).",
+      "Variation Order #: 2026-RFQ-345",
+    ],
+  },
+  {
+    id: "FN0869",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=363595&ID=all",
+    subject: "FN0869-RECREATIONAL Salmon - Sockeye - Region 6 - Babine River - Closed - Effective August 17, 2026",
+    sent: "2026-08-17",
+    order: [
+      "Effective August 17, 2026 at 00:01 hours until 23:59 hours March 31, 2027 the Babine River will be closed to recreational fishing for Sockeye Salmon.",
+      "Variation Order #: 2026-RCT-344",
+    ],
+  },
+  {
+    id: "FN0897",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=364509&ID=all",
+    subject: "FN0897-RECREATIONAL Salmon - Coho and Pink - Region 6 - Kispiox River - Closed - Effective August 24, 2026",
+    sent: "2026-08-21",
+    order: [
+      "Effective August 24, 2026 at 00:01 hours until 23:59 hours March 31, 2027 the Kispiox River will be closed to recreational fishing for Coho and Pink salmon.",
+      "Variation Order #: 2026-RCT-364 and 2026-RFQ-365",
+    ],
+  },
+  {
+    id: "FN0905",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=364628&ID=all",
+    subject: "FN0905-RECREATIONAL - Salmon - Pink - Adam and Eve Rivers - Region 1 - Opening - Effective August 25, 2026",
+    sent: "2026-08-24",
+    order: [
+      "Effective 00:01 hours August 25, 2026, until 23:59 hours September 30, 2026, the daily limit for Pink Salmon is four (4) per day. These measures apply to the following waters:",
+      "Adam and Eve Rivers",
+      "Variation Order: 2026-RFQ-366",
+    ],
+  },
+  {
+    id: "FN0919",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=365178&ID=all",
+    subject: "FN0919-RECREATIONAL Salmon - Sockeye - Region 6 - Portions of the Skeena River watershed - Closed - Effective Aug 28, 2026",
+    sent: "2026-08-27",
+    order: [
+      "Recreational fishing for Sockeye will close in the following waters of the Skeena River watershed as follows:",
+      "Effective August 28, 2026 at 00:01 hours to 23:59 hours March 31, 2027",
+      "Babine Lake",
+      "Effective August 28, 2026 at 00:01 hours to 23:59 hours March 31, 2027",
+      "Skeena River mainstem waters only, upstream of CNR bridge at Terrace, B.C. to a point above the confluence with the Babine River.",
+      "Effective August 28, 2026 at 00:01 hours to 23:59 hours March 31, 2027",
+      "Skeena River mainstem waters only, downstream of CNR Railway bridge at Terrace, B.C.",
+      "Variation Orders #: 2026-RCT-370 and 2026-RFQ-371 are in effect.",
+    ],
+  },
+  {
+    id: "FN0937",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=365606&ID=all",
+    subject: "FN0937-RECREATIONAL - Salmon - Coho - Big Qualicum River - Region 1 - Opening - Effective September 1, 2026",
+    sent: "2026-08-31",
+    order: [
+      "Effective 00:01 hours September 1, 2026, until 23:59 hours December 31, 2026, the daily limit for Coho Salmon is four (4) per day, hatchery-marked only. These measures apply to the following waters:",
+      "Those waters upstream of the Big Qualicum Hatchery upper weir (located approximately 125 m downstream of the E&N railway bridge).",
+      "Reminder:",
+      "No fishing downstream of the upper weir (located approximately 125 m downstream of the E&N railway bridge) to the QFN boundary fence located approximately 100 m downstream of the hatchery counting fence, August 15 through October 15.",
+      "No fishing the waters below the QFN boundary fence, downstream to the Hwy 19A bridge, year-round.",
+      "Variation Order: 2026-RFQ-374 in effect.",
+    ],
+  },
+  {
+    id: "FN0938",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=365613&ID=all",
+    subject: "FN0938-RECREATIONAL - Salmon - Coho - Puntledge and Courtenay Rivers - Region 1 - Opening - Effective September 1, 2026",
+    sent: "2026-08-31",
+    order: [
+      "Effective 00:01 hours September 1, 2026, until 23:59 hours December 31, 2026, the daily limit for Coho Salmon is four (4) per day, hatchery-marked only. These measures apply to the following waters:",
+      "The Puntledge and Courtenay Rivers downstream from the base of Stotan Falls (approximately 450 m downstream of the Duncan Bay Mainline logging road bridge).",
+      "Reminder:",
+      "No fishing year-round from signs located 50m upstream of the BC Hydro generating station tailrace to signs located 75m downstream of the Puntledge River hatchery fish fence (total distance approx. 500m)",
+      "No fishing year-round between fishing boundary signs located 100m upstream and downstream of the confluence with Morrison Creek.",
+      "Variation Order: 2026-RFQ-374 in effect.",
+    ],
+  },
+  {
+    id: "FN0939",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=365620&ID=all",
+    subject: "FN0939-RECREATIONAL - Salmon - Coho - Campbell and Quinsam Rivers - Region 1 - Opening - Effective September 1, 2026",
+    sent: "2026-08-31",
+    order: [
+      "Effective 00:01 hours September 1, 2026, until 23:59 hours December 31, 2026, the daily limit for Coho Salmon is four (4) per day, hatchery-marked only. These measures apply to the following waters:",
+      "The Campbell River downstream of the confluence with the Quinsam River and;",
+      "The Quinsam River.",
+      "Reminder:",
+      "No fishing year round in the Quinsam River from the boundary signs at the power line crossing (approximately 25 m upstream of the Quinsam Hatchery weir) to fishing boundary signs approximately 300 m downstream of the weir.",
+      "No fishing in the Campbell River from a fishing boundary sign at the end of Maple Street downstream to the fishing boundary sign at the cement block",
+      "Variation Order: 2026-RFQ-374 in effect.",
+    ],
+  },
+  {
+    id: "FN0951",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=365946&ID=all",
+    subject: "FN0951-RECREATIONAL Salmon - Coho - Region 6 - Kispiox River - Open - Effective September 4, 2026",
+    sent: "2026-09-02",
+    order: [
+      "Effective September 4, 2026 at 00:01 hours until 23:59 hours of October 15, 2026 the Kispiox River (including tributaries) will be open to Coho fishing with a daily limit of four (4) per day, only two (2) over 50cm.",
+      "Variation Order #: 2026-RCT-400 and 2026-RFQ-401 in effect.",
+    ],
+  },
+  {
+    id: "FN0952",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=365953&ID=all",
+    subject: "FN0952-RECREATIONAL - Salmon - Coho - Nanaimo River - Region 1 - Management Measures - Effective October 16, 2026",
+    sent: "2026-09-02",
+    order: [
+      "Effective 00:01 hours October 15, 2026, until further notice, the daily limit for Coho salmon is zero (0) per day in the Nanaimo River and its tributaries except for the portions listed below:",
+      "Effective 00:01 hours October 16, 2026, until 23:59 hours December 31, 2026, the daily limit for Coho salmon is four (4) per day, hatchery-marked only. These measures apply to the following waters:",
+      "The Nanaimo River from the upstream side of the Cedar Road Bridge, upstream to the downstream side of the Highway 1 overpass.",
+      "Variation Order: 2026-RFQ-396 in effect.",
+    ],
+  },
+  {
+    id: "FN0960",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=366086&ID=all",
+    subject: "FN0960-RECREATIONAL - SALMON - CHINOOK SALMON - CAPILANO RIVER (BC LOWER MAINLAND) - REGION 2 - CHANGE TO SIZE RESTRICTIONS FOR HATCHERY-MARKED CHINOOK - EFFECTIVE SEPTEMBER 5 TO NOVEMBER 30, 2026",
+    sent: "2026-09-03",
+    order: [
+      "For the Capilano River, existing size restrictions on hatchery marked Chinook salmon retained in the recreational fishery will be removed effective September 5, 2026 to November 30, 2026.",
+      "This management action is recommended in response to updated stock assessment information, increased hatchery contribution, and stable escapement trends for Lower Fraser Chinook populations. The proposed measure is consistent with the management approach outlined in the 2026-2027 Integrated Fisheries Management Plan (IFMP) for Southern British Columbia Pacific Salmon.",
+      "Variation Order number 2026-RFQ-376 is in effect",
+    ],
+  },
+  {
+    id: "FN0961",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=366093&ID=all",
+    subject: "FN0961-RECREATIONAL - SALMON - CHINOOK SALMON - COQUITLAM RIVER (BC LOWER MAINLAND) - REGION 2 - CHANGE TO RETENTION LIMITS FOR HATCHERY-MARKED CHINOOK - EFFECTIVE 00:01 HOURS SEPTEMBER 5 TO DECEMBER 31, 2026",
+    sent: "2026-09-03",
+    order: [
+      "For the Coquitlam River, the daily retention limit for hatchery marked Chinook salmon will increase from zero (0) to one (1) per day, with no size restriction, effective September 5, 2026 to December 31, 2026.",
+      "This management action is recommended in response to updated stock assessment information, increased hatchery contribution, and stable escapement trends for Lower Fraser Chinook populations. The proposed measure is consistent with the management approach outlined in the 2026-2027 Integrated Fisheries Management Plan (IFMP) for Southern British Columbia Pacific Salmon.",
+      "Variation Order number 2026-RFQ-376 is in effect.",
+    ],
+  },
+  {
+    id: "FN1008",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=367431&ID=all",
+    subject: "FN1008-Recreational - Salmon - Chinook Salmon - Coquitlam River (BC Lower Mainland) - Region 2 - Change to retention limits for unmarked Chinook - Effective 00:01 Hours September 19, 2026 to December 31, 2026",
+    sent: "2026-09-16",
+    order: [
+      "Further to FN0961, for the Coquitlam River, the daily retention limit for unmarked Chinook salmon will increase from zero (0) to one (1) per day, with no size restriction beyond the minimum 30 cm general requirement, effective September 19, 2026 to December 31, 2026.",
+      "This management action is recommended in response to updated stock assessment information, increased hatchery contribution, and stable escapement trends for Lower Fraser Chinook populations. The proposed measure is consistent with the management approach outlined in the 2026-2027 Integrated Fisheries Management Plan (IFMP) for Southern British Columbia Pacific Salmon.",
+      "Variation order number 2026-RFQ-409 in effect.",
+    ],
+  },
+  {
+    id: "FN1013",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=367531&ID=all",
+    subject: "FN1013-RECREATIONAL - Salmon - Coho - Stamp and Somass rivers - Region 1 - Coho Management Measures - Effective September 19, 2026",
+    sent: "2026-09-17",
+    order: [
+      "Effective September 19, 2026 until December 31, 2026 the daily limit of Coho Salmon is two (2) per day, one (1) of which can be unmarked in open portions of the Stamp and Somass rivers.",
+      "Variation Order: 2026-RFQ-411.",
+    ],
+  },
+  {
+    id: "FN1069",
+    url: "https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=368896&ID=all",
+    subject: "FN1069-RECREATIONAL - Salmon - Coho - Stamp River - Region 1 - Daily Limit - Effective October 3, 2026",
+    sent: "2026-09-29",
+    order: [
+      "Effective October 3, 2026 until December 31, 2026 the daily limit of Coho Salmon is two (2) per day, two (2) of which can be unmarked in open portions of the Stamp River.",
+      "Variation Order Number: 2026-RFQ-437 in effect.",
+    ],
+  },
+];
+
+export const fisheryNotices: Record<string, FisheryNotice> = Object.fromEntries(
+  noticeList.map((notice) => [notice.id, notice]),
+);
 
 export const generatedRegions: RegionInfo[] = [
   {

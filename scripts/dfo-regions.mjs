@@ -40,6 +40,71 @@ export async function fetchRegion(slug, { refresh = false } = {}) {
   return html;
 }
 
+export const noticeUrlFor = (docId) =>
+  `https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=${docId}&ID=all`;
+
+// A table cell cites the fishery notice that set or changed its limit as a
+// link such as FN1069, pointing at DFO's notice system by document id. Only
+// links inside the rules table count; a notice mentioned elsewhere on the page
+// governs no row here. Some links still use an older internal host, so only
+// the document id is kept and every notice is linked through the public host.
+export function parseNoticeLinks(html) {
+  const links = new Map();
+  const tables = (html.match(/<table[\s\S]*?<\/table>/gi) ?? []).join("\n");
+  const pattern = /<a\s[^>]*href="[^"]*fns-sap[^"]*DOC_ID=(\d+)[^"]*"[^>]*>\s*FN\s?(\d{3,4})\s*<\/a>/gi;
+  for (const match of tables.matchAll(pattern)) {
+    const id = `FN${match[2].padStart(4, "0")}`;
+    if (!links.has(id)) links.set(id, { id, docId: match[1], url: noticeUrlFor(match[1]) });
+  }
+  return [...links.values()];
+}
+
+// A published notice is never edited in place (DFO issues a new one instead),
+// so a cached copy is kept for good and only notices not seen before are
+// fetched. Returns null when DFO cannot be reached so one missing notice does
+// not stop the rules from refreshing.
+export const noticeCacheFile = (docId) => join(CACHE, "notices", `${docId}.html`);
+
+export async function fetchNotice(docId, url) {
+  const file = noticeCacheFile(docId);
+  mkdirSync(dirname(file), { recursive: true });
+  if (existsSync(file)) return readFileSync(file, "utf8");
+  try {
+    const response = await fetch(url, { headers: { "user-agent": UA }, signal: AbortSignal.timeout(20000) });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const html = await response.text();
+    writeFileSync(file, html, "utf8");
+    return html;
+  } catch (error) {
+    console.warn(`notice ${docId}: ${error.message}; keeping only its link`);
+    return null;
+  }
+}
+
+const NOTICE_MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+
+// The notice body is a <pre> block: the order itself comes first, then a
+// "NOTES AND REMINDERS" boilerplate shared by every notice, which is dropped.
+export function parseNotice(html) {
+  const subject = html.match(/id="subject"[^>]*>([\s\S]*?)<\/div>/i);
+  const body = html.match(/<pre[^>]*>([\s\S]*?)<\/pre>/i);
+  const sent = html.match(/Sent\s+([A-Z][a-z]+)\s+(\d{1,2}),\s+(\d{4})/);
+  if (!subject || !body || !sent) throw new Error("the DFO notice page has no subject, body or sent date");
+  const month = NOTICE_MONTHS.indexOf(sent[1].toLowerCase()) + 1;
+  if (!month) throw new Error(`unknown month in the notice sent date: ${sent[1]}`);
+  const order = body[1]
+    .split(/^\s*(?:NOTES AND REMINDERS|FOR MORE INFORMATION)\s*:/im)[0]
+    .split(/\r?\n/)
+    .map((line) => text(line))
+    .filter(Boolean);
+  if (!order.length) throw new Error("the DFO notice body is empty");
+  return {
+    subject: text(subject[1]),
+    sent: `${sent[3]}-${String(month).padStart(2, "0")}-${sent[2].padStart(2, "0")}`,
+    order,
+  };
+}
+
 const ENTITIES = {
   nbsp: " ",
   amp: "&",

@@ -4,7 +4,7 @@
 
 import assert from "node:assert/strict";
 import test from "node:test";
-import { parseNotes, parseTable } from "../scripts/dfo-regions.mjs";
+import { parseNoticeLinks, parseNotes, parseNotice, parseTable } from "../scripts/dfo-regions.mjs";
 
 const table = `
 <table>
@@ -124,4 +124,52 @@ test("keeps the rules from the preamble and drops the site furniture", () => {
   assert.equal(notes.length, 2);
   assert.match(notes[0], /daylight hours/);
   assert.match(notes[1], /100 metres/);
+});
+
+test("takes only the fishery notices the rules table cites", () => {
+  const links = parseNoticeLinks(`
+    <p>See <a href="https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&amp;DOC_ID=111111&amp;ID=all">FN0001</a> for tidal waters.</p>
+    <table>
+      <tr><td>Stamp River</td><td>Coho</td><td>Oct 3 to Dec 31</td>
+        <td>2 per day<br><a href="https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&amp;DOC_ID=368896&amp;ID=all">FN1069</a></td></tr>
+      <tr><td>Somass River</td><td>Sockeye</td><td>May 1 to July 23</td>
+        <td>1 per day<br><a href="https://www-ops2.pac.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=352752&ID=all">FN 435</a></td></tr>
+      <tr><td>Stamp River</td><td>Coho</td><td>Aug 25 to Oct 2</td>
+        <td><a href="https://notices.dfo-mpo.gc.ca/fns-sap/index-eng.cfm?pg=view_notice&DOC_ID=368896&ID=all">FN1069</a></td></tr>
+    </table>
+  `);
+
+  assert.deepEqual(
+    links.map(({ id, docId }) => [id, docId]),
+    [
+      ["FN1069", "368896"],
+      ["FN0435", "352752"],
+    ],
+  );
+  assert.ok(links.every((link) => link.url.startsWith("https://notices.dfo-mpo.gc.ca/fns-sap/")));
+});
+
+test("keeps the order from a fishery notice and drops DFO's boilerplate", () => {
+  const notice = parseNotice(`
+    <div class="span-5" id="subject">
+        FN1069-RECREATIONAL - Salmon - Coho - Stamp River - Region 1 - Daily Limit - Effective October 3, 2026
+    </div>
+    <p><br />
+      <pre>Effective October 3, 2026 until December 31, 2026 the daily limit of Coho Salmon is two (2) per day, two (2) of which can be unmarked in open portions of the Stamp River.
+Variation Order Number: 2026-RFQ-437 in effect.
+NOTES AND REMINDERS:
+Barbless hooks are required when fishing for salmon in tidal and non-tidal waters of British Columbia.
+FOR MORE INFORMATION:
+Please contact the nearest Fisheries and Oceans Canada office</pre>
+    </p>
+    <p>Fisheries &amp; Oceans Operations Center - FN1069<br />Sent September 29, 2026 at 1631</p>
+  `);
+
+  assert.equal(notice.subject, "FN1069-RECREATIONAL - Salmon - Coho - Stamp River - Region 1 - Daily Limit - Effective October 3, 2026");
+  assert.equal(notice.sent, "2026-09-29");
+  assert.deepEqual(notice.order, [
+    "Effective October 3, 2026 until December 31, 2026 the daily limit of Coho Salmon is two (2) per day, two (2) of which can be unmarked in open portions of the Stamp River.",
+    "Variation Order Number: 2026-RFQ-437 in effect.",
+  ]);
+  assert.throws(() => parseNotice("<html><body>Service unavailable</body></html>"), /no subject/);
 });

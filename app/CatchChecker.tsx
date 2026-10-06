@@ -21,6 +21,7 @@ import {
   type Language,
   type LocalizedText,
 } from "./fishing-data";
+import NoticeDetails from "./NoticeDetails";
 
 const provincialRegulations =
   "https://www2.gov.bc.ca/gov/content/sports-culture/recreation/fishing-hunting/fishing/fishing-regulations";
@@ -334,6 +335,7 @@ function RuleCitation({ rule, language }: { rule: FishingRule; language: Languag
     <li>
       <span>{rule.species.map((name) => speciesName[language][name]).join(listJoin(language))} · {rule.season[language]}</span>
       <strong>{rule.regulation[language]}</strong>
+      <NoticeDetails rule={rule} language={language} />
     </li>
   );
 }

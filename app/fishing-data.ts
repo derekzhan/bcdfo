@@ -1,4 +1,4 @@
-import { generatedRegions, generatedSpots, sourceModified } from "./region-data.generated";
+import { fisheryNotices, generatedRegions, generatedSpots, sourceModified } from "./region-data.generated";
 import { waterwayPaths } from "./waterway-paths";
 
 export type Language = "en" | "zh";
@@ -60,6 +60,17 @@ export type FishingSpot = {
   section?: LocalizedText;
   notes?: LocalizedText[];
   sourceAnchor?: string;
+};
+
+// A DFO fishery notice cited by number (FN1069) in a rule. The order is kept
+// in DFO's English: it is the legal text, and the notice is only fetched when
+// DFO's notice site answered, so a notice may carry nothing but its link.
+export type FisheryNotice = {
+  id: string;
+  url: string;
+  subject?: string;
+  sent?: string;
+  order?: string[];
 };
 
 export type RegionInfo = {
@@ -507,7 +518,10 @@ export const regionById = (regionId: string) =>
 // the region they are actually looking at.
 export function sourceModifiedFor(regionId: string, language: Language) {
   const iso = sourceModified[regionId];
-  if (!iso) return null;
+  return iso ? formatIsoDate(iso, language) : null;
+}
+
+export function formatIsoDate(iso: string, language: Language) {
   const [year, month, day] = iso.split("-").map(Number);
   if (language === "zh") return `${year}年${month}月${day}日`;
   return new Date(Date.UTC(year, month - 1, day)).toLocaleDateString("en-CA", {
@@ -515,6 +529,16 @@ export function sourceModifiedFor(regionId: string, language: Language) {
     month: "short",
     day: "numeric",
     timeZone: "UTC",
+  });
+}
+
+// The notices a rule cites, in the order it cites them. Region 2 is written by
+// hand, so its numbers are looked up the same way as the generated rows'.
+export function noticesFor(rule: FishingRule): FisheryNotice[] {
+  const ids = rule.regulation.en.match(/FN ?\d{3,4}/g) ?? [];
+  return [...new Set(ids.map((id) => `FN${id.slice(2).trim().padStart(4, "0")}`))].flatMap((id) => {
+    const notice = fisheryNotices[id];
+    return notice ? [notice] : [];
   });
 }
 
