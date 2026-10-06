@@ -135,6 +135,10 @@ const LIMIT_RULES = [
     /^(\d+) per day, hatchery[- ]marked (?:fish )?only$/i,
     (m) => `每日 ${m[1]} 条，且须有孵化场标记`,
   ],
+  [
+    /^(\d+) per day, (\d+) of which (?:can|may) be unmarked$/i,
+    (m) => `每日 ${m[1]} 条，其中无孵化场标记的最多 ${m[2]} 条`,
+  ],
   [/^(\d+) per day, bait ban$/i, (m) => `每日 ${m[1]} 条，禁止使用饵料`],
   [
     /^(\d+) per day, from (\d{2}:\d{2})\s*h until (\d{2}:\d{2})\s*h only$/i,

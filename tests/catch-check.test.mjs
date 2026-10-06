@@ -43,6 +43,7 @@ test("reads every retention wording DFO uses today", () => {
     "2 hatchery marked per day": { daily: 2, markedOnly: true },
     "4 hatchery-marked per day FN0937": { daily: 4, markedOnly: true },
     "2 per day, 1 of which can be unmarked FN1013": { daily: 2, markedOnly: true, unmarkedMax: 1 },
+    "2 per day, 2 of which can be unmarked FN1069": { daily: 2, markedOnly: true, unmarkedMax: 2 },
     "2 per day, 1 of which may be more than 77 cm. in length": { daily: 2, markedOnly: false, over: { cm: 77, max: 1 } },
     "2 per day, 1 of which may be more than 77cm in length.": { daily: 2, markedOnly: false, over: { cm: 77, max: 1 } },
     "2 per day, only 1 over 77 cm": { daily: 2, markedOnly: false, over: { cm: 77, max: 1 } },
