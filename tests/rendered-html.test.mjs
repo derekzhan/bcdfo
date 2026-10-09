@@ -433,6 +433,22 @@ test("opens the catch checker from the topbar and from the open reach", async ()
   );
 });
 
+test("lists the popular spots of the open reach and never quotes a limit for them", async () => {
+  const [html, popup] = await Promise.all([
+    (await render()).text(),
+    readFile(new URL("../app/PopularSpots.tsx", import.meta.url), "utf8"),
+  ]);
+
+  // Alouette above 216th opens expanded and has Davidson's Pool.
+  assert.match(html, /常去钓点/);
+  assert.match(html, /data-popular-show="alouette-upper-davidson-s-pool-hot-rocks"/);
+  assert.match(html, /能否带走、带几条只看上方的 DFO 规定/);
+
+  // The popup takes today's status from the reach and escapes the data.
+  assert.match(popup, /export function popularSpotPopup\(spot: PopularSpot, language: Language, todayLabel: string\)/);
+  assert.match(popup, /escape\(spot\.name\[language\]\)/);
+});
+
 test("dates each region from its own DFO page", async () => {
   const [html, generated, explorer, data] = await Promise.all([
     (await render()).text(),

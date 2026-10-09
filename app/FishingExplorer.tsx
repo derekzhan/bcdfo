@@ -7,6 +7,7 @@ import {
   ChevronDown,
   ExternalLink,
   Fish,
+  FishingHook,
   Flag,
   Globe,
   Languages,
@@ -26,6 +27,8 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CatchChecker from "./CatchChecker";
 import NoticeDetails from "./NoticeDetails";
+import PopularSpotList, { popularMarkerHtml, popularSpotPopup } from "./PopularSpots";
+import { popularSpotsOn } from "./popular-spots";
 import {
   currentKind,
   defaultRegionId,
@@ -106,6 +109,8 @@ const ui = {
       "Red lines are clipped to the boundaries the DFO table names, or show the whole mapped channel where the table lists a water with no specific area. They follow OpenStreetMap geometry for visual guidance and are not legal boundaries. Waters DFO does not locate stay text-and-marker only. Confirm written areas, notices, provincial rules and posted signs.",
     sourceNote: "Salmon rules only",
     locate: "Show my location",
+    popularToggle: "Show or hide popular spots",
+    popularLegend: "Popular spot",
     waters: "listed waters",
     liveNow: "with a current listing",
     listTitle: "Water directory",
@@ -171,6 +176,8 @@ const ui = {
     disclaimer: "红线严格裁剪到 DFO 表格写明的边界；表格未写具体范围时，红线覆盖该水域已测绘的全部主河道。红线基于 OpenStreetMap 几何，仅供直观参考，并非法律边界。DFO 未给出可定位范围的条目只显示文字与位置标记。出发前请核对文字范围、季中公告、省级规定及现场标志。",
     sourceNote: "仅限三文鱼规定",
     locate: "显示我的位置",
+    popularToggle: "显示或隐藏常去钓点",
+    popularLegend: "常去钓点",
     waters: "个 DFO 水域",
     liveNow: "个在表列日期内",
     listTitle: "水域目录",
@@ -225,12 +232,14 @@ function FishingMap({
   language,
   regionId,
   onSelect,
+  popularFocus,
 }: {
   spots: FishingSpot[];
   selected: FishingSpot | null;
   language: Language;
   regionId: string;
   onSelect: (id: string) => void;
+  popularFocus: { id: string; at: number } | null;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const leafletRef = useRef<typeof import("leaflet") | null>(null);
@@ -238,6 +247,10 @@ function FishingMap({
   const markerLayerRef = useRef<import("leaflet").LayerGroup | null>(null);
   const waterwayLayerRef = useRef<import("leaflet").LayerGroup | null>(null);
   const locationLayerRef = useRef<import("leaflet").LayerGroup | null>(null);
+  const popularLayerRef = useRef<import("leaflet").LayerGroup | null>(null);
+  const popularMarkersRef = useRef(new Map<string, import("leaflet").Marker>());
+  const [showPopular, setShowPopular] = useState(true);
+  const [popupOpen, setPopupOpen] = useState(false);
   const baseLayersRef = useRef<Record<Basemap, import("leaflet").TileLayer[]> | null>(null);
   // Counts map instances rather than flagging readiness: a hot update rebuilds
   // the map while React keeps state, and a boolean would stop re-running the
@@ -277,8 +290,10 @@ function FishingMap({
         satellite: build(basemapTiles.satellite),
       };
       leaflet.control.zoom({ position: "bottomright" }).addTo(map);
+      map.on("popupopen", () => setPopupOpen(true)).on("popupclose", () => setPopupOpen(false));
       waterwayLayerRef.current = leaflet.layerGroup().addTo(map);
       markerLayerRef.current = leaflet.layerGroup().addTo(map);
+      popularLayerRef.current = leaflet.layerGroup().addTo(map);
       locationLayerRef.current = leaflet.layerGroup().addTo(map);
       mapRef.current = map;
       setMapEpoch((epoch) => epoch + 1);
@@ -456,6 +471,57 @@ function FishingMap({
     });
   }, [selected, language, mapEpoch]);
 
+  // Popular spots are drawn for the open reach only: across a whole region they
+  // would bury the regulation markers. One the card asked for is drawn even
+  // with the layer switched off, since the reader asked to see that one.
+  const popularHere = useMemo(() => (selected ? popularSpotsOn(selected.id) : []), [selected]);
+  useEffect(() => {
+    const L = leafletRef.current;
+    const layer = popularLayerRef.current;
+    if (!L || !layer) return;
+    layer.clearLayers();
+    popularMarkersRef.current.clear();
+    if (!selected) return;
+    const todayLabel = ui[language][currentKind(selected)];
+    // The map's own controls sit along the top, so a popup is kept short and
+    // panned clear of them; the legend steps aside while a popup is open.
+    const narrowMap = (mapRef.current?.getSize().x ?? 0) < 520;
+    const popupOptions = {
+      maxWidth: 270,
+      maxHeight: narrowMap ? 230 : 340,
+      className: "popular-popup-shell",
+      autoPanPaddingTopLeft: L.point(12, narrowMap ? 120 : 72),
+      autoPanPaddingBottomRight: L.point(12, 40),
+    };
+    popularHere
+      .filter((spot) => showPopular || spot.id === popularFocus?.id)
+      .forEach((spot) => {
+        const marker = L.marker(spot.coordinates, {
+          icon: L.divIcon({
+            className: "marker-shell",
+            html: popularMarkerHtml(spot.name[language]),
+            iconSize: [30, 30],
+            iconAnchor: [15, 15],
+          }),
+          keyboard: true,
+          zIndexOffset: 500,
+        });
+        marker.bindTooltip(spot.name[language], { direction: "top", offset: [0, -14], opacity: 0.96 });
+        marker.bindPopup(popularSpotPopup(spot, language, todayLabel), popupOptions);
+        marker.addTo(layer);
+        popularMarkersRef.current.set(spot.id, marker);
+      });
+  }, [selected, popularHere, showPopular, popularFocus, language, mapEpoch]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !popularFocus) return;
+    const marker = popularMarkersRef.current.get(popularFocus.id);
+    if (!marker) return;
+    map.flyTo(marker.getLatLng(), Math.max(map.getZoom(), 15), { duration: 0.6 });
+    map.once("moveend", () => marker.openPopup());
+  }, [popularFocus, mapEpoch]);
+
   const locate = () => {
     setLocationError(false);
     navigator.geolocation?.getCurrentPosition(
@@ -488,7 +554,7 @@ function FishingMap({
 
   return (
     <div
-      className={`map-wrap${basemap === "satellite" ? " is-satellite" : ""}${fullscreen ? " is-fullscreen" : ""}`}
+      className={`map-wrap${basemap === "satellite" ? " is-satellite" : ""}${fullscreen ? " is-fullscreen" : ""}${popupOpen ? " has-popup" : ""}`}
     >
       {/* Leaflet adds its own classes to this node, so its className has to stay
           a constant: re-rendering it would wipe leaflet-container and with it
@@ -522,6 +588,19 @@ function FishingMap({
               );
             })}
           </div>
+          {popularHere.length > 0 && (
+            <button
+              type="button"
+              className={`map-location-button popular-toggle${showPopular ? " is-active" : ""}`}
+              onClick={() => setShowPopular((on) => !on)}
+              aria-pressed={showPopular}
+              aria-label={ui[language].popularToggle}
+              title={ui[language].popularToggle}
+              data-popular-toggle
+            >
+              <FishingHook size={17} />
+            </button>
+          )}
           <button type="button" className="map-location-button" onClick={locate} aria-label={ui[language].locate}>
             <LocateFixed size={17} />
           </button>
@@ -566,6 +645,9 @@ function FishingMap({
       <div className="map-legend" aria-label={language === "zh" ? "地图图例" : "Map legend"}>
         <span className="boundary-legend"><i>{language === "zh" ? "起" : "S"}</i>{ui[language].boundaryStart}</span>
         <span className="boundary-legend is-reference"><i>{language === "zh" ? "参" : "R"}</i>{ui[language].referencePoint}</span>
+        {popularHere.length > 0 && (
+          <span className="popular-legend"><i><FishingHook size={11} /></i>{ui[language].popularLegend}</span>
+        )}
         {(["retain", "release", "gear", "closed", "pending", "inactive"] as const).map((kind) => (
           <span key={kind}><i className={`legend-dot marker-${kind}`} />{ui[language][kind]}</span>
         ))}
@@ -615,6 +697,12 @@ export default function FishingExplorer() {
   // Holds the reach the checker opened on; null means closed.
   const [checking, setChecking] = useState<{ spot: FishingSpot | null } | null>(null);
   const closeChecker = useCallback(() => setChecking(null), []);
+  // Stamped so asking for the same spot twice still flies back to it.
+  const [popularFocus, setPopularFocus] = useState<{ id: string; at: number } | null>(null);
+  const showPopularSpot = useCallback((id: string) => {
+    setPopularFocus({ id, at: Date.now() });
+    document.querySelector(".map-wrap")?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, []);
 
   useEffect(() => {
     const saved = window.localStorage.getItem("salmon-guide-language");
@@ -793,6 +881,7 @@ export default function FishingExplorer() {
           language={language}
           regionId={regionId}
           onSelect={selectSpot}
+          popularFocus={popularFocus}
         />
 
         <aside className="water-list" aria-label={language === "zh" ? "水域列表" : "Water list"}>
@@ -914,6 +1003,7 @@ export default function FishingExplorer() {
                           </div>
                         ))}
                       <RuleList spot={spot} language={language} />
+                      <PopularSpotList reachId={spot.id} language={language} onShow={showPopularSpot} />
                       <button className="catch-here-button" type="button" onClick={() => setChecking({ spot })} data-catch-open="card">
                         <Camera size={16} />{ui[language].catchCheckHere}
                       </button>

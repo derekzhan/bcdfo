@@ -111,6 +111,20 @@ Oceans Canada（DFO）BC 省 8 个淡水区的表格规定整理成更容易搜�
   「DFO 通知」即可阅读；往年发布、DFO 页面却仍在引用的通知会标明「往年通知」。
   通知暂时打不开时只保留链接，不影响规定刷新。
 
+### 常去钓点（第 2 区）
+
+[`app/popular-spots.ts`](app/popular-spots.ts) 手工整理第 2 区各河段钓友常去的
+位置，来源是公开论坛、渔具店渔情、博客、视频、官方公园和营地页面以及
+OpenStreetMap。Facebook、TikTok、小红书需要登录，无法收录。
+
+- 每个钓点至少有两个来自不同网站的来源，每条都附链接和查阅日期；
+- 只挂在一个 DFO 河段上，离该河段红线不超过 150 米（停车场和步道口等下河入口
+  放宽到 400 米）；
+- 孵化、计数设施 150 米以内、全年禁钓的段落、私人土地和原住民保留地上的位置
+  一律不收；
+- 来源里关于限额的说法一律不用，弹窗里「这段今天」的状态来自所属河段的
+  DFO 规定。
+
 ```bash
 # 打印各区条目数量，并列出没有匹配到翻译规则的限额措辞，不写文件
 npm run regions:report
@@ -284,6 +298,8 @@ app/
   CatchChecker.tsx           「钓到鱼了」识鱼助手面板与鲑鱼示意图
   catch-check.ts             限额解析与「能否带走」判定（纯函数）
   NoticeDetails.tsx          规定下方可展开的 DFO 渔业通知（FN 编号）
+  popular-spots.ts           第 2 区常去钓点数据（手工整理，附来源）
+  PopularSpots.tsx           河段卡片里的钓点列表与地图弹窗
   fishing-data.ts            Region 2 手工维护的双语规定、类型与区域清单
   region-data.generated.ts   其余 7 个区的生成规定（勿手工编辑）
   waterway-paths.ts          生成的 OSM 河段几何（勿手工编辑）
